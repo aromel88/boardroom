@@ -1,5 +1,5 @@
 {
-  "name": "id8",
+  "name": "lower-your-joust",
   "version": "1.0.0",
   "description": "Project 3",
   "main": "app.js",
@@ -10,7 +10,11 @@
     "start": "node ./src/app.js"
   },
   "author": "Aaron Romel",
-  "license": "ISC",
+  "contributors": [{
+    "name": "Jesse Cooper",
+    "email": "JesseAndCooper@Gmail.com"
+  }],
+  "license": "UNLICENSED",
   "devDependencies": {
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
