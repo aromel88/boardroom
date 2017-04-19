@@ -1,0 +1,76 @@
+// text colors
+$primary-dark-text: rgba(0, 0, 0, 0.87);
+$secondary-dark-text: rgba(0, 0, 0, 0.54);
+$disabled-dark-text: rgba(0, 0, 0, 0.38);
+$primary-light-text: rgba(1, 1, 1, 1);
+$secondary-light-text: rgba(1, 1, 1, 0.7);
+$disabled-light-text: rgba(1, 1, 1, 0.5);
+
+// color scheme
+$light-gray: #FAFAFA;
+$med-gray: #F5F5F5;
+$dark-gray: #E0E0E0;
+
+$primary-color: #9C27B0;
+$primary-color-dark: #6A1B9A;
+$accent-color: #69F0AE;
+
+// mixins
+@mixin position-absolute($left, $top) {
+  position: absolute;
+  left: $left;
+  top: $top;
+}
+
+@mixin absolute-centered($left, $top) {
+  position: absolute;
+  left: $left;
+  top: $top;
+  transform: translate(-50%, -50%);
+}
+
+@mixin material($width, $height, $bg-color, $shadow) {
+  background-color: $bg-color;
+  width: $width;
+  height: $height;
+  border-radius: 5px;
+  box-shadow: 0px 7px 5px $shadow;
+}
+
+@mixin button($width, $height, $bg-color, $shadow) {
+  display: block;
+  width: $width;
+  height: $height;
+  background-color: $bg-color;
+  box-shadow: 0px 3px 2px $shadow;
+  border: none;
+  border-radius: 3px;
+
+  // hover styles
+  &:hover {
+    cursor: pointer;
+    box-shadow: 4px 7px 3px $shadow, -4px -2px 3px $shadow;
+    width: $width + 5;
+    height: $height + 5;
+  }
+  &:active {
+    box-shadow: 0px 3px 2px $shadow;
+    width: $width;
+    height: $height;
+  }
+
+  transition: width 0.15s, height 0.15s, box-shadow 0.15s;
+}
+
+// reset styles
+* {
+  margin: 0;
+  padding: 0;
+}
+*:focus {
+  outline: none;
+}
+
+body {
+  background-color: $med-gray;
+}
