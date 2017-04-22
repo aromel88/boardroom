@@ -2,9 +2,9 @@
 $primary-dark-text: rgba(0, 0, 0, 0.87);
 $secondary-dark-text: rgba(0, 0, 0, 0.54);
 $disabled-dark-text: rgba(0, 0, 0, 0.38);
-$primary-light-text: rgba(1, 1, 1, 1);
-$secondary-light-text: rgba(1, 1, 1, 0.7);
-$disabled-light-text: rgba(1, 1, 1, 0.5);
+$primary-light-text: rgba(255, 255, 255, 1);
+$secondary-light-text: rgba(255, 255, 255, 0.7);
+$disabled-light-text: rgba(255, 255, 255, 0.5);
 
 // fonts
 $Montserrat: 'Montserrat', sans-serif;
@@ -40,7 +40,7 @@ $primary-color-dark: #008975;
   box-shadow: 0px 7px 5px $shadow;
 }
 
-@mixin button($width, $height, $bg-color, $shadow) {
+@mixin material-button($width, $height, $bg-color, $shadow) {
   display: block;
   width: $width;
   height: $height;
@@ -48,13 +48,15 @@ $primary-color-dark: #008975;
   box-shadow: 0px 3px 2px $shadow;
   border: none;
   border-radius: 3px;
+  line-height: $height;
+  text-align: center;
 
   // hover styles
   &:hover {
     cursor: pointer;
-    box-shadow: 4px 7px 3px $shadow, -4px -2px 3px $shadow;
-    width: $width + 5;
-    height: $height + 5;
+    box-shadow: 4px 7px 3px $shadow;
+    width: $width + 3;
+    height: $height + 3;
   }
   &:active {
     box-shadow: 0px 3px 2px $shadow;
@@ -75,5 +77,10 @@ $primary-color-dark: #008975;
 }
 
 body {
-  background-color: $med-gray;
+  //background-color: $dark-gray;
+  background: $dark-gray; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, white 0%, $med-gray 40%, $dark-gray 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, white 0%,$med-gray 40%,$dark-gray 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, white 0%,$med-gray 40%,$dark-gray 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  font-family: $Montserrat;
 }

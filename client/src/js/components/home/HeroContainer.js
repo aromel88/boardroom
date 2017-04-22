@@ -10,7 +10,7 @@ class HeroContainer extends React.Component {
     return (
       <div id='hero-container'>
         <h1>{this.props.heroText}</h1>
-        <img alt='Hero Img' src={this.props.heroImg} onClick={this.props.imgClick}/>
+        <img alt='Hero Img' src={this.props.heroImg} />
       </div>
     );
   }

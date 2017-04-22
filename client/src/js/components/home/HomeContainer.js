@@ -19,7 +19,7 @@ class HomeContainer extends React.Component {
       navItem: 'Start a team',
       navAction: this.createTeamPage,
       heroText: 'Welcome to the Home Page',
-      heroImg: './assets/img/logo.png',
+      heroImg: './assets/img/heroimg.svg',
       joinType: 'Join your team',
       joinAction: this.joinRoom,
     }
@@ -39,7 +39,7 @@ class HomeContainer extends React.Component {
   createTeamPage() {
     // TODO: animations
     this.setState({
-      navItem: 'Go home',
+      navItem: 'Back',
       navAction: this.goHome,
       joinType: 'Create your team',
       joinAction: this.createRoom

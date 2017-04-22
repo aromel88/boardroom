@@ -9,7 +9,7 @@ class Nav extends React.Component {
   render() {
     return (
       <nav>
-        <input type='button' value={this.props.navItem} onClick={this.props.navClick} />
+        <input type='button' className='navButton' value={this.props.navItem} onClick={this.props.navClick} />
       </nav>
     );
   }
