@@ -24578,9 +24578,17 @@ var _react = __webpack_require__(50);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Nav = __webpack_require__(195);
+
+var _Nav2 = _interopRequireDefault(_Nav);
+
 var _HeroContainer = __webpack_require__(194);
 
 var _HeroContainer2 = _interopRequireDefault(_HeroContainer);
+
+var _LoginContainer = __webpack_require__(196);
+
+var _LoginContainer2 = _interopRequireDefault(_LoginContainer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24597,24 +24605,59 @@ var HomeContainer = function (_React$Component) {
   function HomeContainer() {
     _classCallCheck(this, HomeContainer);
 
-    // set initial state
     var _this = _possibleConstructorReturn(this, (HomeContainer.__proto__ || Object.getPrototypeOf(HomeContainer)).call(this));
 
+    _this.createTeamPage = _this.createTeamPage.bind(_this);
+    _this.goHome = _this.goHome.bind(_this);
+    _this.joinRoom = _this.joinRoom.bind(_this);
+    _this.createRoom = _this.createRoom.bind(_this);
+
+    // set initial state
     _this.state = {
+      navItem: 'Start a team',
+      navAction: _this.createTeamPage,
       heroText: 'Welcome to the Home Page',
-      heroImg: './assets/img/logo.png'
+      heroImg: './assets/img/logo.png',
+      joinType: 'Join your team',
+      joinAction: _this.joinRoom
     };
 
-    _this.clickImg = _this.clickImg.bind(_this);
     return _this;
   }
 
   _createClass(HomeContainer, [{
-    key: 'clickImg',
-    value: function clickImg() {
+    key: 'goHome',
+    value: function goHome() {
+      // TODO: animations
       this.setState({
-        heroText: 'The button was clicked'
+        navItem: 'Start a team',
+        navAction: this.createTeamPage,
+        joinType: 'Join your team',
+        joinAction: this.joinRoom
       });
+    }
+  }, {
+    key: 'createTeamPage',
+    value: function createTeamPage() {
+      // TODO: animations
+      this.setState({
+        navItem: 'Go home',
+        navAction: this.goHome,
+        joinType: 'Create your team',
+        joinAction: this.createRoom
+      });
+    }
+  }, {
+    key: 'joinRoom',
+    value: function joinRoom() {
+      // TODO: join room logic (client emit) and switch to main app page
+      console.log('joining room');
+    }
+  }, {
+    key: 'createRoom',
+    value: function createRoom() {
+      // TODO: create room logic (client emit) and switch to main app page
+      console.log('creating room');
     }
 
     // render Home page
@@ -24622,11 +24665,24 @@ var HomeContainer = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(_HeroContainer2.default, {
-        heroText: this.state.heroText,
-        heroImg: this.state.heroImg,
-        imgClick: this.clickImg
-      });
+      return (
+        // everything wrapped in div to avoid error 'Adjacent JSX elements must be wrapped in an enclosing tag'
+        _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(_Nav2.default, { navItem: this.state.navItem, navClick: this.state.navAction }),
+          _react2.default.createElement(
+            'div',
+            { id: 'home-container' },
+            ' ',
+            _react2.default.createElement(_HeroContainer2.default, {
+              heroText: this.state.heroText,
+              heroImg: this.state.heroImg
+            }),
+            _react2.default.createElement(_LoginContainer2.default, { joinType: this.state.joinType, joinAction: this.state.joinAction })
+          )
+        )
+      );
     }
   }]);
 
@@ -24689,6 +24745,114 @@ var HeroContainer = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = HeroContainer;
+
+/***/ }),
+/* 195 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(50);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Nav = function (_React$Component) {
+  _inherits(Nav, _React$Component);
+
+  function Nav(props) {
+    _classCallCheck(this, Nav);
+
+    return _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this, props));
+  }
+
+  _createClass(Nav, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'nav',
+        null,
+        _react2.default.createElement('input', { type: 'button', value: this.props.navItem, onClick: this.props.navClick })
+      );
+    }
+  }]);
+
+  return Nav;
+}(_react2.default.Component);
+
+exports.default = Nav;
+
+/***/ }),
+/* 196 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(50);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LoginContainer = function (_React$Component) {
+  _inherits(LoginContainer, _React$Component);
+
+  function LoginContainer(props) {
+    _classCallCheck(this, LoginContainer);
+
+    return _possibleConstructorReturn(this, (LoginContainer.__proto__ || Object.getPrototypeOf(LoginContainer)).call(this, props));
+  }
+
+  _createClass(LoginContainer, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { id: 'login-container' },
+        _react2.default.createElement(
+          'div',
+          { id: 'login-controls' },
+          _react2.default.createElement('input', { type: 'text', id: 'team-name', name: 'team-name' }),
+          _react2.default.createElement('input', { type: 'text', id: 'join-code', name: 'join-code' }),
+          _react2.default.createElement('input', { type: 'text', id: 'user-name', name: 'user-name' }),
+          _react2.default.createElement('input', { type: 'button', id: 'join-button', name: 'join-button',
+            value: this.props.joinType, onClick: this.props.joinAction })
+        )
+      );
+    }
+  }]);
+
+  return LoginContainer;
+}(_react2.default.Component);
+
+exports.default = LoginContainer;
 
 /***/ })
 /******/ ]);

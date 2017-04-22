@@ -12,17 +12,14 @@ let io;
 
 const onJoin = (sock) => {
   const socket = sock;
-
 };
 
 const onMsg = (sock) => {
   const socket = sock;
-
 };
 
 const onDisconnect = (sock) => {
   const socket = sock;
-
 };
 
 const init = (expressApp) => {
