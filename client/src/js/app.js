@@ -1,11 +1,11 @@
 import '../stylesheets/app.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Joust from './components/Joust';
+import HomeContainer from './components/home/HomeContainer';
 
 const init = () => {
   ReactDOM.render(
-      <Joust />,
+      <HomeContainer />,
       document.querySelector('#app')
     );
 };
