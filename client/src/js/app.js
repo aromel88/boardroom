@@ -19,7 +19,7 @@ const init = () => {
   ReactDOM.render(
       <HomeContainer />,
       document.querySelector('#app'), () => {
-        animations.init();
+        // module initializations
       }
     );
 };

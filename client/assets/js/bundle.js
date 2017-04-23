@@ -6678,31 +6678,16 @@ module.exports = ReactNoopUpdateQueue;
 "use strict";
 
 
-var loginControls = void 0;
-var joinButton = void 0;
-var heroText = void 0;
-var heroImg = void 0;
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var toggleLoginControls = function toggleLoginControls(callback) {
-  TweenMax.to(loginControls, 0.3, { right: '-400px', onComplete: function onComplete() {
-      callback();
-      TweenMax.to(loginControls, 0.3, { delay: 0.3, right: '75px' });
-    } });
-
-  TweenMax.to(heroText, 0.3, { opacity: 0, onComplete: function onComplete() {
-      TweenMax.to(heroText, 0.3, { delay: 0.3, opacity: 1 });
-    } });
+var animateWithRewind = function animateWithRewind(element, duration, toOptions, backOptions, callback) {
+  TweenMax.to(element, duration, _extends({}, toOptions, { onComplete: function onComplete() {
+      if (callback) callback();
+      TweenMax.to(element, duration, backOptions);
+    } }));
 };
 
-var init = function init() {
-  loginControls = document.querySelector('#login-controls');
-  joinButton = document.querySelector('#join-button');
-  heroText = document.querySelector('#hero-container').childNodes[0];
-  heroImg = document.querySelector('#hero-img');
-};
-
-module.exports.init = init;
-module.exports.toggleLoginControls = toggleLoginControls;
+module.exports.animateWithRewind = animateWithRewind;
 
 /***/ }),
 /* 52 */
@@ -9593,7 +9578,7 @@ var HomeContainer = function (_React$Component) {
 
     _this.createTeamPage = _this.createTeamPage.bind(_this);
     _this.setCreateTeamPageState = _this.setCreateTeamPageState.bind(_this);
-    _this.goHome = _this.goHome.bind(_this);
+    _this.homePage = _this.homePage.bind(_this);
     _this.setHomePageState = _this.setHomePageState.bind(_this);
     _this.joinRoom = _this.joinRoom.bind(_this);
     _this.createRoom = _this.createRoom.bind(_this);
@@ -9615,7 +9600,7 @@ var HomeContainer = function (_React$Component) {
     value: function setCreateTeamPageState() {
       this.setState({
         navItem: 'Back',
-        navAction: this.goHome,
+        navAction: this.homePage,
         heroText: 'Start your brainstorming here',
         joinType: 'Create your team',
         joinAction: this.createRoom
@@ -9633,28 +9618,48 @@ var HomeContainer = function (_React$Component) {
       });
     }
   }, {
-    key: 'goHome',
-    value: function goHome() {
-      animations.toggleLoginControls(this.setHomePageState);
+    key: 'togglePage',
+    value: function togglePage(action) {
+      // animate login controls
+      var toAnimation = { right: '-400px' };
+      var backAnimation = { delay: 0.3, right: '75px' };
+      animations.animateWithRewind(document.querySelector('#login-controls'), 0.3, toAnimation, backAnimation, action);
+
+      // animate hero text
+      toAnimation = { opacity: '0' };
+      backAnimation = { delay: 0.3, opacity: '1' };
+      animations.animateWithRewind(document.querySelector('#hero-container').childNodes[0], 0.3, toAnimation, backAnimation);
+    }
+  }, {
+    key: 'appPage',
+    value: function appPage() {
+      var toAnimation = { opacity: 0 };
+      var backAnimation = { delay: 0.3, opacity: 1 };
+      animations.animateWithRewind(document.querySelector('#app'), 0.3, toAnimation, backAnimation, app.renderApp);
+    }
+  }, {
+    key: 'homePage',
+    value: function homePage() {
+      this.togglePage(this.setHomePageState);
     }
   }, {
     key: 'createTeamPage',
     value: function createTeamPage() {
-      animations.toggleLoginControls(this.setCreateTeamPageState);
+      this.togglePage(this.setCreateTeamPageState);
     }
   }, {
     key: 'joinRoom',
     value: function joinRoom() {
       // TODO: join room logic (client emit) and switch to main app page
       console.log('joining room');
-      app.renderApp();
+      this.appPage();
     }
   }, {
     key: 'createRoom',
     value: function createRoom() {
       // TODO: create room logic (client emit) and switch to main app page
       console.log('creating room');
-      app.renderApp();
+      this.appPage();
     }
 
     // render Home page
@@ -9762,7 +9767,7 @@ var renderApp = function renderApp() {
 
 var init = function init() {
   _reactDom2.default.render(_react2.default.createElement(_HomeContainer2.default, null), document.querySelector('#app'), function () {
-    animations.init();
+    // module initializations
   });
 };
 
