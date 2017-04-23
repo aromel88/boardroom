@@ -68,13 +68,6 @@ nav {
   height: calc(100vh - 75px);
   position: relative; }
 
-#login-container {
-  width: 59%;
-  height: 100vh;
-  position: absolute;
-  top: 0;
-  right: 0; }
-
 #hero-container h1 {
   font-size: 3.5em;
   color: rgba(0, 0, 0, 0.87);
@@ -88,7 +81,7 @@ nav {
   left: 0;
   bottom: 0; }
 
-#login-container {
+#login-controls {
   background-color: #FAFAFA;
   width: 400px;
   height: 300px;
@@ -98,7 +91,7 @@ nav {
   right: 75px;
   top: 100px; }
 
-#login-container input[type='text'] {
+#login-controls input[type='text'] {
   display: block;
   margin: auto;
   width: 200px;

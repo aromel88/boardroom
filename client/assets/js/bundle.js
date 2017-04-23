@@ -9569,8 +9569,13 @@ var _HomeContainer2 = _interopRequireDefault(_HomeContainer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var animations = __webpack_require__(199);
+
+
 var init = function init() {
-    _reactDom2.default.render(_react2.default.createElement(_HomeContainer2.default, null), document.querySelector('#app'));
+  _reactDom2.default.render(_react2.default.createElement(_HomeContainer2.default, null), document.querySelector('#app'), function () {
+    animations.init();
+  });
 };
 
 window.addEventListener('load', init);
@@ -11502,7 +11507,7 @@ exports = module.exports = __webpack_require__(88)(undefined);
 
 
 // module
-exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\n*:focus {\n  outline: none; }\n\nbody {\n  background: #E0E0E0;\n  /* Old browsers */\n  background: -moz-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(135deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\n  font-family: \"Montserrat\", sans-serif; }\n\n/*\n  Styles for home page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unkown\n*/\nnav {\n  height: 75px;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  background: #008975;\n  /* Old browsers */\n  background: -moz-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(to bottom, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n.navButton {\n  width: 100px;\n  height: 50px;\n  line-height: 50px;\n  border: 2px solid #FAFAFA;\n  color: #FAFAFA;\n  border-radius: 5px;\n  background-color: transparent;\n  position: absolute;\n  right: 75px;\n  top: 12px; }\n\n.navButton:hover {\n  background-color: white;\n  color: #00AA8D;\n  cursor: pointer; }\n\n#home-container {\n  width: 100%;\n  height: 100vh;\n  overflow-y: auto;\n  position: relative;\n  top: 75px; }\n\n#hero-container {\n  width: 40%;\n  height: calc(100vh - 75px);\n  position: relative; }\n\n#login-container {\n  width: 59%;\n  height: 100vh;\n  position: absolute;\n  top: 0;\n  right: 0; }\n\n#hero-container h1 {\n  font-size: 3.5em;\n  color: rgba(0, 0, 0, 0.87);\n  width: 400px;\n  position: absolute;\n  left: 100px;\n  top: 100px; }\n\n#hero-container img {\n  position: absolute;\n  left: 0;\n  bottom: 0; }\n\n#login-container {\n  background-color: #FAFAFA;\n  width: 400px;\n  height: 300px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  position: absolute;\n  right: 75px;\n  top: 100px; }\n\n#login-container input[type='text'] {\n  display: block;\n  margin: auto;\n  width: 200px;\n  padding: 4px;\n  font-size: 1em;\n  border-radius: 4px;\n  border: 2px solid #E0E0E0;\n  position: relative;\n  margin-bottom: 10px;\n  top: 25px; }\n\n#join-button {\n  display: block;\n  width: 212px;\n  height: 40px;\n  background-color: #00AA8D;\n  box-shadow: 0px 3px 2px #E0E0E0;\n  border: none;\n  border-radius: 3px;\n  line-height: 40px;\n  text-align: center;\n  transition: width 0.15s, height 0.15s, box-shadow 0.15s;\n  position: absolute;\n  left: 50%;\n  top: 200px;\n  transform: translate(-50%, -50%);\n  color: white;\n  font-size: 1em; }\n  #join-button:hover {\n    cursor: pointer;\n    box-shadow: 4px 7px 3px #E0E0E0;\n    width: 215px;\n    height: 43px; }\n  #join-button:active {\n    box-shadow: 0px 3px 2px #E0E0E0;\n    width: 212px;\n    height: 40px; }\n\n/*# sourceMappingURL=app.css.map */\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\n*:focus {\n  outline: none; }\n\nbody {\n  background: #E0E0E0;\n  /* Old browsers */\n  background: -moz-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(135deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\n  font-family: \"Montserrat\", sans-serif; }\n\n/*\n  Styles for home page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unkown\n*/\nnav {\n  height: 75px;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  background: #008975;\n  /* Old browsers */\n  background: -moz-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(to bottom, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n.navButton {\n  width: 100px;\n  height: 50px;\n  line-height: 50px;\n  border: 2px solid #FAFAFA;\n  color: #FAFAFA;\n  border-radius: 5px;\n  background-color: transparent;\n  position: absolute;\n  right: 75px;\n  top: 12px; }\n\n.navButton:hover {\n  background-color: white;\n  color: #00AA8D;\n  cursor: pointer; }\n\n#home-container {\n  width: 100%;\n  height: 100vh;\n  overflow-y: auto;\n  position: relative;\n  top: 75px; }\n\n#hero-container {\n  width: 40%;\n  height: calc(100vh - 75px);\n  position: relative; }\n\n#hero-container h1 {\n  font-size: 3.5em;\n  color: rgba(0, 0, 0, 0.87);\n  width: 400px;\n  position: absolute;\n  left: 100px;\n  top: 100px; }\n\n#hero-container img {\n  position: absolute;\n  left: 0;\n  bottom: 0; }\n\n#login-controls {\n  background-color: #FAFAFA;\n  width: 400px;\n  height: 300px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  position: absolute;\n  right: 75px;\n  top: 100px; }\n\n#login-controls input[type='text'] {\n  display: block;\n  margin: auto;\n  width: 200px;\n  padding: 4px;\n  font-size: 1em;\n  border-radius: 4px;\n  border: 2px solid #E0E0E0;\n  position: relative;\n  margin-bottom: 10px;\n  top: 25px; }\n\n#join-button {\n  display: block;\n  width: 212px;\n  height: 40px;\n  background-color: #00AA8D;\n  box-shadow: 0px 3px 2px #E0E0E0;\n  border: none;\n  border-radius: 3px;\n  line-height: 40px;\n  text-align: center;\n  transition: width 0.15s, height 0.15s, box-shadow 0.15s;\n  position: absolute;\n  left: 50%;\n  top: 200px;\n  transform: translate(-50%, -50%);\n  color: white;\n  font-size: 1em; }\n  #join-button:hover {\n    cursor: pointer;\n    box-shadow: 4px 7px 3px #E0E0E0;\n    width: 215px;\n    height: 43px; }\n  #join-button:active {\n    box-shadow: 0px 3px 2px #E0E0E0;\n    width: 212px;\n    height: 40px; }\n\n/*# sourceMappingURL=app.css.map */\n", ""]);
 
 // exports
 
@@ -24598,6 +24603,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var path = __webpack_require__(197);
+var animations = __webpack_require__(199);
+
 // test class to make sure react is working
 var HomeContainer = function (_React$Component) {
   _inherits(HomeContainer, _React$Component);
@@ -24608,7 +24616,9 @@ var HomeContainer = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (HomeContainer.__proto__ || Object.getPrototypeOf(HomeContainer)).call(this));
 
     _this.createTeamPage = _this.createTeamPage.bind(_this);
+    _this.setCreateTeamPageState = _this.setCreateTeamPageState.bind(_this);
     _this.goHome = _this.goHome.bind(_this);
+    _this.setHomePageState = _this.setHomePageState.bind(_this);
     _this.joinRoom = _this.joinRoom.bind(_this);
     _this.createRoom = _this.createRoom.bind(_this);
 
@@ -24616,36 +24626,45 @@ var HomeContainer = function (_React$Component) {
     _this.state = {
       navItem: 'Start a team',
       navAction: _this.createTeamPage,
-      heroText: 'Welcome to the Home Page',
+      heroText: 'Plan, discuss, win.',
       heroImg: './assets/img/heroimg.svg',
       joinType: 'Join your team',
       joinAction: _this.joinRoom
     };
-
     return _this;
   }
 
   _createClass(HomeContainer, [{
-    key: 'goHome',
-    value: function goHome() {
-      // TODO: animations
+    key: 'setCreateTeamPageState',
+    value: function setCreateTeamPageState() {
+      this.setState({
+        navItem: 'Back',
+        navAction: this.goHome,
+        heroText: 'Start your brainstorming here',
+        joinType: 'Create your team',
+        joinAction: this.createRoom
+      });
+    }
+  }, {
+    key: 'setHomePageState',
+    value: function setHomePageState() {
       this.setState({
         navItem: 'Start a team',
         navAction: this.createTeamPage,
+        heroText: 'Plan, discuss, win.',
         joinType: 'Join your team',
         joinAction: this.joinRoom
       });
     }
   }, {
+    key: 'goHome',
+    value: function goHome() {
+      animations.toggleLoginControls(this.setHomePageState);
+    }
+  }, {
     key: 'createTeamPage',
     value: function createTeamPage() {
-      // TODO: animations
-      this.setState({
-        navItem: 'Back',
-        navAction: this.goHome,
-        joinType: 'Create your team',
-        joinAction: this.createRoom
-      });
+      animations.toggleLoginControls(this.setCreateTeamPageState);
     }
   }, {
     key: 'joinRoom',
@@ -24835,16 +24854,12 @@ var LoginContainer = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        { id: 'login-container' },
-        _react2.default.createElement(
-          'div',
-          { id: 'login-controls' },
-          _react2.default.createElement('input', { type: 'text', id: 'team-name', name: 'team-name' }),
-          _react2.default.createElement('input', { type: 'text', id: 'join-code', name: 'join-code' }),
-          _react2.default.createElement('input', { type: 'text', id: 'user-name', name: 'user-name' }),
-          _react2.default.createElement('input', { type: 'button', id: 'join-button', name: 'join-button',
-            value: this.props.joinType, onClick: this.props.joinAction })
-        )
+        { id: 'login-controls' },
+        _react2.default.createElement('input', { type: 'text', id: 'team-name', name: 'team-name' }),
+        _react2.default.createElement('input', { type: 'text', id: 'join-code', name: 'join-code' }),
+        _react2.default.createElement('input', { type: 'text', id: 'user-name', name: 'user-name' }),
+        _react2.default.createElement('input', { type: 'button', id: 'join-button', name: 'join-button',
+          value: this.props.joinType, onClick: this.props.joinAction })
       );
     }
   }]);
@@ -24853,6 +24868,271 @@ var LoginContainer = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = LoginContainer;
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// resolves . and .. elements in a path array with directory names there
+// must be no slashes, empty elements, or device names (c:\) in the array
+// (so also no leading and trailing slashes - it does not distinguish
+// relative and absolute paths)
+function normalizeArray(parts, allowAboveRoot) {
+  // if the path tries to go above the root, `up` ends up > 0
+  var up = 0;
+  for (var i = parts.length - 1; i >= 0; i--) {
+    var last = parts[i];
+    if (last === '.') {
+      parts.splice(i, 1);
+    } else if (last === '..') {
+      parts.splice(i, 1);
+      up++;
+    } else if (up) {
+      parts.splice(i, 1);
+      up--;
+    }
+  }
+
+  // if the path is allowed to go above the root, restore leading ..s
+  if (allowAboveRoot) {
+    for (; up--; up) {
+      parts.unshift('..');
+    }
+  }
+
+  return parts;
+}
+
+// Split a filename into [root, dir, basename, ext], unix version
+// 'root' is just a slash, or nothing.
+var splitPathRe =
+    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+var splitPath = function(filename) {
+  return splitPathRe.exec(filename).slice(1);
+};
+
+// path.resolve([from ...], to)
+// posix version
+exports.resolve = function() {
+  var resolvedPath = '',
+      resolvedAbsolute = false;
+
+  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    var path = (i >= 0) ? arguments[i] : process.cwd();
+
+    // Skip empty and invalid entries
+    if (typeof path !== 'string') {
+      throw new TypeError('Arguments to path.resolve must be strings');
+    } else if (!path) {
+      continue;
+    }
+
+    resolvedPath = path + '/' + resolvedPath;
+    resolvedAbsolute = path.charAt(0) === '/';
+  }
+
+  // At this point the path should be resolved to a full absolute path, but
+  // handle relative paths to be safe (might happen when process.cwd() fails)
+
+  // Normalize the path
+  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
+    return !!p;
+  }), !resolvedAbsolute).join('/');
+
+  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
+};
+
+// path.normalize(path)
+// posix version
+exports.normalize = function(path) {
+  var isAbsolute = exports.isAbsolute(path),
+      trailingSlash = substr(path, -1) === '/';
+
+  // Normalize the path
+  path = normalizeArray(filter(path.split('/'), function(p) {
+    return !!p;
+  }), !isAbsolute).join('/');
+
+  if (!path && !isAbsolute) {
+    path = '.';
+  }
+  if (path && trailingSlash) {
+    path += '/';
+  }
+
+  return (isAbsolute ? '/' : '') + path;
+};
+
+// posix version
+exports.isAbsolute = function(path) {
+  return path.charAt(0) === '/';
+};
+
+// posix version
+exports.join = function() {
+  var paths = Array.prototype.slice.call(arguments, 0);
+  return exports.normalize(filter(paths, function(p, index) {
+    if (typeof p !== 'string') {
+      throw new TypeError('Arguments to path.join must be strings');
+    }
+    return p;
+  }).join('/'));
+};
+
+
+// path.relative(from, to)
+// posix version
+exports.relative = function(from, to) {
+  from = exports.resolve(from).substr(1);
+  to = exports.resolve(to).substr(1);
+
+  function trim(arr) {
+    var start = 0;
+    for (; start < arr.length; start++) {
+      if (arr[start] !== '') break;
+    }
+
+    var end = arr.length - 1;
+    for (; end >= 0; end--) {
+      if (arr[end] !== '') break;
+    }
+
+    if (start > end) return [];
+    return arr.slice(start, end - start + 1);
+  }
+
+  var fromParts = trim(from.split('/'));
+  var toParts = trim(to.split('/'));
+
+  var length = Math.min(fromParts.length, toParts.length);
+  var samePartsLength = length;
+  for (var i = 0; i < length; i++) {
+    if (fromParts[i] !== toParts[i]) {
+      samePartsLength = i;
+      break;
+    }
+  }
+
+  var outputParts = [];
+  for (var i = samePartsLength; i < fromParts.length; i++) {
+    outputParts.push('..');
+  }
+
+  outputParts = outputParts.concat(toParts.slice(samePartsLength));
+
+  return outputParts.join('/');
+};
+
+exports.sep = '/';
+exports.delimiter = ':';
+
+exports.dirname = function(path) {
+  var result = splitPath(path),
+      root = result[0],
+      dir = result[1];
+
+  if (!root && !dir) {
+    // No dirname whatsoever
+    return '.';
+  }
+
+  if (dir) {
+    // It has a dirname, strip trailing slash
+    dir = dir.substr(0, dir.length - 1);
+  }
+
+  return root + dir;
+};
+
+
+exports.basename = function(path, ext) {
+  var f = splitPath(path)[2];
+  // TODO: make this comparison case-insensitive on windows?
+  if (ext && f.substr(-1 * ext.length) === ext) {
+    f = f.substr(0, f.length - ext.length);
+  }
+  return f;
+};
+
+
+exports.extname = function(path) {
+  return splitPath(path)[3];
+};
+
+function filter (xs, f) {
+    if (xs.filter) return xs.filter(f);
+    var res = [];
+    for (var i = 0; i < xs.length; i++) {
+        if (f(xs[i], i, xs)) res.push(xs[i]);
+    }
+    return res;
+}
+
+// String.prototype.substr - negative index don't work in IE8
+var substr = 'ab'.substr(-1) === 'b'
+    ? function (str, start, len) { return str.substr(start, len) }
+    : function (str, start, len) {
+        if (start < 0) start = str.length + start;
+        return str.substr(start, len);
+    }
+;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 198 */,
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var loginControls = void 0;
+var joinButton = void 0;
+var heroText = void 0;
+var heroImg = void 0;
+
+var toggleLoginControls = function toggleLoginControls(callback) {
+  TweenMax.to(loginControls, 0.3, { right: '-400px', onComplete: function onComplete() {
+      callback();
+      TweenMax.to(loginControls, 0.3, { delay: 0.3, right: '75px' });
+    } });
+
+  TweenMax.to(heroText, 0.3, { opacity: 0, onComplete: function onComplete() {
+      TweenMax.to(heroText, 0.3, { delay: 0.3, opacity: 1 });
+    } });
+};
+
+var init = function init() {
+  loginControls = document.querySelector('#login-controls');
+  joinButton = document.querySelector('#join-button');
+  heroText = document.querySelector('#hero-container').childNodes[0];
+  heroImg = document.querySelector('#hero-img');
+};
+
+module.exports.init = init;
+module.exports.toggleLoginControls = toggleLoginControls;
 
 /***/ })
 /******/ ]);

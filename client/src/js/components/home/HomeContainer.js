@@ -1,3 +1,5 @@
+const path = require('path');
+const animations = require('../../animations');
 import React from 'react';
 import Nav from './Nav';
 import HeroContainer from './HeroContainer';
@@ -10,7 +12,9 @@ class HomeContainer extends React.Component {
     super();
 
     this.createTeamPage = this.createTeamPage.bind(this);
+    this.setCreateTeamPageState = this.setCreateTeamPageState.bind(this);
     this.goHome = this.goHome.bind(this);
+    this.setHomePageState = this.setHomePageState.bind(this);
     this.joinRoom = this.joinRoom.bind(this);
     this.createRoom = this.createRoom.bind(this);
 
@@ -18,32 +22,39 @@ class HomeContainer extends React.Component {
     this.state = {
       navItem: 'Start a team',
       navAction: this.createTeamPage,
-      heroText: 'Welcome to the Home Page',
+      heroText: 'Plan, discuss, win.',
       heroImg: './assets/img/heroimg.svg',
       joinType: 'Join your team',
       joinAction: this.joinRoom,
     }
-
   }
 
-  goHome() {
-    // TODO: animations
+  setCreateTeamPageState() {
+    this.setState({
+      navItem: 'Back',
+      navAction: this.goHome,
+      heroText: 'Start your brainstorming here',
+      joinType: 'Create your team',
+      joinAction: this.createRoom
+    });
+  }
+
+  setHomePageState() {
     this.setState({
       navItem: 'Start a team',
       navAction: this.createTeamPage,
+      heroText: 'Plan, discuss, win.',
       joinType: 'Join your team',
       joinAction: this.joinRoom
     });
   }
 
+  goHome() {
+    animations.toggleLoginControls(this.setHomePageState);
+  }
+
   createTeamPage() {
-    // TODO: animations
-    this.setState({
-      navItem: 'Back',
-      navAction: this.goHome,
-      joinType: 'Create your team',
-      joinAction: this.createRoom
-    });
+    animations.toggleLoginControls(this.setCreateTeamPageState);
   }
 
   joinRoom() {

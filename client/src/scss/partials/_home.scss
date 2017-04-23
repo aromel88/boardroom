@@ -52,14 +52,6 @@ nav {
   position: relative;
 }
 
-#login-container {
-  width: 59%;
-  height: 100vh;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
 #hero-container h1 {
   font-size: 3.5em;
   color: $primary-dark-text;
@@ -73,14 +65,14 @@ nav {
   bottom: 0;
 }
 
-#login-container {
+#login-controls {
   @include material(400px, 300px, $light-gray, rgba(0,0,0,0.5));
   position: absolute;
   right: 75px;
   top: 100px;
 }
 
-#login-container input[type='text'] {
+#login-controls input[type='text'] {
   display: block;
   margin: auto;
   width: 200px;
