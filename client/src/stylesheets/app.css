@@ -6,14 +6,6 @@
   outline: none; }
 
 body {
-  background: #E0E0E0;
-  /* Old browsers */
-  background: -moz-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);
-  /* FF3.6-15 */
-  background: -webkit-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);
-  /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(135deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);
-  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   font-family: "Montserrat", sans-serif; }
 
 /*
@@ -62,7 +54,15 @@ nav {
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
-  top: 75px; }
+  top: 75px;
+  background: #E0E0E0;
+  /* Old browsers */
+  background: -moz-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }
 
 #hero-container {
   width: 40%;

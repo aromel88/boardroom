@@ -4,13 +4,13 @@ import '../stylesheets/app.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import HomeContainer from './components/home/HomeContainer';
-import AppContainer from './components/AppContainer';
+import ChatContainer from './components/chat/ChatContainer';
 
 const renderApp = () => {
   ReactDOM.render(
-      <AppContainer />,
+      <ChatContainer />,
       document.querySelector('#app'), () => {
-        // module initializations
+        // module initializations if needed
       }
     );
 };
@@ -19,7 +19,7 @@ const init = () => {
   ReactDOM.render(
       <HomeContainer />,
       document.querySelector('#app'), () => {
-        // module initializations
+        // module initializations if needed
       }
     );
 };
