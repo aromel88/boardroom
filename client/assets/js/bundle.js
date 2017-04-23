@@ -9579,7 +9579,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var path = __webpack_require__(109);
+var app = __webpack_require__(85);
 var animations = __webpack_require__(51);
 
 // test class to make sure react is working
@@ -9647,12 +9647,14 @@ var HomeContainer = function (_React$Component) {
     value: function joinRoom() {
       // TODO: join room logic (client emit) and switch to main app page
       console.log('joining room');
+      app.renderApp();
     }
   }, {
     key: 'createRoom',
     value: function createRoom() {
       // TODO: create room logic (client emit) and switch to main app page
       console.log('creating room');
+      app.renderApp();
     }
 
     // render Home page
@@ -9743,10 +9745,20 @@ var _HomeContainer = __webpack_require__(82);
 
 var _HomeContainer2 = _interopRequireDefault(_HomeContainer);
 
+var _AppContainer = __webpack_require__(198);
+
+var _AppContainer2 = _interopRequireDefault(_AppContainer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var animations = __webpack_require__(51);
 
+
+var renderApp = function renderApp() {
+  _reactDom2.default.render(_react2.default.createElement(_AppContainer2.default, null), document.querySelector('#app'), function () {
+    // module initializations
+  });
+};
 
 var init = function init() {
   _reactDom2.default.render(_react2.default.createElement(_HomeContainer2.default, null), document.querySelector('#app'), function () {
@@ -9755,6 +9767,8 @@ var init = function init() {
 };
 
 window.addEventListener('load', init);
+
+module.exports.renderApp = renderApp;
 
 /***/ }),
 /* 86 */
@@ -11842,7 +11856,7 @@ exports = module.exports = __webpack_require__(92)(undefined);
 
 
 // module
-exports.push([module.i, "* {\r\n  margin: 0;\r\n  padding: 0; }\r\n\r\n*:focus {\r\n  outline: none; }\r\n\r\nbody {\r\n  background: #E0E0E0;\r\n  /* Old browsers */\r\n  background: -moz-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\r\n  /* FF3.6-15 */\r\n  background: -webkit-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\r\n  /* Chrome10-25,Safari5.1-6 */\r\n  background: linear-gradient(135deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\r\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\r\n  font-family: \"Montserrat\", sans-serif; }\r\n\r\n/*\r\n  Styles for home page\r\n  IMGE 590 - Project 3 - The Product\r\n\r\n  Aaron Romel\r\n  Jesse Cooper\r\n\r\n  \"Drop your joust, boys\" - Unknown\r\n*/\r\nnav {\r\n  height: 75px;\r\n  width: 100%;\r\n  position: absolute;\r\n  top: 0;\r\n  background: #008975;\r\n  /* Old browsers */\r\n  background: -moz-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\r\n  /* FF3.6-15 */\r\n  background: -webkit-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\r\n  /* Chrome10-25,Safari5.1-6 */\r\n  background: linear-gradient(to bottom, #00BF9A 0%, #00AA8D 44%, #008975 100%);\r\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\r\n\r\n.navButton {\r\n  width: 100px;\r\n  height: 50px;\r\n  line-height: 50px;\r\n  border: 2px solid #FAFAFA;\r\n  color: #FAFAFA;\r\n  border-radius: 5px;\r\n  background-color: transparent;\r\n  position: absolute;\r\n  right: 75px;\r\n  top: 12px; }\r\n\r\n.navButton:hover {\r\n  background-color: white;\r\n  color: #00AA8D;\r\n  cursor: pointer; }\r\n\r\n#home-container {\r\n  width: 100%;\r\n  height: calc(100vh - 75px);\r\n  overflow-y: auto;\r\n  overflow-x: hidden;\r\n  position: relative;\r\n  top: 75px; }\r\n\r\n#hero-container {\r\n  width: 40%;\r\n  height: calc(100vh - 75px);\r\n  position: relative; }\r\n\r\n#hero-container h1 {\r\n  font-size: 3.5em;\r\n  color: rgba(0, 0, 0, 0.87);\r\n  width: 400px;\r\n  position: absolute;\r\n  left: 100px;\r\n  top: 100px; }\r\n\r\n#hero-container img {\r\n  position: absolute;\r\n  left: 0;\r\n  bottom: 0; }\r\n\r\n#login-controls {\r\n  background-color: #FAFAFA;\r\n  width: 400px;\r\n  height: 300px;\r\n  border-radius: 5px;\r\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\r\n  position: absolute;\r\n  right: 75px;\r\n  top: 100px; }\r\n\r\n#login-controls input[type='text'] {\r\n  display: block;\r\n  margin: auto;\r\n  width: 200px;\r\n  padding: 4px;\r\n  font-size: 1em;\r\n  border-radius: 4px;\r\n  border: 2px solid #E0E0E0;\r\n  position: relative;\r\n  margin-bottom: 10px;\r\n  top: 25px; }\r\n\r\n#join-button {\r\n  display: block;\r\n  width: 212px;\r\n  height: 40px;\r\n  background-color: #00AA8D;\r\n  box-shadow: 0px 3px 2px #E0E0E0;\r\n  border: none;\r\n  border-radius: 3px;\r\n  line-height: 40px;\r\n  text-align: center;\r\n  transition: width 0.15s, height 0.15s, box-shadow 0.15s;\r\n  position: absolute;\r\n  left: 50%;\r\n  top: 200px;\r\n  transform: translate(-50%, -50%);\r\n  color: white;\r\n  font-size: 1em; }\r\n  #join-button:hover {\r\n    cursor: pointer;\r\n    box-shadow: 4px 7px 3px #E0E0E0;\r\n    width: 215px;\r\n    height: 43px; }\r\n  #join-button:active {\r\n    box-shadow: 0px 3px 2px #E0E0E0;\r\n    width: 212px;\r\n    height: 40px; }\r\n\r\n/*\r\n  Styles for chat page\r\n  IMGE 590 - Project 3 - The Product\r\n\r\n  Aaron Romel\r\n  Jesse Cooper\r\n\r\n  \"Drop your joust, boys\" - Unknown\r\n*/\r\n#chat-container {\r\n  height: 100%;\r\n  width: 100%; }\r\n\r\n#sidebar-container {\r\n  position: absolute;\r\n  left: 0px;\r\n  top: 0px;\r\n  width: 300px;\r\n  height: 100%;\r\n  background-color: #00AA8D; }\r\n\r\n#sidebar-container h3 {\r\n  color: #FAFAFA;\r\n  background-color: #008975;\r\n  line-height: 80px;\r\n  text-align: center;\r\n  vertical-align: middle;\r\n  font-size: 20pt; }\r\n\r\n#user-list {\r\n  width: 85%;\r\n  margin: auto;\r\n  margin-top: 20px; }\r\n\r\n#message-container {\r\n  position: absolute;\r\n  left: 300px;\r\n  top: 0px;\r\n  min-width: 500px; }\r\n\r\n.user-wrapper {\r\n  background-color: #00BF9A;\r\n  width: 100%;\r\n  height: 80px;\r\n  border-radius: 5px;\r\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\r\n  border-radius: 3px;\r\n  margin-bottom: 20px; }\r\n\r\n.user-avatar {\r\n  border-radius: 25px;\r\n  width: 50px;\r\n  height: 50px; }\r\n\r\n.username {\r\n  margin-left: 5px;\r\n  color: #FAFAFA;\r\n  display: inline; }\r\n\r\n.message-wrapper {\r\n  background-color: #00BF9A;\r\n  width: 250px;\r\n  height: 100px;\r\n  border-radius: 5px;\r\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\r\n  /* May need to use min-width instead of whatever material's doing to get scaling correct */\r\n  border-radius: 5px;\r\n  margin-right: 20px;\r\n  margin-left: 20px;\r\n  margin-top: 20px; }\r\n\r\n.message-avatar {\r\n  border-radius: 25px;\r\n  width: 30px;\r\n  height: 30px; }\r\n\r\n.message-text {\r\n  background-color: #00AA8D;\r\n  color: #FAFAFA;\r\n  display: inline;\r\n  padding: 5px; }\r\n\r\n#message-input-container {\r\n  position: absolute;\r\n  bottom: 0px;\r\n  left: 300px; }\r\n\r\n#message-input {\r\n  width: 100%; }\r\n\r\n/*# sourceMappingURL=app.css.map */\r\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\n*:focus {\n  outline: none; }\n\nbody {\n  background: #E0E0E0;\n  /* Old browsers */\n  background: -moz-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(135deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */\n  font-family: \"Montserrat\", sans-serif; }\n\n/*\n  Styles for home page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\nnav {\n  height: 75px;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  background: #008975;\n  /* Old browsers */\n  background: -moz-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(to bottom, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n.navButton {\n  width: 100px;\n  height: 50px;\n  line-height: 50px;\n  border: 2px solid #FAFAFA;\n  color: #FAFAFA;\n  border-radius: 5px;\n  background-color: transparent;\n  position: absolute;\n  right: 75px;\n  top: 12px; }\n\n.navButton:hover {\n  background-color: white;\n  color: #00AA8D;\n  cursor: pointer; }\n\n#home-container {\n  width: 100%;\n  height: calc(100vh - 75px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  position: relative;\n  top: 75px; }\n\n#hero-container {\n  width: 40%;\n  height: calc(100vh - 75px);\n  position: relative; }\n\n#hero-container h1 {\n  font-size: 3.5em;\n  color: rgba(0, 0, 0, 0.87);\n  width: 400px;\n  position: absolute;\n  left: 100px;\n  top: 100px; }\n\n#hero-container img {\n  position: absolute;\n  left: 0;\n  bottom: 0; }\n\n#login-controls {\n  background-color: #FAFAFA;\n  width: 400px;\n  height: 300px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  position: absolute;\n  right: 75px;\n  top: 100px; }\n\n#login-controls input[type='text'] {\n  display: block;\n  margin: auto;\n  width: 200px;\n  padding: 4px;\n  font-size: 1em;\n  border-radius: 4px;\n  border: 2px solid #E0E0E0;\n  position: relative;\n  margin-bottom: 10px;\n  top: 25px; }\n\n#join-button {\n  display: block;\n  width: 212px;\n  height: 40px;\n  background-color: #00AA8D;\n  box-shadow: 0px 3px 2px #E0E0E0;\n  border: none;\n  border-radius: 3px;\n  line-height: 40px;\n  text-align: center;\n  transition: width 0.15s, height 0.15s, box-shadow 0.15s;\n  position: absolute;\n  left: 50%;\n  top: 200px;\n  transform: translate(-50%, -50%);\n  color: white;\n  font-size: 1em; }\n  #join-button:hover {\n    cursor: pointer;\n    box-shadow: 4px 7px 3px #E0E0E0;\n    width: 215px;\n    height: 43px; }\n  #join-button:active {\n    box-shadow: 0px 3px 2px #E0E0E0;\n    width: 212px;\n    height: 40px; }\n\n/*\n  Styles for chat page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\n#chat-container {\n  height: 100%;\n  width: 100%; }\n\n#sidebar-container {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  width: 300px;\n  height: 100%;\n  background-color: #00AA8D; }\n\n#sidebar-container h3 {\n  color: #FAFAFA;\n  background-color: #008975;\n  line-height: 80px;\n  text-align: center;\n  vertical-align: middle;\n  font-size: 20pt; }\n\n#user-list {\n  width: 85%;\n  margin: auto;\n  margin-top: 20px; }\n\n#message-container {\n  position: absolute;\n  left: 300px;\n  top: 0px;\n  min-width: 500px; }\n\n.user-wrapper {\n  background-color: #00BF9A;\n  width: 100%;\n  height: 80px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  border-radius: 3px;\n  margin-bottom: 20px; }\n\n.user-avatar {\n  border-radius: 25px;\n  width: 50px;\n  height: 50px; }\n\n.username {\n  margin-left: 5px;\n  color: #FAFAFA;\n  display: inline; }\n\n.message-wrapper {\n  background-color: #00BF9A;\n  width: 250px;\n  height: 100px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  /* May need to use min-width instead of whatever material's doing to get scaling correct */\n  border-radius: 5px;\n  margin-right: 20px;\n  margin-left: 20px;\n  margin-top: 20px; }\n\n.message-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px; }\n\n.message-text {\n  background-color: #00AA8D;\n  color: #FAFAFA;\n  display: inline;\n  padding: 5px; }\n\n#message-input-container {\n  position: absolute;\n  bottom: 0px;\n  left: 300px; }\n\n#message-input {\n  width: 100%; }\n\n/*# sourceMappingURL=app.css.map */\n", ""]);
 
 // exports
 
@@ -25131,6 +25145,405 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(20);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _ChatContainer = __webpack_require__(199);
+
+var _ChatContainer2 = _interopRequireDefault(_ChatContainer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// test class to make sure react is working
+var AppContainer = function (_React$Component) {
+  _inherits(AppContainer, _React$Component);
+
+  function AppContainer() {
+    _classCallCheck(this, AppContainer);
+
+    return _possibleConstructorReturn(this, (AppContainer.__proto__ || Object.getPrototypeOf(AppContainer)).call(this));
+  }
+
+  // render Home page
+
+
+  _createClass(AppContainer, [{
+    key: 'render',
+    value: function render() {
+      return (
+        // everything wrapped in div to avoid error 'Adjacent JSX elements must be wrapped in an enclosing tag'
+        _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(_ChatContainer2.default, null)
+        )
+      );
+    }
+  }]);
+
+  return AppContainer;
+}(_react2.default.Component);
+
+exports.default = AppContainer;
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(20);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _MessageContainer = __webpack_require__(201);
+
+var _MessageContainer2 = _interopRequireDefault(_MessageContainer);
+
+var _SidebarContainer = __webpack_require__(202);
+
+var _SidebarContainer2 = _interopRequireDefault(_SidebarContainer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var path = __webpack_require__(109);
+var animations = __webpack_require__(51);
+
+var ChatContainer = function (_React$Component) {
+  _inherits(ChatContainer, _React$Component);
+
+  function ChatContainer() {
+    _classCallCheck(this, ChatContainer);
+
+    var _this = _possibleConstructorReturn(this, (ChatContainer.__proto__ || Object.getPrototypeOf(ChatContainer)).call(this));
+
+    _this.getUsers = _this.getUsers.bind(_this);
+    _this.getMessages = _this.getMessages.bind(_this);
+
+    _this.state = {
+      users: [{ avi: './assets/img/usravi_m.png', username: 'Jesse' }, { avi: './assets/img/usravi_m.png', username: 'Aaron' }, { avi: './assets/img/usravi_m.png', username: 'Lathewave' }, { avi: './assets/img/usravi_m.png', username: 'Margaret' }],
+      messages: [{ avi: './assets/img/usravi_m.png', username: 'Jesse', content: 'This app is great! Conform!', timestamp: 1 }, { avi: './assets/img/usravi_m.png', username: 'Aaron', content: 'Conform!', timestamp: 2 }, { avi: './assets/img/usravi_m.png', username: 'Lathewave', content: 'Conform!', timestamp: 3 }, { avi: './assets/img/usravi_m.png', username: 'Margaret', content: 'Your app tastes like chalk.', timestamp: 4 }, { avi: './assets/img/usravi_m.png', username: 'Jesse', content: '*Snaps fingers in Z*', timestamp: 5 }]
+    };
+    return _this;
+  }
+
+  _createClass(ChatContainer, [{
+    key: 'getUsers',
+    value: function getUsers() {
+      this.setState({
+        users: [{ avi: './assets/img/usravi_m.png', username: 'Jesse' }, { avi: './assets/img/usravi_m.png', username: 'Aaron' }, { avi: './assets/img/usravi_m.png', username: 'Lathewave' }, { avi: './assets/img/usravi_m.png', username: 'Margaret' }]
+      });
+    }
+  }, {
+    key: 'getMessages',
+    value: function getMessages() {
+      this.setState({
+        messages: [{ avi: './assets/img/usravi_m.png', username: 'Jesse', content: 'This app is great! Conform!', timestamp: 1 }, { avi: './assets/img/usravi_m.png', username: 'Aaron', content: 'Conform!', timestamp: 2 }, { avi: './assets/img/usravi_m.png', username: 'Lathewave', content: 'Conform!', timestamp: 3 }, { avi: './assets/img/usravi_m.png', username: 'Margaret', content: 'Your app tastes like chalk.', timestamp: 4 }, { avi: './assets/img/usravi_m.png', username: 'Jesse', content: '*Snaps fingers in Z*', timestamp: 5 }]
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { id: 'chat-container' },
+        _react2.default.createElement(
+          'div',
+          { id: 'sidebar-container' },
+          _react2.default.createElement(_SidebarContainer2.default, { users: this.state.users })
+        ),
+        _react2.default.createElement(
+          'div',
+          { id: 'message-container' },
+          _react2.default.createElement(_MessageContainer2.default, { messages: this.state.messages })
+        ),
+        _react2.default.createElement(
+          'div',
+          { id: 'message-input-container' },
+          _react2.default.createElement('input', { type: 'text', id: 'message-input', placeholder: 'Write a message' })
+        )
+      );
+    }
+  }]);
+
+  return ChatContainer;
+}(_react2.default.Component);
+
+exports.default = ChatContainer;
+
+/***/ }),
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(20);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Message = function (_React$Component) {
+  _inherits(Message, _React$Component);
+
+  function Message(props) {
+    _classCallCheck(this, Message);
+
+    return _possibleConstructorReturn(this, (Message.__proto__ || Object.getPrototypeOf(Message)).call(this, props));
+  }
+
+  // TODO: Need to figure out user/avatar architecture
+
+  _createClass(Message, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'message-wrapper' },
+        _react2.default.createElement('img', { className: 'message-avatar', src: this.props.message.avi, alt: this.props.message.username }),
+        _react2.default.createElement(
+          'p',
+          { className: 'message-text' },
+          this.props.message.content
+        )
+      );
+    }
+  }]);
+
+  return Message;
+}(_react2.default.Component);
+
+exports.default = Message;
+
+/***/ }),
+/* 201 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(20);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Message = __webpack_require__(200);
+
+var _Message2 = _interopRequireDefault(_Message);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MessageContainer = function (_React$Component) {
+  _inherits(MessageContainer, _React$Component);
+
+  function MessageContainer(props) {
+    _classCallCheck(this, MessageContainer);
+
+    return _possibleConstructorReturn(this, (MessageContainer.__proto__ || Object.getPrototypeOf(MessageContainer)).call(this, props));
+  }
+
+  _createClass(MessageContainer, [{
+    key: 'render',
+    value: function render() {
+      // Sort messages by timestamp - this could potentially be expensive to do every time we render
+      var messages = this.props.messages.sort(function (msg1, msg2) {
+        return msg1.timestamp - msg2.timestamp;
+      }).map(function (message) {
+        return _react2.default.createElement(_Message2.default, { message: message, key: message.timestamp + message.username });
+      });
+
+      return _react2.default.createElement(
+        'ul',
+        { id: 'messages' },
+        messages
+      );
+    }
+  }]);
+
+  return MessageContainer;
+}(_react2.default.Component);
+
+exports.default = MessageContainer;
+
+/***/ }),
+/* 202 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(20);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _User = __webpack_require__(203);
+
+var _User2 = _interopRequireDefault(_User);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SidebarContainer = function (_React$Component) {
+  _inherits(SidebarContainer, _React$Component);
+
+  function SidebarContainer(props) {
+    _classCallCheck(this, SidebarContainer);
+
+    return _possibleConstructorReturn(this, (SidebarContainer.__proto__ || Object.getPrototypeOf(SidebarContainer)).call(this, props));
+  }
+
+  _createClass(SidebarContainer, [{
+    key: 'render',
+    value: function render() {
+      var users = this.props.users.map(function (user) {
+        return _react2.default.createElement(_User2.default, { user: user, key: performance.now() + user.username });
+      });
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'h3',
+          null,
+          'Users'
+        ),
+        _react2.default.createElement(
+          'ul',
+          { id: 'user-list' },
+          users
+        )
+      );
+    }
+  }]);
+
+  return SidebarContainer;
+}(_react2.default.Component);
+
+exports.default = SidebarContainer;
+
+/***/ }),
+/* 203 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(20);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var User = function (_React$Component) {
+  _inherits(User, _React$Component);
+
+  function User(props) {
+    _classCallCheck(this, User);
+
+    return _possibleConstructorReturn(this, (User.__proto__ || Object.getPrototypeOf(User)).call(this, props));
+  }
+
+  _createClass(User, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'user-wrapper' },
+        _react2.default.createElement('img', { className: 'user-avatar', src: this.props.user.avi, alt: this.props.user.username }),
+        _react2.default.createElement(
+          'p',
+          { className: 'username' },
+          this.props.user.username
+        )
+      );
+    }
+  }]);
+
+  return User;
+}(_react2.default.Component);
+
+exports.default = User;
 
 /***/ })
 /******/ ]);

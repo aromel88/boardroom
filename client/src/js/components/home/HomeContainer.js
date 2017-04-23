@@ -1,4 +1,4 @@
-const path = require('path');
+const app = require('../../app');
 const animations = require('../../animations');
 import React from 'react';
 import Nav from './Nav';
@@ -60,11 +60,13 @@ class HomeContainer extends React.Component {
   joinRoom() {
     // TODO: join room logic (client emit) and switch to main app page
     console.log('joining room');
+    app.renderApp();
   }
 
   createRoom() {
     // TODO: create room logic (client emit) and switch to main app page
     console.log('creating room');
+    app.renderApp();
   }
 
   // render Home page
