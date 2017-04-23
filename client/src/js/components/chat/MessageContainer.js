@@ -15,7 +15,7 @@ class MessageContainer extends React.Component {
       return (<Message message={message} key={message.timestamp + message.username} />);
     });
 
-    return (<ul id='messages'>{messages}</ul>);
+    return (<div id='messages'>{messages}</div>);
   }
 }
 

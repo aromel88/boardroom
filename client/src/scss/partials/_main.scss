@@ -40,6 +40,14 @@ $primary-color-dark: #008975;
   box-shadow: 0px 7px 5px $shadow;
 }
 
+@mixin material-flexible($width, $height, $bg-color, $shadow) {
+  background-color: $bg-color;
+  min-width: $width;
+  min-height: $height;
+  border-radius: 5px;
+  box-shadow: 0px 7px 5px $shadow;
+}
+
 @mixin material-button($width, $height, $bg-color, $shadow) {
   display: block;
   width: $width;

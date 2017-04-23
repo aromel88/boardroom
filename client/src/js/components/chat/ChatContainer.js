@@ -20,7 +20,7 @@ class ChatContainer extends React.Component {
               { avi: './assets/img/usravi_m.png', username: 'Margaret' },
              ],
       messages: [
-                  { avi: './assets/img/usravi_m.png', username: 'Jesse', content: 'This app is great! Conform!', timestamp: 1 },
+                  { avi: './assets/img/usravi_m.png', username: 'Jesse', content: 'This app is great! Conform! This app is great! Conform! This app is great! Conform! This app is great! Conform! This app is great! Conform! This app is great! Conform!', timestamp: 1 },
                   { avi: './assets/img/usravi_m.png', username: 'Aaron', content: 'Conform!', timestamp: 2 },
                   { avi: './assets/img/usravi_m.png', username: 'Lathewave', content: 'Conform!', timestamp: 3 },
                   { avi: './assets/img/usravi_m.png', username: 'Margaret', content: 'Your app tastes like chalk.', timestamp: 4 },
@@ -58,7 +58,7 @@ class ChatContainer extends React.Component {
         <div id='sidebar-container'>
           <SidebarContainer users={this.state.users} />
         </div>
-        <div id='message-container'>
+        <div id='messages-container'>
           <MessageContainer messages={this.state.messages} />
         </div>
         <div id='message-input-container'>
