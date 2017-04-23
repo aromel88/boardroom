@@ -10,11 +10,18 @@
 
 // Constants
 
+$sidebar-min-width: 300px;
+
+$user-list-min-width: 85%;
+
+$message-list-min-width: 500px;
+
 $user-radius: 3px;
-$user-min-width: 40px;
+$user-min-width: 100%;
 
 $message-radius: 5px;
-$message-min-width: 70px;
+$message-min-width: 250px;
+$message-min-height: 100px;
 
 // Mixins
 
@@ -25,35 +32,43 @@ $message-min-width: 70px;
 // Main styling
 
 #chat-container {
-	display: flex;
-	flex-direction: row;
 	height: 100%;
 	width: 100%;
 }
 
-#user-list-container {
-	order            : 0;
-	display          : flex;
-	flex-direction   : column;
-	justify-content  : center;
-	background-color : $primary-color;
-	height           : 100%;
+#sidebar-container {
+	@include position-absolute(0px, 0px);
+	width: $sidebar-min-width;
+	height: 100%;
+	background-color: $primary-color;
+}
+
+#sidebar-container h3 {
+	color            : $light-gray;
+	background-color : $primary-color-dark;
+	line-height      : 80px;
+	text-align       : center;
+	vertical-align   : middle;
+	font-size        : 20pt;
+}
+
+#user-list {
+	width: $user-list-min-width;
+	margin: auto;
+	margin-top: 20px;
 }
 
 #message-container {
-	order: 1;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	@include position-absolute($sidebar-min-width, 0px);
+	min-width: $message-list-min-width;
 }
 
 // User component styles
 
 .user-wrapper {
-	flex             : 0, 0, $user-min-width;
-	background-color : $primary-color-light;
+	@include material($user-min-width, 80px, $primary-color-light, rgba(0, 0, 0, 0.5));
 	border-radius    : $user-radius;
-	margin-left      : 5px;
+	margin-bottom    : 20px;
 }
 
 .user-avatar {
@@ -71,11 +86,12 @@ $message-min-width: 70px;
 // Message component styles
 
 .message-wrapper {
-	flex             : 0, 0, $message-min-width;
-	background-color : $primary-color-light;
+	@include material($message-min-width, $message-min-height, $primary-color-light, rgba(0, 0, 0, 0.5));
+	/* May need to use min-width instead of whatever material's doing to get scaling correct */
 	border-radius    : $message-radius;
 	margin-right     : 20px;
 	margin-left      : 20px;
+	margin-top       : 20px;
 }
 
 .message-avatar {
@@ -88,4 +104,15 @@ $message-min-width: 70px;
 	background-color: $primary-color;
 	color: $light-gray;
 	display: inline;
+	padding: 5px;
+}
+
+#message-input-container {
+	position: absolute;
+	bottom: 0px;
+	left: $sidebar-min-width;
+}
+
+#message-input {
+	width: 100%;
 }

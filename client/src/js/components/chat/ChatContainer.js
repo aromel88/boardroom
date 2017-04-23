@@ -2,7 +2,7 @@ const path = require('path');
 const animations = require('../../animations');
 import React from 'react';
 import MessageContainer from './MessageContainer';
-import UserListContainer from './UserListContainer';
+import SidebarContainer from './SidebarContainer';
 
 class ChatContainer extends React.Component {
 
@@ -55,15 +55,14 @@ class ChatContainer extends React.Component {
   render() {
     return (
       <div id="chat-container">
-        <div id='user-list-container'>
-          <UserListContainer users={this.state.users} />
+        <div id='sidebar-container'>
+          <SidebarContainer users={this.state.users} />
         </div>
         <div id='message-container'>
           <MessageContainer messages={this.state.messages} />
-          
-          <div id='message-input-container'>
-            <input type='text' id='message-input' placeholder='Write a message' />
-          </div>
+        </div>
+        <div id='message-input-container'>
+          <input type='text' id='message-input' placeholder='Write a message' />
         </div>
       </div>
     );

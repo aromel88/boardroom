@@ -141,30 +141,44 @@ nav {
   "Drop your joust, boys" - Unknown
 */
 #chat-container {
-  display: flex;
-  flex-direction: row;
   height: 100%;
   width: 100%; }
 
-#user-list-container {
-  order: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: #00AA8D;
-  height: 100%; }
+#sidebar-container {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 300px;
+  height: 100%;
+  background-color: #00AA8D; }
+
+#sidebar-container h3 {
+  color: #FAFAFA;
+  background-color: #008975;
+  line-height: 80px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 20pt; }
+
+#user-list {
+  width: 85%;
+  margin: auto;
+  margin-top: 20px; }
 
 #message-container {
-  order: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; }
+  position: absolute;
+  left: 300px;
+  top: 0px;
+  min-width: 500px; }
 
 .user-wrapper {
-  flex: 0, 0, 40px;
   background-color: #00BF9A;
+  width: 100%;
+  height: 80px;
+  border-radius: 5px;
+  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);
   border-radius: 3px;
-  margin-left: 5px; }
+  margin-bottom: 20px; }
 
 .user-avatar {
   border-radius: 25px;
@@ -177,11 +191,16 @@ nav {
   display: inline; }
 
 .message-wrapper {
-  flex: 0, 0, 70px;
   background-color: #00BF9A;
+  width: 250px;
+  height: 100px;
+  border-radius: 5px;
+  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);
+  /* May need to use min-width instead of whatever material's doing to get scaling correct */
   border-radius: 5px;
   margin-right: 20px;
-  margin-left: 20px; }
+  margin-left: 20px;
+  margin-top: 20px; }
 
 .message-avatar {
   border-radius: 25px;
@@ -191,6 +210,15 @@ nav {
 .message-text {
   background-color: #00AA8D;
   color: #FAFAFA;
-  display: inline; }
+  display: inline;
+  padding: 5px; }
+
+#message-input-container {
+  position: absolute;
+  bottom: 0px;
+  left: 300px; }
+
+#message-input {
+  width: 100%; }
 
 /*# sourceMappingURL=app.css.map */

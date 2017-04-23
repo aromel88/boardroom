@@ -1,7 +1,7 @@
 import React from 'react';
 import User from './User';
 
-class UserListContainer extends React.Component {
+class SidebarContainer extends React.Component {
 
   constructor(props) {
     super(props);
@@ -12,8 +12,13 @@ class UserListContainer extends React.Component {
       return (<User user={user}  key={performance.now() + user.username} />);
     });
 
-    return (<ul id='user-list'>{users}</ul>);
+    return (
+      <div>
+        <h3>Users</h3>
+        <ul id='user-list'>{users}</ul>
+      </div>
+    );
   }
 }
 
-export default UserListContainer;
+export default SidebarContainer;
