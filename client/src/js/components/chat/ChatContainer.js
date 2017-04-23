@@ -54,12 +54,16 @@ class ChatContainer extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="chat-container">
         <div id='user-list-container'>
           <UserListContainer users={this.state.users} />
         </div>
         <div id='message-container'>
           <MessageContainer messages={this.state.messages} />
+          
+          <div id='message-input-container'>
+            <input type='text' id='message-input' placeholder='Write a message' />
+          </div>
         </div>
       </div>
     );

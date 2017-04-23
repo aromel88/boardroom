@@ -131,4 +131,66 @@ nav {
     width: 212px;
     height: 40px; }
 
+/*
+  Styles for chat page
+  IMGE 590 - Project 3 - The Product
+
+  Aaron Romel
+  Jesse Cooper
+
+  "Drop your joust, boys" - Unknown
+*/
+#chat-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%; }
+
+#user-list-container {
+  order: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #00AA8D;
+  height: 100%; }
+
+#message-container {
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.user-wrapper {
+  flex: 0, 0, 40px;
+  background-color: #00BF9A;
+  border-radius: 3px;
+  margin-left: 5px; }
+
+.user-avatar {
+  border-radius: 25px;
+  width: 50px;
+  height: 50px; }
+
+.username {
+  margin-left: 5px;
+  color: #FAFAFA;
+  display: inline; }
+
+.message-wrapper {
+  flex: 0, 0, 70px;
+  background-color: #00BF9A;
+  border-radius: 5px;
+  margin-right: 20px;
+  margin-left: 20px; }
+
+.message-avatar {
+  border-radius: 25px;
+  width: 30px;
+  height: 30px; }
+
+.message-text {
+  background-color: #00AA8D;
+  color: #FAFAFA;
+  display: inline; }
+
 /*# sourceMappingURL=app.css.map */

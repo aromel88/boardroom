@@ -9,10 +9,10 @@ class UserListContainer extends React.Component {
 
   render() {
     const users = this.props.users.map((user) => {
-      return <User user={user} />
+      return (<User user={user}  key={performance.now() + user.username} />);
     });
 
-    return <ul id='user-list'>{users}</ul>;
+    return (<ul id='user-list'>{users}</ul>);
   }
 }
 

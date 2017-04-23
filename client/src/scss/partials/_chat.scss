@@ -1,0 +1,91 @@
+/*
+  Styles for chat page
+  IMGE 590 - Project 3 - The Product
+
+  Aaron Romel
+  Jesse Cooper
+
+  "Drop your joust, boys" - Unknown
+*/
+
+// Constants
+
+$user-radius: 3px;
+$user-min-width: 40px;
+
+$message-radius: 5px;
+$message-min-width: 70px;
+
+// Mixins
+
+@mixin encircle-avatar($radius) {
+	border-radius: $radius
+}
+
+// Main styling
+
+#chat-container {
+	display: flex;
+	flex-direction: row;
+	height: 100%;
+	width: 100%;
+}
+
+#user-list-container {
+	order            : 0;
+	display          : flex;
+	flex-direction   : column;
+	justify-content  : center;
+	background-color : $primary-color;
+	height           : 100%;
+}
+
+#message-container {
+	order: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+// User component styles
+
+.user-wrapper {
+	flex             : 0, 0, $user-min-width;
+	background-color : $primary-color-light;
+	border-radius    : $user-radius;
+	margin-left      : 5px;
+}
+
+.user-avatar {
+	@include encircle-avatar(25px);
+	width: 50px;
+	height: 50px;
+}
+
+.username {
+	margin-left: 5px;
+	color: $light-gray;
+	display: inline;
+}
+
+// Message component styles
+
+.message-wrapper {
+	flex             : 0, 0, $message-min-width;
+	background-color : $primary-color-light;
+	border-radius    : $message-radius;
+	margin-right     : 20px;
+	margin-left      : 20px;
+}
+
+.message-avatar {
+	@include encircle-avatar(25px);
+	width: 30px;
+	height: 30px;
+}
+
+.message-text {
+	background-color: $primary-color;
+	color: $light-gray;
+	display: inline;
+}
