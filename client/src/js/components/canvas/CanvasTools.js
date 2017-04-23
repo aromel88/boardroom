@@ -12,8 +12,8 @@ class CanvasTools extends React.Component {
   render() {
     return (
       // everything wrapped in div to avoid error 'Adjacent JSX elements must be wrapped in an enclosing tag'
-      <div>
-
+      <div id='canvas-tools'>
+        <h1>Canvas Tools Will Go Here</h1>
       </div>
     );
   }

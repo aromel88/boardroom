@@ -1,4 +1,30 @@
 
 #canvas-container {
-  display: none;
+  //display: none;
+}
+
+canvas {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  border: 2px solid $primary-color;
+  border-radius: 10px;
+}
+
+canvas:hover {
+  cursor: crosshair;
+}
+
+#top-canvas {
+  z-index: 10;
+}
+
+#canvas-tools {
+  background-color: $primary-color;
+  width: 400px;
+  height: calc(100vh - 800px);
+  min-height: 75px;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
 }

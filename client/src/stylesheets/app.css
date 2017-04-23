@@ -221,4 +221,26 @@ nav {
 #message-input {
   width: 100%; }
 
+canvas {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  border: 2px solid #00AA8D;
+  border-radius: 10px; }
+
+canvas:hover {
+  cursor: crosshair; }
+
+#top-canvas {
+  z-index: 10; }
+
+#canvas-tools {
+  background-color: #00AA8D;
+  width: 400px;
+  height: calc(100vh - 800px);
+  min-height: 75px;
+  position: absolute;
+  right: 0px;
+  bottom: 0px; }
+
 /*# sourceMappingURL=app.css.map */

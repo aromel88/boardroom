@@ -1,16 +1,18 @@
 
+const canvas = require('./canvas');
 const animations = require('./animations');
 import '../stylesheets/app.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import HomeContainer from './components/home/HomeContainer';
-import ChatContainer from './components/chat/ChatContainer';
+import AppContainer from './components/AppContainer';
 
 const renderApp = () => {
   ReactDOM.render(
-      <ChatContainer />,
+      <AppContainer />,
       document.querySelector('#app'), () => {
         // module initializations if needed
+        canvas.init();
       }
     );
 };
