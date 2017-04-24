@@ -169,7 +169,7 @@ nav {
   position: absolute;
   left: 300px;
   top: 0px;
-  width: calc(100% - 300px); }
+  width: calc(100% - 300px - 400px); }
 
 .user-wrapper {
   background-color: #00BF9A;
@@ -216,6 +216,15 @@ nav {
   margin-top: 10px;
   margin-left: 10px; }
 
+.message-username {
+  position: relative;
+  display: inline;
+  color: #FAFAFA;
+  top: -7px;
+  margin-left: 5px;
+  margin-right: 10px;
+  font-size: 14pt; }
+
 .message-text {
   position: relative;
   border-radius: 5px;
@@ -232,12 +241,13 @@ nav {
   position: fixed;
   bottom: 0px;
   left: 300px;
-  width: calc(100% - 300px); }
+  width: calc(100% - 300px - 400px); }
 
 #message-input {
   width: 100%;
-  height: 24px;
-  text-indent: 5px; }
+  height: 30px;
+  text-indent: 5px;
+  font-size: 14pt; }
 
 canvas {
   position: absolute;

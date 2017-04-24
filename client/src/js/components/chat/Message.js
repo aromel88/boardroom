@@ -11,8 +11,8 @@ class Message extends React.Component {
   render() {
     return (
       <div className='message-wrapper'>
-        {/* TODO: src would presumably be an image lookup via username */}
         <img className='message-avatar' src={this.props.message.avi} alt={this.props.message.username} />
+        <p className='message-username'>{this.props.message.username}</p>
         {/* May need to change to handle diagrams vs. text messages */}
         <p className='message-text'>{this.props.message.content}</p>
       </div>
