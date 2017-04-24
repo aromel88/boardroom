@@ -259,8 +259,7 @@ canvas {
   position: absolute;
   right: 0px;
   top: 0px;
-  border: 2px solid #00AA8D;
-  border-radius: 10px; }
+  border: 2px solid #00AA8D; }
 
 canvas:hover {
   cursor: crosshair; }
