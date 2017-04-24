@@ -108,6 +108,10 @@ $canvas-width: 400px;
 	clear         : both;
 }
 
+.self-message {
+	float : right;
+}
+
 .message-avatar {
 	@include encircle-avatar(25px);
 	width       : 30px;

@@ -212,6 +212,9 @@ nav {
   float: left;
   clear: both; }
 
+.self-message {
+  float: right; }
+
 .message-avatar {
   border-radius: 25px;
   width: 30px;

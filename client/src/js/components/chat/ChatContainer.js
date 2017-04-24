@@ -33,7 +33,7 @@ class ChatContainer extends React.Component {
     return [
             { avi: './assets/img/usravi_m.png', username: 'Jesse', content: 'This app is great! Conform!', timestamp: 1 },
             { avi: './assets/img/usravi_m.png', username: 'Aaron', content: 'Conform!', timestamp: 2 },
-            { avi: './assets/img/usravi_m.png', username: 'Lathewave', content: 'Conform!', timestamp: 3 },
+            { avi: './assets/img/usravi_m.png', username: 'Lathewave', content: 'All the time, every day', timestamp: 3 },
             { avi: './assets/img/usravi_m.png', username: 'Margaret', content: 'Your app tastes like chalk.', timestamp: 4 },
             { avi: './assets/img/usravi_m.png', username: 'Jesse', content: '*Snaps fingers in Z*', timestamp: 5 },
            ];
@@ -67,7 +67,7 @@ class ChatContainer extends React.Component {
           <SidebarContainer users={this.state.users} />
         </div>
         <div id='messages-container'>
-          <MessageContainer messages={this.state.messages} />
+          <MessageContainer username={this.state.username} messages={this.state.messages} />
         </div>
         <div id='message-input-container'>
           <input type='text' id='message-input' placeholder='Write a message' onKeyUp={this.submitMessage} />
