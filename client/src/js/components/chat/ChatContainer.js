@@ -70,7 +70,7 @@ class ChatContainer extends React.Component {
           <MessageContainer messages={this.state.messages} />
         </div>
         <div id='message-input-container'>
-          <input type='text' id='message-input' placeholder='Write a message' onClick={this.submitMessage} />
+          <input type='text' id='message-input' placeholder='Write a message' onKeyUp={this.submitMessage} />
         </div>
       </div>
     );
