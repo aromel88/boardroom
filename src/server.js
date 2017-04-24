@@ -10,24 +10,25 @@ const socketio = require('socket.io');
 
 let io;
 
-const onJoin = (sock) => {
-  const socket = sock;
-};
-
-const onMsg = (sock) => {
-  const socket = sock;
-};
-
-const onDisconnect = (sock) => {
-  const socket = sock;
-};
+// const onJoin = (sock) => {
+//   const socket = sock;
+// };
+//
+// const onMsg = (sock) => {
+//   const socket = sock;
+// };
+//
+// const onDisconnect = (sock) => {
+//   const socket = sock;
+// };
 
 const init = (expressApp) => {
   io = socketio(expressApp);
   io.sockets.on('connection', (sock) => {
-    onJoin(sock);
-    onMsg(sock);
-    onDisconnect(sock);
+    sock.emit('connected');
+    // onJoin(sock);
+    // onMsg(sock);
+    // onDisconnect(sock);
   });
   console.log('Websocket server running');
 };
