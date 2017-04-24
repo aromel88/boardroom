@@ -14,18 +14,15 @@ $sidebar-min-width: 300px;
 
 $user-list-min-width: 85%;
 
-$user-radius    : 3px;
+$user-radius    : 4px;
 $user-min-width : 100%;
 
-$message-radius     : 5px;
-$message-min-width  : 250px;
-$message-max-width  : 500px;
+$message-radius     : 4px;
+$message-min-width  : 200px;
+$message-max-width  : 550px;
 $message-min-height : 50px;
 
-$message-input-height: 30px;
-
-// Should probably be defined in a separate file and just referenced from here
-$canvas-width: 400px;
+$message-input-height: 32px;
 
 // Mixins
 
@@ -66,7 +63,7 @@ $canvas-width: 400px;
 	@include position-absolute($sidebar-min-width, 0px);
 	width      : calc(100% - #{$sidebar-min-width} - #{$canvas-width});
 	height     : calc(100% - #{$message-input-height});
-	overflow-y : scroll;
+	overflow-y : auto;
 }
 
 // User component styles
@@ -96,7 +93,7 @@ $canvas-width: 400px;
 // Message component styles
 
 .message-wrapper {
-	@include material-flexible(min-content, $message-min-height, $primary-color-light, rgba(0, 0, 0, 0.5));
+	@include material-flexible($message-min-width, $message-min-height, $primary-color-light, rgba(0, 0, 0, 0.5));
 	max-width     : $message-max-width;
 	border-radius : $message-radius;
 	margin-top    : 8px;
@@ -125,7 +122,7 @@ $canvas-width: 400px;
 	display      : inline;
 	color        : $light-gray;
 	top          : -7px;
-	margin-left  : 5px;
+	margin-left  : 10px;
 	margin-right : 10px;
 	font-size    : 14pt;
 }
@@ -154,5 +151,6 @@ $canvas-width: 400px;
 	width       : 100%;
 	height      : $message-input-height;
 	text-indent : 5px;
-	font-size   : 14pt;
+	font-size   : 13pt;
+	vertical-align : center;
 }

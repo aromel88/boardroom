@@ -1,4 +1,4 @@
 @import 'partials/main';
 @import 'partials/home';
-@import 'partials/chat';
 @import 'partials/canvas';
+@import 'partials/chat';	// Needs to be after canvas to reference its width

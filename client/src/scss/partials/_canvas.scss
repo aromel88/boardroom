@@ -1,9 +1,14 @@
 
+$canvas-width: 400px;
+$canvas-height: 800px;
 
 canvas {
   position: absolute;
   right: 0px;
   top: 0px;
+  width: $canvas-width;
+  height: $canvas-height;
+  box-sizing: border-box;
   border: 2px solid $primary-color;
 }
 
@@ -17,8 +22,8 @@ canvas:hover {
 
 #canvas-tools {
   background-color: $primary-color;
-  width: 400px;
-  height: calc(100vh - 800px);
+  width: $canvas-width;
+  height: calc(100vh - #{$canvas-height});
   min-height: 75px;
   position: absolute;
   right: 0px;
