@@ -10,12 +10,13 @@
 
 // Constants
 
-$sidebar-min-width: 300px;
+$sidebar-min-width: 250px;
 
 $user-list-min-width: 85%;
 
-$user-radius    : 4px;
-$user-min-width : 100%;
+$user-radius     : 4px;
+$user-min-width  : 100%;
+$user-min-height : 50px;
 
 $message-radius     : 4px;
 $message-min-width  : 200px;
@@ -69,7 +70,7 @@ $message-input-height: 32px;
 // User component styles
 
 .user-wrapper {
-	@include material($user-min-width, 80px, $primary-color-light, rgba(0, 0, 0, 0.5));
+	@include material($user-min-width, $user-min-height, $med-gray, rgba(0, 0, 0, 0.5));
 	border-radius  : $user-radius;
 	margin-bottom  : 20px;
 	display        : flex;
@@ -79,14 +80,14 @@ $message-input-height: 32px;
 
 .user-avatar {
 	@include encircle-avatar(25px);
-	width       : 50px;
-	height      : 50px;
+	width       : 30px;
+	height      : 30px;
 	margin-left : 5px;
 }
 
 .username {
 	margin-left : 10px;
-	color       : $light-gray;
+	color       : $primary-dark-text;
 	display     : inline;
 }
 
