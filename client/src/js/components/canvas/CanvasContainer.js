@@ -3,6 +3,7 @@ const canvas = require('../../canvas');
 const animations = require('../../animations');
 import React from 'react';
 import Canvas from './Canvas';
+import CanvasTabBar from './CanvasTabBar';
 import CanvasTools from './CanvasTools';
 
 // test class to make sure react is working
@@ -17,6 +18,7 @@ class CanvasContainer extends React.Component {
       drawColor: 'black',
       lineWeight: 1,
       imgData: this.props.imgData,
+      canvasTabs: [],
     }
 
     canvas.setUpdateCallback(this.setImageData);
@@ -31,6 +33,7 @@ class CanvasContainer extends React.Component {
     return (
       // everything wrapped in div to avoid error 'Adjacent JSX elements must be wrapped in an enclosing tag'
       <div>
+        <CanvasTabBar canvasTabs={this.state.canvasTabs} />
         <Canvas />
         <CanvasTools />
       </div>

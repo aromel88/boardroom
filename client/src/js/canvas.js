@@ -7,10 +7,13 @@ let topCanvas;    // drawing canvas
 let topCtx;
 let mainCanvas;   // display canvas
 let mainCtx;
+let canvasTools;
+let canvasSlideButton;
 
 // drawing control variables
 let drawing;
 let drawAllowed = true;
+let canvasOpen = false;
 
 const setUpdateCallback = (callback) => {
   updateCallback = callback;
@@ -28,6 +31,7 @@ const init = () => {
   topCtx.strokeStyle = 'black';
   mainCanvas = document.querySelector('#main-canvas');
   mainCtx = mainCanvas.getContext('2d');
+  canvasTools = document.querySelector('#canvas-tools');
 };
 
 // set stroke color of canvas
@@ -61,6 +65,7 @@ const mouseDown = (e) => {
 
 // mousemove event handler for drawing
 const mouseMove = (e) => {
+  e.preventDefault();
   if (drawing) {
     const mouse = getMouse(e);
     draw(mouse);
@@ -105,5 +110,15 @@ const clearCanvas = () => {
   mainCtx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
 };
 
+const toggleCanvas = () => {
+  canvasOpen = !canvasOpen;
+  if (canvasOpen) {
+    TweenMax.to('.canvas-slide', 0.3, { right: '+=400px' });
+  } else {
+    TweenMax.to('.canvas-slide', 0.3, { right: '-=400px' });
+  }
+};
+
 module.exports.init = init;
 module.exports.setUpdateCallback = setUpdateCallback;
+module.exports.toggleCanvas = toggleCanvas;

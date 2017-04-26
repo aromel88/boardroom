@@ -6753,10 +6753,13 @@ var topCanvas = void 0; // drawing canvas
 var topCtx = void 0;
 var mainCanvas = void 0; // display canvas
 var mainCtx = void 0;
+var canvasTools = void 0;
+var canvasSlideButton = void 0;
 
 // drawing control variables
 var drawing = void 0;
 var drawAllowed = true;
+var canvasOpen = false;
 
 var setUpdateCallback = function setUpdateCallback(callback) {
   updateCallback = callback;
@@ -6774,6 +6777,7 @@ var init = function init() {
   topCtx.strokeStyle = 'black';
   mainCanvas = document.querySelector('#main-canvas');
   mainCtx = mainCanvas.getContext('2d');
+  canvasTools = document.querySelector('#canvas-tools');
 };
 
 // set stroke color of canvas
@@ -6806,6 +6810,7 @@ var mouseDown = function mouseDown(e) {
 
 // mousemove event handler for drawing
 var mouseMove = function mouseMove(e) {
+  e.preventDefault();
   if (drawing) {
     var mouse = getMouse(e);
     draw(mouse);
@@ -6850,8 +6855,18 @@ var clearCanvas = function clearCanvas() {
   mainCtx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
 };
 
+var toggleCanvas = function toggleCanvas() {
+  canvasOpen = !canvasOpen;
+  if (canvasOpen) {
+    TweenMax.to('.canvas-slide', 0.3, { right: '+=400px' });
+  } else {
+    TweenMax.to('.canvas-slide', 0.3, { right: '-=400px' });
+  }
+};
+
 module.exports.init = init;
 module.exports.setUpdateCallback = setUpdateCallback;
+module.exports.toggleCanvas = toggleCanvas;
 
 /***/ }),
 /* 54 */
@@ -10001,9 +10016,9 @@ var Canvas = function (_React$Component) {
         // everything wrapped in div to avoid error 'Adjacent JSX elements must be wrapped in an enclosing tag'
         _react2.default.createElement(
           'div',
-          { id: 'canvas-container' },
-          _react2.default.createElement('canvas', { id: 'top-canvas', width: '400', height: '800' }),
-          _react2.default.createElement('canvas', { id: 'main-canvas', width: '400', height: '800' })
+          { id: 'canvas-container', className: 'canvas-slide' },
+          _react2.default.createElement('canvas', { id: 'top-canvas', width: '400', height: '800', className: 'canvas-slide' }),
+          _react2.default.createElement('canvas', { id: 'main-canvas', width: '400', height: '800', className: 'canvas-slide' })
         )
       );
     }
@@ -10035,6 +10050,10 @@ var _Canvas = __webpack_require__(88);
 
 var _Canvas2 = _interopRequireDefault(_Canvas);
 
+var _CanvasTabBar = __webpack_require__(208);
+
+var _CanvasTabBar2 = _interopRequireDefault(_CanvasTabBar);
+
 var _CanvasTools = __webpack_require__(90);
 
 var _CanvasTools2 = _interopRequireDefault(_CanvasTools);
@@ -10065,7 +10084,8 @@ var CanvasContainer = function (_React$Component) {
     _this.state = {
       drawColor: 'black',
       lineWeight: 1,
-      imgData: _this.props.imgData
+      imgData: _this.props.imgData,
+      canvasTabs: []
     };
 
     canvas.setUpdateCallback(_this.setImageData);
@@ -10088,6 +10108,7 @@ var CanvasContainer = function (_React$Component) {
         _react2.default.createElement(
           'div',
           null,
+          _react2.default.createElement(_CanvasTabBar2.default, { canvasTabs: this.state.canvasTabs }),
           _react2.default.createElement(_Canvas2.default, null),
           _react2.default.createElement(_CanvasTools2.default, null)
         )
@@ -10145,7 +10166,7 @@ var CanvasTools = function (_React$Component) {
         // everything wrapped in div to avoid error 'Adjacent JSX elements must be wrapped in an enclosing tag'
         _react2.default.createElement(
           'div',
-          { id: 'canvas-tools' },
+          { id: 'canvas-tools', className: 'canvas-slide' },
           _react2.default.createElement(
             'h1',
             null,
@@ -12630,7 +12651,7 @@ exports = module.exports = __webpack_require__(102)(undefined);
 
 
 // module
-exports.push([module.i, "* {\r\n  margin: 0;\r\n  padding: 0; }\r\n\r\n*:focus {\r\n  outline: none; }\r\n\r\nbody {\r\n  font-family: \"Montserrat\", sans-serif; }\r\n\r\n/*\r\n  Styles for home page\r\n  IMGE 590 - Project 3 - The Product\r\n\r\n  Aaron Romel\r\n  Jesse Cooper\r\n\r\n  \"Drop your joust, boys\" - Unknown\r\n*/\r\nnav {\r\n  height: 75px;\r\n  width: 100%;\r\n  position: absolute;\r\n  top: 0;\r\n  background: #008975;\r\n  /* Old browsers */\r\n  background: -moz-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\r\n  /* FF3.6-15 */\r\n  background: -webkit-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\r\n  /* Chrome10-25,Safari5.1-6 */\r\n  background: linear-gradient(to bottom, #00BF9A 0%, #00AA8D 44%, #008975 100%);\r\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\r\n\r\n.navButton {\r\n  width: 100px;\r\n  height: 50px;\r\n  line-height: 50px;\r\n  border: 2px solid #FAFAFA;\r\n  color: #FAFAFA;\r\n  border-radius: 5px;\r\n  background-color: transparent;\r\n  position: absolute;\r\n  right: 75px;\r\n  top: 12px; }\r\n\r\n.navButton:hover {\r\n  background-color: white;\r\n  color: #00AA8D;\r\n  cursor: pointer; }\r\n\r\n#home-container {\r\n  width: 100%;\r\n  height: calc(100vh - 75px);\r\n  overflow-y: auto;\r\n  overflow-x: hidden;\r\n  position: relative;\r\n  top: 75px;\r\n  background: #E0E0E0;\r\n  /* Old browsers */\r\n  background: -moz-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\r\n  /* FF3.6-15 */\r\n  background: -webkit-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\r\n  /* Chrome10-25,Safari5.1-6 */\r\n  background: linear-gradient(135deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\r\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\r\n\r\n#hero-container {\r\n  width: 40%;\r\n  height: calc(100vh - 75px);\r\n  position: relative; }\r\n\r\n#hero-container h1 {\r\n  font-size: 3.5em;\r\n  color: rgba(0, 0, 0, 0.87);\r\n  width: 400px;\r\n  position: absolute;\r\n  left: 100px;\r\n  top: 100px; }\r\n\r\n#hero-container img {\r\n  position: absolute;\r\n  left: 0;\r\n  bottom: 0; }\r\n\r\n#login-controls {\r\n  background-color: #FAFAFA;\r\n  width: 400px;\r\n  height: 300px;\r\n  border-radius: 5px;\r\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\r\n  position: absolute;\r\n  right: 75px;\r\n  top: 100px; }\r\n\r\n#login-controls input[type='text'] {\r\n  display: block;\r\n  margin: auto;\r\n  width: 200px;\r\n  padding: 4px;\r\n  font-size: 1em;\r\n  border-radius: 4px;\r\n  border: 2px solid #E0E0E0;\r\n  position: relative;\r\n  margin-bottom: 10px;\r\n  top: 25px; }\r\n\r\n#join-button {\r\n  display: block;\r\n  width: 212px;\r\n  height: 40px;\r\n  background-color: #00AA8D;\r\n  box-shadow: 0px 3px 2px #E0E0E0;\r\n  border: none;\r\n  border-radius: 3px;\r\n  line-height: 40px;\r\n  text-align: center;\r\n  transition: width 0.15s, height 0.15s, box-shadow 0.15s;\r\n  position: absolute;\r\n  left: 50%;\r\n  top: 200px;\r\n  transform: translate(-50%, -50%);\r\n  color: white;\r\n  font-size: 1em; }\r\n  #join-button:hover {\r\n    cursor: pointer;\r\n    box-shadow: 4px 7px 3px #E0E0E0;\r\n    width: 215px;\r\n    height: 43px; }\r\n  #join-button:active {\r\n    box-shadow: 0px 3px 2px #E0E0E0;\r\n    width: 212px;\r\n    height: 40px; }\r\n\r\ncanvas {\r\n  position: absolute;\r\n  right: 0px;\r\n  top: 0px;\r\n  width: 400px;\r\n  height: 800px;\r\n  box-sizing: border-box;\r\n  border: 2px solid #00AA8D; }\r\n\r\ncanvas:hover {\r\n  cursor: crosshair; }\r\n\r\n#top-canvas {\r\n  z-index: 10; }\r\n\r\n#canvas-tools {\r\n  background-color: #00AA8D;\r\n  width: 400px;\r\n  height: calc(100vh - 800px);\r\n  min-height: 75px;\r\n  position: absolute;\r\n  right: 0px;\r\n  bottom: 0px; }\r\n\r\n/*\r\n  Styles for chat page\r\n  IMGE 590 - Project 3 - The Product\r\n\r\n  Aaron Romel\r\n  Jesse Cooper\r\n\r\n  \"Drop your joust, boys\" - Unknown\r\n*/\r\n#chat-container {\r\n  height: 100%;\r\n  width: 100%; }\r\n\r\n#sidebar-container {\r\n  position: absolute;\r\n  left: 0px;\r\n  top: 0px;\r\n  width: 250px;\r\n  height: 100%;\r\n  background-color: #00AA8D; }\r\n\r\n#sidebar-container h3 {\r\n  color: #FAFAFA;\r\n  background-color: #008975;\r\n  line-height: 80px;\r\n  text-align: center;\r\n  vertical-align: middle;\r\n  font-size: 20pt; }\r\n\r\n#user-list {\r\n  width: 85%;\r\n  margin: auto;\r\n  margin-top: 20px; }\r\n\r\n#messages-container {\r\n  position: absolute;\r\n  left: 250px;\r\n  top: 0px;\r\n  width: calc(100% - 250px - 400px);\r\n  height: calc(100% - 32px);\r\n  overflow-y: auto; }\r\n\r\n.user-wrapper {\r\n  background-color: #F5F5F5;\r\n  width: 100%;\r\n  height: 50px;\r\n  border-radius: 5px;\r\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\r\n  border-radius: 4px;\r\n  margin-bottom: 20px;\r\n  display: flex;\r\n  flex-direction: row;\r\n  align-items: center; }\r\n\r\n.user-avatar {\r\n  border-radius: 25px;\r\n  width: 30px;\r\n  height: 30px;\r\n  margin-left: 5px; }\r\n\r\n.username {\r\n  margin-left: 10px;\r\n  color: rgba(0, 0, 0, 0.87);\r\n  display: inline; }\r\n\r\n.message-wrapper {\r\n  background-color: #00BF9A;\r\n  min-width: 200px;\r\n  min-height: 50px;\r\n  border-radius: 5px;\r\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\r\n  max-width: 550px;\r\n  border-radius: 4px;\r\n  margin-top: 8px;\r\n  margin-bottom: 12px;\r\n  margin-right: 20px;\r\n  margin-left: 20px;\r\n  display: inline-block;\r\n  float: left;\r\n  clear: both; }\r\n\r\n.self-message {\r\n  float: right; }\r\n\r\n.message-avatar {\r\n  border-radius: 25px;\r\n  width: 30px;\r\n  height: 30px;\r\n  margin-top: 10px;\r\n  margin-left: 10px; }\r\n\r\n.message-username {\r\n  position: relative;\r\n  display: inline;\r\n  color: #FAFAFA;\r\n  top: -7px;\r\n  margin-left: 10px;\r\n  margin-right: 10px;\r\n  font-size: 14pt; }\r\n\r\n.message-text {\r\n  position: relative;\r\n  border-radius: 4px;\r\n  color: #FAFAFA;\r\n  display: block;\r\n  padding: 5px;\r\n  margin-top: 5px;\r\n  margin-right: 10px;\r\n  margin-left: 20px;\r\n  margin-bottom: 5px;\r\n  height: 80%; }\r\n\r\n#message-input-container {\r\n  position: fixed;\r\n  bottom: 0px;\r\n  left: 250px;\r\n  width: calc(100% - 250px - 400px); }\r\n\r\n#message-input {\r\n  width: 100%;\r\n  height: 32px;\r\n  text-indent: 5px;\r\n  font-size: 13pt;\r\n  vertical-align: center; }\r\n\r\n/*# sourceMappingURL=app.css.map */\r\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\n*:focus {\n  outline: none; }\n\nbody {\n  font-family: \"Montserrat\", sans-serif; }\n\n/*\n  Styles for home page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\nnav {\n  height: 75px;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  background: #008975;\n  /* Old browsers */\n  background: -moz-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(to bottom, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n.navButton {\n  width: 100px;\n  height: 50px;\n  line-height: 50px;\n  border: 2px solid #FAFAFA;\n  color: #FAFAFA;\n  border-radius: 5px;\n  background-color: transparent;\n  position: absolute;\n  right: 75px;\n  top: 12px; }\n\n.navButton:hover {\n  background-color: white;\n  color: #00AA8D;\n  cursor: pointer; }\n\n#home-container {\n  width: 100%;\n  height: calc(100vh - 75px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  position: relative;\n  top: 75px;\n  background: #E0E0E0;\n  /* Old browsers */\n  background: -moz-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(135deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n#hero-container {\n  width: 40%;\n  height: calc(100vh - 75px);\n  position: relative; }\n\n#hero-container h1 {\n  font-size: 3.5em;\n  color: rgba(0, 0, 0, 0.87);\n  width: 400px;\n  position: absolute;\n  left: 100px;\n  top: 100px; }\n\n#hero-container img {\n  position: absolute;\n  left: 0;\n  bottom: 0; }\n\n#login-controls {\n  background-color: #FAFAFA;\n  width: 400px;\n  height: 300px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  position: absolute;\n  right: 75px;\n  top: 100px; }\n\n#login-controls input[type='text'] {\n  display: block;\n  margin: auto;\n  width: 200px;\n  padding: 4px;\n  font-size: 1em;\n  border-radius: 4px;\n  border: 2px solid #E0E0E0;\n  position: relative;\n  margin-bottom: 10px;\n  top: 25px; }\n\n#join-button {\n  display: block;\n  width: 212px;\n  height: 40px;\n  background-color: #00AA8D;\n  box-shadow: 0px 3px 2px #E0E0E0;\n  border: none;\n  border-radius: 3px;\n  line-height: 40px;\n  text-align: center;\n  transition: width 0.15s, height 0.15s, box-shadow 0.15s;\n  position: absolute;\n  left: 50%;\n  top: 200px;\n  transform: translate(-50%, -50%);\n  color: white;\n  font-size: 1em; }\n  #join-button:hover {\n    cursor: pointer;\n    box-shadow: 4px 7px 3px #E0E0E0;\n    width: 215px;\n    height: 43px; }\n  #join-button:active {\n    box-shadow: 0px 3px 2px #E0E0E0;\n    width: 212px;\n    height: 40px; }\n\n#canvas-container {\n  overflow-y: auto; }\n\ncanvas {\n  position: absolute;\n  right: -400px;\n  top: 0px;\n  width: 400px;\n  height: 800px;\n  box-sizing: border-box;\n  border: 2px solid #00AA8D; }\n\ncanvas:hover {\n  cursor: crosshair; }\n\n#top-canvas {\n  z-index: 10; }\n\n#canvas-tab-bar {\n  width: 50px;\n  height: 100vh;\n  position: absolute;\n  right: 0px;\n  top: 0px;\n  background-color: rgba(0, 0, 0, 0.5); }\n\n.canvas-tab {\n  width: 70px;\n  height: 30px;\n  background-color: #00AA8D;\n  opacity: 0.5;\n  position: relative;\n  right: 20px;\n  top: 20px;\n  color: white; }\n\n:hover {\n  opacity: 1;\n  cursor: pointer; }\n\n#canvas-tools {\n  background-color: #00AA8D;\n  width: 400px;\n  height: calc(100vh - 800px);\n  min-height: 100px;\n  position: absolute;\n  right: -400px;\n  top: 800px; }\n\n/*\n  Styles for chat page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\n#chat-container {\n  height: 100%;\n  width: 100%; }\n\n#sidebar-container {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  width: 250px;\n  height: 100%;\n  background-color: #00AA8D; }\n\n#sidebar-container h3 {\n  color: #FAFAFA;\n  background-color: #008975;\n  line-height: 80px;\n  text-align: center;\n  vertical-align: middle;\n  font-size: 20pt; }\n\n#user-list {\n  width: 85%;\n  margin: auto;\n  margin-top: 20px; }\n\n#messages-container {\n  position: absolute;\n  left: 250px;\n  top: 0px;\n  width: calc(100% - 250px - 400px);\n  height: calc(100% - 32px);\n  overflow-y: auto; }\n\n.user-wrapper {\n  background-color: #F5F5F5;\n  width: 100%;\n  height: 50px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  border-radius: 4px;\n  margin-bottom: 20px;\n  display: flex;\n  flex-direction: row;\n  align-items: center; }\n\n.user-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px;\n  margin-left: 5px; }\n\n.username {\n  margin-left: 10px;\n  color: rgba(0, 0, 0, 0.87);\n  display: inline; }\n\n.message-wrapper {\n  background-color: #00BF9A;\n  min-width: 200px;\n  min-height: 50px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  max-width: 550px;\n  border-radius: 4px;\n  margin-top: 8px;\n  margin-bottom: 12px;\n  margin-right: 20px;\n  margin-left: 20px;\n  display: inline-block;\n  float: left;\n  clear: both; }\n\n.self-message {\n  float: right; }\n\n.message-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px;\n  margin-top: 10px;\n  margin-left: 10px; }\n\n.message-username {\n  position: relative;\n  display: inline;\n  color: #FAFAFA;\n  top: -7px;\n  margin-left: 10px;\n  margin-right: 10px;\n  font-size: 14pt; }\n\n.message-text {\n  position: relative;\n  border-radius: 4px;\n  color: #FAFAFA;\n  display: block;\n  padding: 5px;\n  margin-top: 5px;\n  margin-right: 10px;\n  margin-left: 20px;\n  margin-bottom: 5px;\n  height: 80%; }\n\n#message-input-container {\n  position: fixed;\n  bottom: 0px;\n  left: 250px;\n  width: calc(100% - 250px - 400px); }\n\n#message-input {\n  width: 100%;\n  height: 32px;\n  text-indent: 5px;\n  font-size: 13pt;\n  vertical-align: center; }\n\n/*# sourceMappingURL=app.css.map */\n", ""]);
 
 // exports
 
@@ -25919,6 +25940,73 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+/* 208 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(7);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var canvas = __webpack_require__(53);
+
+// test class to make sure react is working
+var CanvasTabBar = function (_React$Component) {
+  _inherits(CanvasTabBar, _React$Component);
+
+  function CanvasTabBar(props) {
+    _classCallCheck(this, CanvasTabBar);
+
+    return _possibleConstructorReturn(this, (CanvasTabBar.__proto__ || Object.getPrototypeOf(CanvasTabBar)).call(this, props));
+  }
+
+  // render Home page
+
+
+  _createClass(CanvasTabBar, [{
+    key: 'render',
+    value: function render() {
+      return (
+        // everything wrapped in div to avoid error 'Adjacent JSX elements must be wrapped in an enclosing tag'
+        _react2.default.createElement(
+          'div',
+          { id: 'canvas-tab-bar', className: 'canvas-slide' },
+          _react2.default.createElement(
+            'div',
+            { id: 'canvas-slide-button', className: 'canvas-tab', onClick: canvas.toggleCanvas },
+            _react2.default.createElement(
+              'p',
+              null,
+              'New'
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return CanvasTabBar;
+}(_react2.default.Component);
+
+exports.default = CanvasTabBar;
 
 /***/ })
 /******/ ]);

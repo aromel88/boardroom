@@ -2,9 +2,13 @@
 $canvas-width: 400px;
 $canvas-height: 800px;
 
+#canvas-container {
+  overflow-y: auto;
+}
+
 canvas {
   position: absolute;
-  right: 0px;
+  right: -400px;
   top: 0px;
   width: $canvas-width;
   height: $canvas-height;
@@ -20,12 +24,35 @@ canvas:hover {
   z-index: 10;
 }
 
+#canvas-tab-bar {
+  width: 50px;
+  height: 100vh;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.canvas-tab {
+  width: 70px;
+  height: 30px;
+  background-color: $primary-color;
+  opacity: 0.5;
+  position: relative;
+  right: 20px;
+  top: 20px;
+  color: white;
+}:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
 #canvas-tools {
   background-color: $primary-color;
   width: $canvas-width;
   height: calc(100vh - #{$canvas-height});
-  min-height: 75px;
+  min-height: 100px;
   position: absolute;
-  right: 0px;
-  bottom: 0px;
+  right: -400px;
+  top: 800px;
 }
