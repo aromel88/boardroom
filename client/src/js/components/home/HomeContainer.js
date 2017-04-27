@@ -1,5 +1,6 @@
 const app = require('../../app');
 const animations = require('../../animations');
+const client = require('../../client.js');
 import React from 'react';
 import Nav from './Nav';
 import HeroContainer from './HeroContainer';
@@ -17,6 +18,8 @@ class HomeContainer extends React.Component {
     this.setHomePageState = this.setHomePageState.bind(this);
     this.joinRoom = this.joinRoom.bind(this);
     this.createRoom = this.createRoom.bind(this);
+    this.joinSuccess = this.joinSuccess.bind(this);
+    this.joinFailure = this.joinFailure.bind(this);
 
     // set initial state
     this.state = {
@@ -84,16 +87,29 @@ class HomeContainer extends React.Component {
     this.togglePage(this.setCreateTeamPageState);
   }
 
+  // TODO: Find a way to get these in React (w/out docucment.querySelector)
   joinRoom() {
-    // TODO: join room logic (client emit) and switch to main app page
     console.log('joining room');
-    this.appPage();
+    const team = document.querySelector('#team-name').value;
+    const code = document.querySelector('#join-code').value;
+    const user = document.querySelector('#user-name').value;
+    client.connect(team, code, user, this.joinSuccess, this.joinFailure);
   }
 
   createRoom() {
-    // TODO: create room logic (client emit) and switch to main app page
     console.log('creating room');
+    const team = document.querySelector('#team-name').value;
+    const code = document.querySelector('#join-code').value;
+    const user = document.querySelector('#user-name').value;
+    client.connect(team, code, user, this.joinSuccess, this.joinFailure);
+  }
+
+  joinSuccess() {
     this.appPage();
+  }
+
+  joinFailure() {
+    console.log('Join failed!');
   }
 
   // render Home page
