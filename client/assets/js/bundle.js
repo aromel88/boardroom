@@ -7046,6 +7046,7 @@ var HomeContainer = function (_React$Component) {
   }, {
     key: 'joinSuccess',
     value: function joinSuccess(data) {
+      console.dir(data);
       app.setupTeam(data.team, data.code, data.user);
       this.appPage();
     }
