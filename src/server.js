@@ -26,6 +26,17 @@ const onJoin = (sock) => {
 //   const socket = sock;
 // };
 //
+
+const onCanvas = (sock) => {
+  const socket = sock;
+  socket.on('beginDrawStream', (data) => {
+    socket.broadcast.to(socket.team).emit('startDraw', data);
+  });
+
+  socket.on('updateDrawStream', (data) => {
+    socket.broadcast.to(socket.team).emit('draw', data);
+  });
+};
 // const onDisconnect = (sock) => {
 //   const socket = sock;
 // };
@@ -37,6 +48,7 @@ const init = (expressApp) => {
     onJoin(sock);
     // onMsg(sock);
     // onDisconnect(sock);
+    onCanvas(sock);
   });
   console.log('Websocket server running');
 };

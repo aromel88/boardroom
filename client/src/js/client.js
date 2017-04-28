@@ -1,3 +1,4 @@
+const canvas = require('./canvas');
 import HomeContainer from './components/home/HomeContainer';
 
 let socket;
@@ -27,6 +28,10 @@ let socket;
 
 const connect = () => {
   socket = io.connect();
+
+  socket.on('startDraw', canvas.startDraw);
+  socket.on('draw', canvas.draw);
+  socket.on('clearCanvas', canvas.clearCanvas);
 };
 
 const disconnect = () => {

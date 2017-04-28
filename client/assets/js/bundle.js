@@ -4650,6 +4650,7 @@ module.exports = canDefineProperty;
 "use strict";
 
 
+var client = __webpack_require__(88);
 var animations = __webpack_require__(21);
 
 var updateCallback = void 0;
@@ -4709,7 +4710,7 @@ var mouseDown = function mouseDown(e) {
       x: mouse.x,
       y: mouse.y
     };
-    //    client.emit('beginDrawStream', drawData);
+    client.emit('beginDrawStream', drawData);
     startDraw(drawData);
   }
 };
@@ -4720,10 +4721,10 @@ var mouseMove = function mouseMove(e) {
   if (drawing) {
     var mouse = getMouse(e);
     draw(mouse);
-    //    client.emit('updateDrawStream', {
-    //      x: mouse.x,
-    //      y: mouse.y,
-    //    });
+    client.emit('updateDrawStream', {
+      x: mouse.x,
+      y: mouse.y
+    });
   }
 };
 
@@ -4771,6 +4772,9 @@ var toggleCanvas = function toggleCanvas() {
 };
 
 module.exports.init = init;
+module.exports.startDraw = startDraw;
+module.exports.draw = draw;
+module.exports.clearCanvas = clearCanvas;
 module.exports.setUpdateCallback = setUpdateCallback;
 module.exports.toggleCanvas = toggleCanvas;
 
@@ -10038,6 +10042,9 @@ var _HomeContainer2 = _interopRequireDefault(_HomeContainer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var canvas = __webpack_require__(34);
+
+
 var socket = void 0;
 
 // const connect = (teamname, joincode, username, joinSuccessCallback, joinFailureCallback) => {
@@ -10065,6 +10072,10 @@ var socket = void 0;
 
 var connect = function connect() {
   socket = io.connect();
+
+  socket.on('startDraw', canvas.startDraw);
+  socket.on('draw', canvas.draw);
+  socket.on('clearCanvas', canvas.clearCanvas);
 };
 
 var disconnect = function disconnect() {

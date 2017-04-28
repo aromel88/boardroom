@@ -1,3 +1,4 @@
+const client = require('./client');
 const animations = require('./animations');
 
 let updateCallback;
@@ -57,8 +58,9 @@ const mouseDown = (e) => {
       x: mouse.x,
       y: mouse.y,
       //style: topCtx.strokeStyle,
+      //id: the id for the diagram we're drawing on
     };
-//    client.emit('beginDrawStream', drawData);
+    client.emit('beginDrawStream', drawData);
     startDraw(drawData);
   }
 };
@@ -69,10 +71,11 @@ const mouseMove = (e) => {
   if (drawing) {
     const mouse = getMouse(e);
     draw(mouse);
-//    client.emit('updateDrawStream', {
-//      x: mouse.x,
-//      y: mouse.y,
-//    });
+   client.emit('updateDrawStream', {
+     x: mouse.x,
+     y: mouse.y,
+     //id: the id for the diagram we're drawing on
+   });
   }
 };
 
@@ -120,5 +123,8 @@ const toggleCanvas = () => {
 };
 
 module.exports.init = init;
+module.exports.startDraw = startDraw;
+module.exports.draw = draw;
+module.exports.clearCanvas = clearCanvas;
 module.exports.setUpdateCallback = setUpdateCallback;
 module.exports.toggleCanvas = toggleCanvas;
