@@ -7,6 +7,10 @@ import ReactDOM from 'react-dom';
 import HomeContainer from './components/home/HomeContainer';
 import AppContainer from './components/AppContainer';
 
+let team;
+let code;
+let user;
+
 const renderApp = () => {
   ReactDOM.render(
       <AppContainer />,
@@ -26,6 +30,13 @@ const init = () => {
     );
 };
 
+const setupTeam = (_team, _code, _user) => {
+  team = _team;
+  code = _code;
+  user = _user;
+}
+
 window.addEventListener('load', init);
 
 module.exports.renderApp = renderApp;
+module.exports.setupTeam = setupTeam;

@@ -16,6 +16,7 @@ class HomeContainer extends React.Component {
     this.setCreateTeamPageState = this.setCreateTeamPageState.bind(this);
     this.homePage = this.homePage.bind(this);
     this.setHomePageState = this.setHomePageState.bind(this);
+    this.connectToServer = this.connectToServer.bind(this);
     this.joinRoom = this.joinRoom.bind(this);
     this.createRoom = this.createRoom.bind(this);
     this.joinSuccess = this.joinSuccess.bind(this);
@@ -87,13 +88,29 @@ class HomeContainer extends React.Component {
     this.togglePage(this.setCreateTeamPageState);
   }
 
+  connectToServer(team, code, user, joinType) {
+    client.connect();
+    client.on('joinSuccess', this.joinSuccess);
+    client.on('joinFailure', this.joinFailure);
+    const connectData = {
+      team: team,
+      code: code,
+      user: user,
+      type: joinType
+    };
+
+    client.emit('join', connectData);
+  }
+
   // TODO: Find a way to get these in React (w/out docucment.querySelector)
   joinRoom() {
     console.log('joining room');
     const team = document.querySelector('#team-name').value;
     const code = document.querySelector('#join-code').value;
     const user = document.querySelector('#user-name').value;
-    client.connect(team, code, user, this.joinSuccess, this.joinFailure);
+    //if (validInputs(team, code, user)) {
+      this.connectToServer(team, code, user, 'join');
+    //}
   }
 
   createRoom() {
@@ -101,15 +118,19 @@ class HomeContainer extends React.Component {
     const team = document.querySelector('#team-name').value;
     const code = document.querySelector('#join-code').value;
     const user = document.querySelector('#user-name').value;
-    client.connect(team, code, user, this.joinSuccess, this.joinFailure);
+    //if (validInputs(team, code, user)) {
+      this.connectToServer(team, code, user, 'create');
+    //}
   }
 
-  joinSuccess() {
+  joinSuccess(data) {
+    app.setupTeam(data.team, data.code, data.user);
     this.appPage();
   }
 
-  joinFailure() {
-    console.log('Join failed!');
+  joinFailure(err) {
+    console.dir(err);
+    client.disconnect();
   }
 
   // render Home page

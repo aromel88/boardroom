@@ -7,7 +7,8 @@
 */
 
 const socketio = require('socket.io');
-const Team = require('./Team.js');
+const connectionManager = require('./connect');
+//const Team = require('./Team.js');
 
 let io;
 
@@ -16,36 +17,8 @@ const teams = {};
 // Should join & create be separated?
 const onJoin = (sock) => {
   const socket = sock;
-
   socket.on('join', (data) => {
-    let action = 'joined';
-    let success = true;
-
-    if (data.team && data.team !== '') {
-      console.log(`Team: ${data.team} | Code: ${data.join} | Name: ${data.user}`);
-
-      if (!teams[data.team]) {
-        teams[data.team] = new Team(data.team);
-        action = 'created';
-      }
-
-      const team = teams[data.team];
-
-      // TODO: validate data.user before using
-      if (!team.hasUser(data.user)) {
-        team.addUser(data.user);
-      } else {
-        success = false;
-      }
-
-      if (success) {
-        socket.join('room1'); // Could replace with data.team
-      }
-    } else {
-      success = false;
-    }
-
-    socket.emit(action, { success });
+    connectionManager.attemptConnect(data, socket);
   });
 };
 
@@ -71,4 +44,5 @@ const init = (expressApp) => {
 const getIO = () => io;
 
 module.exports.init = init;
+module.exports.teams = teams;
 module.exports.io = getIO;
