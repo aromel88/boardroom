@@ -8,7 +8,6 @@
 
 const socketio = require('socket.io');
 const connectionManager = require('./connect');
-// const Team = require('./Team.js');
 
 let io;
 

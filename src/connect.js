@@ -1,5 +1,5 @@
 const server = require('./server');
-const Team = require('./Team');
+const Team = require('./Classes/Team');
 
 const attemptCreate = (data, sock) => {
   const socket = sock;

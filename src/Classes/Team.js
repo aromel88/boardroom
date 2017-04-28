@@ -4,6 +4,8 @@ class Team {
     this.code = code;
     this.users = [];
     this.messages = {};
+    this.diagrams = {};
+    this.tabs = [];
     this.sockets = {};
   }
 
