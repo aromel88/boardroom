@@ -12,8 +12,9 @@ class CanvasTabBar extends React.Component {
   // render Home page
   render() {
     const tabNodes = this.props.canvasTabs.map(function(tab) {
+      const tabClassName = this.props.activeTab === tab.id ? 'active-tab' : 'canvas-tab';
       return (
-        <div id={tab.id} className='canvas-tab' onClick={this.props.tabOpenAction}></div>
+        <div key={tab.id} id={tab.id} className={tabClassName} onClick={this.props.tabOpenAction}></div>
       );
     }.bind(this));
 

@@ -12,6 +12,7 @@ let canvasTools;
 let canvasSlideButton;
 
 // drawing control variables
+let activeTab;
 let drawing;
 let drawAllowed = true;
 let canvasOpen = false;
@@ -34,6 +35,8 @@ const init = () => {
   mainCtx = mainCanvas.getContext('2d');
   canvasTools = document.querySelector('#canvas-tools');
   canvasSlideButton = document.querySelector('#canvas-slide-button');
+
+  client.on('receiveCanvasData', receiveCanvasData);
 };
 
 // set stroke color of canvas
@@ -71,12 +74,13 @@ const mouseMove = (e) => {
   e.preventDefault();
   if (drawing) {
     const mouse = getMouse(e);
-    draw(mouse);
-   client.emit('updateDrawStream', {
-     x: mouse.x,
-     y: mouse.y,
-     //id: the id for the diagram we're drawing on
-   });
+    const drawData = {
+      x: mouse.x,
+      y: mouse.y,
+      id: activeTab
+    };
+    client.emit('updateDrawStream', drawData);
+    draw(drawData);
   }
 };
 
@@ -89,6 +93,7 @@ const allowDraw = (allow) => {
 // called to ensure draw flag is false
 const stopDraw = () => {
   drawing = false;
+  sendCanvasData();
 };
 
 // start a drawing path where the mouse is clicked on the canvas
@@ -101,10 +106,28 @@ const startDraw = (drawData) => {
 
 // draw a line to new point when mouse is dragged on the canvas
 const draw = (drawData) => {
+  if (drawData.id !== activeTab) return;
   topCtx.lineTo(drawData.x, drawData.y);
   topCtx.stroke();
   mainCtx.drawImage(topCanvas, 0, 0);
   topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
+};
+
+const receiveCanvasData = (canvasData) => {
+  let image = new Image();
+  clearCanvas();
+  image.onload = () => {
+    mainCtx.globalCompositeOperation = 'source-over';
+    mainCtx.drawImage(image, 0, 0, mainCanvas.width, mainCanvas.height);
+  }
+  image.src = canvasData.imgData;
+};
+
+const sendCanvasData = () => {
+  client.emit('sendCanvasData', {
+    id: activeTab,
+    imgData: mainCanvas.toDataURL(),
+  });
 };
 
 // clear canvas of any drawing
@@ -123,9 +146,16 @@ const toggleCanvas = () => {
     TweenMax.to('.canvas-slide', 0.3, { right: '-=400px', onComplete: () => {
         TweenMax.to(canvasSlideButton, 0.2, { opacity: 1 });
     }});
-
   }
 };
+
+const setActiveTab = (tabID) => {
+  activeTab = tabID;
+};
+
+const getActiveTab = () => { return activeTab; };
+
+const getCanvasOpen = () => { return canvasOpen; };
 
 module.exports.init = init;
 module.exports.startDraw = startDraw;
@@ -133,3 +163,8 @@ module.exports.draw = draw;
 module.exports.clearCanvas = clearCanvas;
 module.exports.setUpdateCallback = setUpdateCallback;
 module.exports.toggleCanvas = toggleCanvas;
+module.exports.setActiveTab = setActiveTab;
+module.exports.getActiveTab = getActiveTab;
+module.exports.canvasOpen = getCanvasOpen;
+module.exports.sendCanvasData = sendCanvasData;
+module.exports.receiveCanvasData = receiveCanvasData;

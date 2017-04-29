@@ -40,6 +40,14 @@ const onCanvas = (sock) => {
   socket.on('createTab', (data) => {
     canvasManager.createTab(data, socket);
   });
+
+  socket.on('sendCanvasData', (data) => {
+    canvasManager.tabUpdated(data, socket);
+  });
+
+  socket.on('openTab', (data) => {
+    canvasManager.sendTabData(data, socket);
+  });
 };
 // const onDisconnect = (sock) => {
 //   const socket = sock;

@@ -30,6 +30,10 @@ class Team {
     }
   }
 
+  updateDiagram(id, imgData) {
+    this.diagrams[id] = imgData;
+  }
+
   addTab(tab) {
     this.tabs.push(tab);
   }

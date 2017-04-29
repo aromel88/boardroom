@@ -60,12 +60,21 @@ canvas:hover {
   opacity: 0.5;
   position: relative;
   right: 20px;
-  top: 20px;
+  top: 70px;
+  margin-top: 20px;
   color: white;
 }
 .canvas-tab:hover {
   opacity: 1;
   cursor: pointer;
+}
+
+.active-tab {
+  @extend .canvas-tab;
+  opacity: 1;
+}
+.active-tab:hover {
+  cursor: default;
 }
 
 #canvas-tools {

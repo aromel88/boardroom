@@ -160,7 +160,7 @@ class HomeContainer extends React.Component {
 
   joinSuccess(data) {
     console.dir(data);
-    app.setupTeam(data.team, data.code, data.user);
+    app.setupTeam(data.team, data.code, data.user, data.existingTabs);
     this.appPage();
   }
 

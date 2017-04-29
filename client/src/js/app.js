@@ -10,6 +10,7 @@ import AppContainer from './components/AppContainer';
 let team;
 let code;
 let user;
+let initialTabData;
 
 const renderApp = () => {
   ReactDOM.render(
@@ -30,14 +31,19 @@ const init = () => {
     );
 };
 
-const setupTeam = (_team, _code, _user) => {
+const setupTeam = (_team, _code, _user, _tabs) => {
   team = _team;
   code = _code;
   user = _user;
+  initialTabData = _tabs;
 }
 
 const getName = () => {
   return user;
+};
+
+const getInitialTabs = () => {
+  return initialTabData ? initialTabData : [];
 };
 
 window.addEventListener('load', init);
@@ -45,3 +51,4 @@ window.addEventListener('load', init);
 module.exports.renderApp = renderApp;
 module.exports.setupTeam = setupTeam;
 module.exports.getName = getName;
+module.exports.getInitialTabs = getInitialTabs;

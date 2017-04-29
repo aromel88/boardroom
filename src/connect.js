@@ -50,8 +50,9 @@ const attemptJoin = (data, sock) => {
   socket.name = user;
   socket.join(team);
 
+  const existingTabs = teamData.getTabs();
   teamData.addUser(user, socket);
-  socket.emit('joinSuccess', { team, code, user });
+  socket.emit('joinSuccess', { team, code, user, existingTabs });
 
   console.dir(server.teams);
 };

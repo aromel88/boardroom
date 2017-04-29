@@ -177,19 +177,26 @@ canvas:hover {
   top: 0px;
   background-color: rgba(0, 0, 0, 0.5); }
 
-.canvas-tab {
+.canvas-tab, .active-tab {
   width: 70px;
   height: 30px;
   background-color: #00AA8D;
   opacity: 0.5;
   position: relative;
   right: 20px;
-  top: 20px;
+  top: 70px;
+  margin-top: 20px;
   color: white; }
 
-.canvas-tab:hover {
+.canvas-tab:hover, .active-tab:hover {
   opacity: 1;
   cursor: pointer; }
+
+.active-tab {
+  opacity: 1; }
+
+.active-tab:hover {
+  cursor: default; }
 
 #canvas-tools {
   background-color: #00AA8D;
