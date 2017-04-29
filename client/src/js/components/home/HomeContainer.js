@@ -102,15 +102,50 @@ class HomeContainer extends React.Component {
     client.emit('join', connectData);
   }
 
+  validInputs(team, code, user) {
+    if (team === '' || code === '' || user === '') {
+      //handleErr({ err: 'Must fill out all inputs' });
+      console.dir({ err: 'Must fill out all inputs' })
+      return false;
+    }
+    if (!team.match(/^[0-9a-zA-Z]+$/)) {
+      //handleErr({ err: 'Numbers and letters only for team name' });
+      console.dir({ err: 'Numbers and letters only for team name' });
+      return false;
+    }
+    if (team.length > 10) {
+      //handleErr({ err: 'Team name length is limited to 10 characters' });
+      console.dir({ err: 'Team name length is limited to 10 characters' });
+      return false;
+    }
+    if (!user.match(/^[0-9a-zA-Z]+$/)) {
+      //handleErr({ err: 'Numbers and letters only for team name' });
+      console.dir({ err: 'Numbers and letters only for user name' });
+      return false;
+    }
+    if (user.length > 10) {
+      //handleErr({ err: 'Team name length is limited to 10 characters' });
+      console.dir({ err: 'User name length is limited to 10 characters' });
+      return false;
+    }
+    if (code.length > 15) {
+      //handleErr({ err: 'Room Code name length is limited to 15 characters' });
+      console.dir({ err: 'Room Code length is limited to 15 characters' });
+      return false;
+    }
+
+    return true;
+  };
+
   // TODO: Find a way to get these in React (w/out docucment.querySelector)
   joinRoom() {
     console.log('joining room');
     const team = document.querySelector('#team-name').value;
     const code = document.querySelector('#join-code').value;
     const user = document.querySelector('#user-name').value;
-    //if (validInputs(team, code, user)) {
+    if (this.validInputs(team, code, user)) {
       this.connectToServer(team, code, user, 'join');
-    //}
+    }
   }
 
   createRoom() {
@@ -118,9 +153,9 @@ class HomeContainer extends React.Component {
     const team = document.querySelector('#team-name').value;
     const code = document.querySelector('#join-code').value;
     const user = document.querySelector('#user-name').value;
-    //if (validInputs(team, code, user)) {
+    if (this.validInputs(team, code, user)) {
       this.connectToServer(team, code, user, 'create');
-    //}
+    }
   }
 
   joinSuccess(data) {
@@ -130,6 +165,7 @@ class HomeContainer extends React.Component {
   }
 
   joinFailure(err) {
+    //handleErr(err);
     console.dir(err);
     client.disconnect();
   }
