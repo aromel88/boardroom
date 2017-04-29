@@ -22,14 +22,6 @@ class Team {
     this.sockets[user] = socket;
   }
 
-  getUsers() {
-    return this.users;
-  }
-
-  getSockets() {
-    return this.sockets;
-  }
-
   addMessage(id, message) {
     if (this.messages[id]) {
       // update message
@@ -38,8 +30,24 @@ class Team {
     }
   }
 
+  addTab(tab) {
+    this.tabs.push(tab);
+  }
+
+  getUsers() {
+    return this.users;
+  }
+
+  getSockets() {
+    return this.sockets;
+  }
+
   getMessages() {
     return this.messages;
+  }
+
+  getTabs() {
+    return this.tabs;
   }
 }
 

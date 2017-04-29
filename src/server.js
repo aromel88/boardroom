@@ -8,6 +8,7 @@
 
 const socketio = require('socket.io');
 const connectionManager = require('./connect');
+const canvasManager = require('./canvas');
 
 let io;
 
@@ -34,6 +35,10 @@ const onCanvas = (sock) => {
 
   socket.on('updateDrawStream', (data) => {
     socket.broadcast.to(socket.team).emit('draw', data);
+  });
+
+  socket.on('createTab', (data) => {
+    canvasManager.createTab(data, socket);
   });
 };
 // const onDisconnect = (sock) => {

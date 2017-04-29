@@ -33,6 +33,7 @@ const init = () => {
   mainCanvas = document.querySelector('#main-canvas');
   mainCtx = mainCanvas.getContext('2d');
   canvasTools = document.querySelector('#canvas-tools');
+  canvasSlideButton = document.querySelector('#canvas-slide-button');
 };
 
 // set stroke color of canvas
@@ -117,8 +118,12 @@ const toggleCanvas = () => {
   canvasOpen = !canvasOpen;
   if (canvasOpen) {
     TweenMax.to('.canvas-slide', 0.3, { right: '+=400px' });
+    canvasSlideButton.style.opacity = 0;
   } else {
-    TweenMax.to('.canvas-slide', 0.3, { right: '-=400px' });
+    TweenMax.to('.canvas-slide', 0.3, { right: '-=400px', onComplete: () => {
+        TweenMax.to(canvasSlideButton, 0.2, { opacity: 1 });
+    }});
+
   }
 };
 

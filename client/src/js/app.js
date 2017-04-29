@@ -36,7 +36,12 @@ const setupTeam = (_team, _code, _user) => {
   user = _user;
 }
 
+const getName = () => {
+  return user;
+};
+
 window.addEventListener('load', init);
 
 module.exports.renderApp = renderApp;
 module.exports.setupTeam = setupTeam;
+module.exports.getName = getName;

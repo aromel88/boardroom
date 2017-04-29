@@ -11,10 +11,16 @@ class CanvasTabBar extends React.Component {
 
   // render Home page
   render() {
+    const tabNodes = this.props.canvasTabs.map(function(tab) {
+      return (
+        <div id={tab.id} className='canvas-tab' onClick={this.props.tabOpenAction}></div>
+      );
+    }.bind(this));
+
     return (
       // everything wrapped in div to avoid error 'Adjacent JSX elements must be wrapped in an enclosing tag'
       <div id='canvas-tab-bar' className='canvas-slide'>
-        <div id='canvas-slide-button' className='canvas-tab' onClick={canvas.toggleCanvas}><p>New</p></div>
+        {tabNodes}
       </div>
     );
   }
