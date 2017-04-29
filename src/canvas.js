@@ -7,6 +7,6 @@ const createTab = (data, sock) => {
   const team = server.teams[socket.team];
   team.addTab(newTab);
   server.io().sockets.emit('tabCreated', team.getTabs());
-}
+};
 
 module.exports.createTab = createTab;
