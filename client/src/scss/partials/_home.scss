@@ -97,3 +97,20 @@ nav {
   color: white;
   font-size: 1em;
 }
+
+.no-error {
+  display: none;
+}
+
+.error {
+  width: 400px;
+  height: 25px;
+  line-height: 25px;
+  background-color: red;
+  color: white;
+  position: absolute;
+  right: 75px;
+  top: 500px;
+  text-align: center;
+  border-radius: 3px;
+}

@@ -16,11 +16,14 @@ class HomeContainer extends React.Component {
     this.setCreateTeamPageState = this.setCreateTeamPageState.bind(this);
     this.homePage = this.homePage.bind(this);
     this.setHomePageState = this.setHomePageState.bind(this);
+    this.validInputs = this.validInputs.bind(this);
     this.connectToServer = this.connectToServer.bind(this);
     this.joinRoom = this.joinRoom.bind(this);
     this.createRoom = this.createRoom.bind(this);
     this.joinSuccess = this.joinSuccess.bind(this);
     this.joinFailure = this.joinFailure.bind(this);
+    this.handleErr = this.handleErr.bind(this);
+    this.clearError = this.clearError.bind(this);
 
     // set initial state
     this.state = {
@@ -30,6 +33,8 @@ class HomeContainer extends React.Component {
       heroImg: './assets/img/heroimg.svg',
       joinType: 'Join your team',
       joinAction: this.joinRoom,
+      error: 'no-error',
+      errorMessage: ''
     }
   }
 
@@ -104,33 +109,27 @@ class HomeContainer extends React.Component {
 
   validInputs(team, code, user) {
     if (team === '' || code === '' || user === '') {
-      //handleErr({ err: 'Must fill out all inputs' });
-      console.dir({ err: 'Must fill out all inputs' })
+      this.handleErr('Must fill out all inputs');
       return false;
     }
     if (!team.match(/^[0-9a-zA-Z]+$/)) {
-      //handleErr({ err: 'Numbers and letters only for team name' });
-      console.dir({ err: 'Numbers and letters only for team name' });
+      this.handleErr('Numbers and letters only for team name');
       return false;
     }
     if (team.length > 10) {
-      //handleErr({ err: 'Team name length is limited to 10 characters' });
-      console.dir({ err: 'Team name length is limited to 10 characters' });
+      this.handleErr('Team name length is limited to 10 characters');
       return false;
     }
     if (!user.match(/^[0-9a-zA-Z]+$/)) {
-      //handleErr({ err: 'Numbers and letters only for team name' });
-      console.dir({ err: 'Numbers and letters only for user name' });
+      this.handleErr('Numbers and letters only for team name');
       return false;
     }
     if (user.length > 10) {
-      //handleErr({ err: 'Team name length is limited to 10 characters' });
-      console.dir({ err: 'User name length is limited to 10 characters' });
+      this.handleErr('Team name length is limited to 10 characters');
       return false;
     }
     if (code.length > 15) {
-      //handleErr({ err: 'Room Code name length is limited to 15 characters' });
-      console.dir({ err: 'Room Code length is limited to 15 characters' });
+      this.handleErr('Room Code name length is limited to 15 characters');
       return false;
     }
 
@@ -165,9 +164,17 @@ class HomeContainer extends React.Component {
   }
 
   joinFailure(err) {
-    //handleErr(err);
-    console.dir(err);
+    this.handleErr(err.err);
     client.disconnect();
+  }
+
+  handleErr(errorMessage) {
+    this.setState({ error: 'error', errorMessage: errorMessage  });
+    animations.handleError();
+  }
+
+  clearError() {
+    this.setState( { error: 'no-error', errorMessage: '' });
   }
 
   // render Home page
@@ -175,14 +182,19 @@ class HomeContainer extends React.Component {
     return (
       // everything wrapped in div to avoid error 'Adjacent JSX elements must be wrapped in an enclosing tag'
       <div>
-        <Nav navItem={this.state.navItem} navClick={this.state.navAction} />
+        <Nav navItem={this.state.navItem} navClick={this.state.navAction} errorClear={this.clearError} />
         <div id='home-container'> {/* wrapper for styling purposes */}
           <HeroContainer
             heroText={this.state.heroText}
             heroImg={this.state.heroImg}
           />
-          <LoginContainer joinType={this.state.joinType} joinAction={this.state.joinAction} />
+          <LoginContainer
+            joinType={this.state.joinType}
+            joinAction={this.state.joinAction}
+            inputOnChange={this.clearError}
+          />
         </div>
+        <div className={this.state.error}>{this.state.errorMessage}</div>
       </div>
     );
   }
