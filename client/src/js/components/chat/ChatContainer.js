@@ -36,7 +36,7 @@ class ChatContainer extends React.Component {
    *                        new message.
    */
   setUser(data) {
-    const user = data.user;
+    const user = { username: data.user };
     const users = this.state.users.slice();
     users.push(user);
 
@@ -52,11 +52,15 @@ class ChatContainer extends React.Component {
    *                        list.
    */
   setUsers(data) {
-    const users = data.users;
-    
-    this.setState({
-      users: users,
-    });
+    if (data.users) {
+      const users = data.users.map((user) => {
+        return { username: user };
+      });
+
+      this.setState({
+        users: users,
+      });
+    }
   }
 
   /**
@@ -123,6 +127,11 @@ class ChatContainer extends React.Component {
         <MessageInput submitMessage={this.submitMessage} />
       </div>
     );
+  }
+
+  componentDidMount() {
+    client.emit('getUsers', {});
+    client.emit('getMessages', {});
   }
 }
 

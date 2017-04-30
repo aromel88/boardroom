@@ -41,6 +41,16 @@ const onMsg = (sock) => {
       socket.emit('messageError', { msg: 'Message missing data!' });
     }
   });
+
+  socket.on('getUsers', () => {
+    const users = teams[socket.team].getUsers();
+    socket.emit('userList', { users });
+  });
+
+  socket.on('getMessages', () => {
+    const messages = teams[socket.team].getMessageArray();
+    socket.emit('messageList', { messages });
+  });
 };
 
 

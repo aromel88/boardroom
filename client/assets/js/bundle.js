@@ -10456,7 +10456,7 @@ var ChatContainer = function (_React$Component) {
   _createClass(ChatContainer, [{
     key: 'setUser',
     value: function setUser(data) {
-      var user = data.user;
+      var user = { username: data.user };
       var users = this.state.users.slice();
       users.push(user);
 
@@ -10475,11 +10475,15 @@ var ChatContainer = function (_React$Component) {
   }, {
     key: 'setUsers',
     value: function setUsers(data) {
-      var users = data.users;
+      if (data.users) {
+        var users = data.users.map(function (user) {
+          return { username: user };
+        });
 
-      this.setState({
-        users: users
-      });
+        this.setState({
+          users: users
+        });
+      }
     }
 
     /**
@@ -10556,6 +10560,12 @@ var ChatContainer = function (_React$Component) {
         _react2.default.createElement(_MessageInput2.default, { submitMessage: this.submitMessage })
       );
     }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      client.emit('getUsers', {});
+      client.emit('getMessages', {});
+    }
   }]);
 
   return ChatContainer;
@@ -10600,11 +10610,16 @@ var Message = function (_React$Component) {
   _createClass(Message, [{
     key: 'render',
     value: function render() {
+      var avatarPath = this.props.message.avatar;
+      if (!avatarPath || avatarPath == '') {
+        avatarPath = './assets/img/usravi_m.png';
+      }
+
       if (this.props.username === this.props.message.user) {
         return _react2.default.createElement(
           'div',
           { className: 'message-wrapper self-message' },
-          _react2.default.createElement('img', { className: 'message-avatar', src: this.props.message.avatar, alt: './assets/img/usravi_m.png' }),
+          _react2.default.createElement('img', { className: 'message-avatar', src: avatarPath, alt: avatarPath }),
           _react2.default.createElement(
             'p',
             { className: 'message-username' },
@@ -10620,7 +10635,7 @@ var Message = function (_React$Component) {
         return _react2.default.createElement(
           'div',
           { className: 'message-wrapper' },
-          _react2.default.createElement('img', { className: 'message-avatar', src: this.props.message.avatar, alt: './assets/img/usravi_m.png' }),
+          _react2.default.createElement('img', { className: 'message-avatar', src: avatarPath, alt: avatarPath }),
           _react2.default.createElement(
             'p',
             { className: 'message-username' },
@@ -10858,10 +10873,15 @@ var User = function (_React$Component) {
   _createClass(User, [{
     key: 'render',
     value: function render() {
+      var avatarPath = this.props.user.avatar;
+      if (!avatarPath || avatarPath == '') {
+        avatarPath = './assets/img/usravi_m.png';
+      }
+
       return _react2.default.createElement(
         'div',
         { className: 'user-wrapper' },
-        _react2.default.createElement('img', { className: 'user-avatar', src: this.props.user.avatar, alt: './assets/img/usravi_m.png' }),
+        _react2.default.createElement('img', { className: 'user-avatar', src: avatarPath, alt: this.props.user.username }),
         _react2.default.createElement(
           'p',
           { className: 'username' },
