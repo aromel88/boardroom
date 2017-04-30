@@ -8,6 +8,7 @@
 
 const socketio = require('socket.io');
 const connectionManager = require('./connect');
+const Message = require('./Classes/Message.js');
 
 let io;
 
@@ -21,10 +22,27 @@ const onJoin = (sock) => {
   });
 };
 
-// const onMsg = (sock) => {
-//   const socket = sock;
-// };
-//
+const onMsg = (sock) => {
+  const socket = sock;
+
+  socket.on('createMessage', (data) => {
+    const user = socket.name;
+    const id = Date.now() + user;
+    const type = data.type;
+    const content = data.content;
+    const timestamp = data.timestamp;
+    // const avatar = data.avatar;  // Will add in avatars later
+
+    if (id && type && content && timestamp) {
+      const newMessage = new Message(type, content, timestamp, user);
+      teams[socket.team].addMessage(id, newMessage);
+      socket.broadcast.to(socket.team).emit('message', { messageData: newMessage });
+    } else {
+      socket.emit('messageError', { msg: 'Message missing data!' });
+    }
+  });
+};
+
 
 const onCanvas = (sock) => {
   const socket = sock;
@@ -45,7 +63,7 @@ const init = (expressApp) => {
   io.sockets.on('connection', (sock) => {
     sock.emit('connected');
     onJoin(sock);
-    // onMsg(sock);
+    onMsg(sock);
     // onDisconnect(sock);
     onCanvas(sock);
   });

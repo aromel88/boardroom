@@ -1,8 +1,9 @@
-const path = require('path');
-const animations = require('../../animations');
+const client = require('../../client.js');
+
 import React from 'react';
 import MessageContainer from './MessageContainer';
 import SidebarContainer from './SidebarContainer';
+import MessageInput from './MessageInput.js';
 
 class ChatContainer extends React.Component {
 
@@ -10,33 +11,84 @@ class ChatContainer extends React.Component {
     super();
 
     this.submitMessage = this.submitMessage.bind(this);
-    this.getUsers = this.getUsers.bind(this);
-    this.getMessages = this.getMessages.bind(this);
+    this.setUser = this.setUser.bind(this);
+    this.setUsers = this.setUsers.bind(this);
+    this.setMessage = this.setMessage.bind(this);
+    this.setMessages = this.setMessages.bind(this);
+    this.handleMessageError = this.handleMessageError.bind(this);
+
+    client.on('message', this.setMessage);
+    client.on('messageList', this.setMessages);
+    client.on('userJoined', this.setUser);
+    client.on('userList', this.setUsers);
+    client.on('messageError', this.handleMessageError);
 
     this.state = {
-      users: this.getUsers(),
-      messages: this.getMessages(),
+      users: [],
+      messages: [],
       username: 'Cool User',
     };
   }
 
-  getUsers() {
-    return [
-            { avi: './assets/img/usravi_m.png', username: 'Jesse' },
-            { avi: './assets/img/usravi_m.png', username: 'Aaron' },
-            { avi: './assets/img/usravi_m.png', username: 'Lathewave' },
-            { avi: './assets/img/usravi_m.png', username: 'Margaret' },
-           ];
+  /**
+   * When a new user is sent from the server, add it to the user list.
+   * @param {Object} data Data from the socket. data.user contains the
+   *                        new message.
+   */
+  setUser(data) {
+    const user = data.user;
+    const users = this.state.users.slice();
+    users.push(user);
+
+    this.setState({
+      users: users,
+    });
   }
 
-  getMessages() {
-    return [
-            { avi: './assets/img/usravi_m.png', username: 'Jesse', content: 'This app is great! Conform!', timestamp: 1 },
-            { avi: './assets/img/usravi_m.png', username: 'Aaron', content: 'Conform!', timestamp: 2 },
-            { avi: './assets/img/usravi_m.png', username: 'Lathewave', content: 'All the time, every day', timestamp: 3 },
-            { avi: './assets/img/usravi_m.png', username: 'Margaret', content: 'Your app tastes like chalk.', timestamp: 4 },
-            { avi: './assets/img/usravi_m.png', username: 'Jesse', content: '*Snaps fingers in Z*', timestamp: 5 },
-           ];
+  /**
+   * When the entire user list is sent from the server (on join), overwrite the
+   *   user list with the new data.
+   * @param {Object} data Data from the socket. data.users contains the user
+   *                        list.
+   */
+  setUsers(data) {
+    const users = data.users;
+    
+    this.setState({
+      users: users,
+    });
+  }
+
+  /**
+   * When a new message is sent from the server, add it to the message list.
+   * @param {Object} data Data from the socket. data.messageData contains the
+   *                        new message.
+   */
+  setMessage(data) {
+    const messages = this.state.messages.slice();
+    messages.push(data.messageData);
+
+    this.setState({
+      messages: messages,
+    });
+  }
+
+  /**
+   * When the entire message list is sent from the server (on join), overwrite
+   *   the message list with the new data.
+   * @param  {Object} data Data from the socket. data.messages contains the
+   *                         message list.
+   */
+  setMessages(data) {
+    const messages = data.messages;
+
+    this.setState({
+      messages: messages,
+    });
+  }
+
+  handleMessageError(data) {
+    console.dir(data.msg);
   }
 
   submitMessage(e) {
@@ -45,11 +97,14 @@ class ChatContainer extends React.Component {
 
       const messages = this.state.messages.slice(); // Get copy of existing message array
       const newMessage = {
-        avi: './assets/img/usravi_m.png',
-        username: this.state.username,
+        type: 'chat',
         content: inputBox.value,
         timestamp: Date.now(),
+        user: this.state.username,
+        avatar: './assets/img/usravi_m.png',
       };
+
+      client.emit('createMessage', newMessage);
 
       inputBox.value = '';
       messages.push(newMessage);
@@ -63,15 +118,9 @@ class ChatContainer extends React.Component {
   render() {
     return (
       <div id="chat-container">
-        <div id='sidebar-container'>
-          <SidebarContainer users={this.state.users} />
-        </div>
-        <div id='messages-container'>
-          <MessageContainer username={this.state.username} messages={this.state.messages} />
-        </div>
-        <div id='message-input-container'>
-          <input type='text' id='message-input' placeholder='Write a message' onKeyUp={this.submitMessage} />
-        </div>
+        <SidebarContainer users={this.state.users} />
+        <MessageContainer username={this.state.username} messages={this.state.messages} />
+        <MessageInput submitMessage={this.submitMessage} />
       </div>
     );
   }

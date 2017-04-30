@@ -53,6 +53,17 @@ const attemptJoin = (data, sock) => {
   teamData.addUser(user, socket);
   socket.emit('joinSuccess', { team, code, user });
 
+  // Give new user existing data
+  const users = server.teams[team].getUsers();
+  const messages = server.teams[team].getMessageArray();
+  console.dir(users);
+  console.dir(messages);
+  socket.emit('userList', { users });
+  socket.emit('messageList', { messages });
+
+  // Inform other users of new member
+  socket.broadcast.to(team).emit('userJoined', { user });
+
   console.dir(server.teams);
 };
 

@@ -10,7 +10,7 @@ class User extends React.Component {
     return (
       <div className='user-wrapper'>
         {/* TODO: src would presumably be an image lookup via username */}
-        <img className='user-avatar' src={this.props.user.avi} alt={this.props.user.username} />
+        <img className='user-avatar' src={this.props.user.avatar} alt='./assets/img/usravi_m.png' />
         <p className='username'>{this.props.user.username}</p>
       </div>
     );

@@ -41,6 +41,13 @@ class Team {
   getMessages() {
     return this.messages;
   }
+
+  getMessageArray() {
+    const messages = this.messages;
+    const messageArray = Object.keys(this.messages).map(id => messages[id]);
+
+    return messageArray;
+  }
 }
 
 module.exports = Team;
