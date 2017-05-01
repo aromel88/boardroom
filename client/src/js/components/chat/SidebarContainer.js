@@ -13,7 +13,7 @@ class SidebarContainer extends React.Component {
     });
 
     return (
-      <div>
+      <div id='sidebar-container'>
         <h3>Users</h3>
         <ul id='user-list'>{users}</ul>
       </div>

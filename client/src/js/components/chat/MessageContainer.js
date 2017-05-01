@@ -12,10 +12,10 @@ class MessageContainer extends React.Component {
     const messages = this.props.messages.sort((msg1, msg2) => {
       return msg1.timestamp - msg2.timestamp;
     }).map((message) => {
-      return <Message message={message} username={this.props.username} key={message.timestamp + message.username} />
+      return <Message message={message} username={this.props.username} key={message.timestamp + message.user} />
     });
 
-    return <ul id='messages'>{messages}</ul>;
+    return <div id='messages-container'>{messages}</div>;
   }
 }
 

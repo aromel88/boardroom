@@ -6,14 +6,17 @@ class Message extends React.Component {
     super(props);
   }
 
-  // TODO: Need to figure out user/avatar architecture
-
   render() {
-    if (this.props.username === this.props.message.username) {
+    let avatarPath = this.props.message.avatar;
+    if (!avatarPath || avatarPath == '') {
+      avatarPath = './assets/img/usravi_m.png';
+    }
+
+    if (this.props.username === this.props.message.user) {
       return (
         <div className='message-wrapper self-message'>
-          <img className='message-avatar' src={this.props.message.avi} alt={this.props.message.username} />
-          <p className='message-username'>{this.props.message.username}</p>
+          <img className='message-avatar' src={avatarPath} alt={avatarPath} />
+          <p className='message-username'>{this.props.message.user}</p>
           {/* May need to change to handle diagrams vs. text messages */}
           <p className='message-text'>{this.props.message.content}</p>
         </div>
@@ -21,8 +24,8 @@ class Message extends React.Component {
     } else {
       return (
         <div className='message-wrapper'>
-          <img className='message-avatar' src={this.props.message.avi} alt={this.props.message.username} />
-          <p className='message-username'>{this.props.message.username}</p>
+          <img className='message-avatar' src={avatarPath} alt={avatarPath} />
+          <p className='message-username'>{this.props.message.user}</p>
           {/* May need to change to handle diagrams vs. text messages */}
           <p className='message-text'>{this.props.message.content}</p>
         </div>
