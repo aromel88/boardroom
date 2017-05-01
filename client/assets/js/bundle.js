@@ -10617,6 +10617,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var client = __webpack_require__(28);
+var app = __webpack_require__(36);
 
 var ChatContainer = function (_React$Component) {
   _inherits(ChatContainer, _React$Component);
@@ -10736,7 +10737,8 @@ var ChatContainer = function (_React$Component) {
           type: 'chat',
           content: inputBox.value,
           timestamp: Date.now(),
-          user: this.state.username,
+          //user: this.state.username,
+          user: app.getName(),
           avatar: './assets/img/usravi_m.png'
         };
 
@@ -10799,6 +10801,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var app = __webpack_require__(36);
+
 var Message = function (_React$Component) {
   _inherits(Message, _React$Component);
 
@@ -10816,7 +10820,8 @@ var Message = function (_React$Component) {
         avatarPath = './assets/img/usravi_m.png';
       }
 
-      if (this.props.username === this.props.message.user) {
+      //if (this.props.username === this.props.message.user) {
+      if (app.getName() === this.props.message.user) {
         return _react2.default.createElement(
           'div',
           { className: 'message-wrapper self-message' },

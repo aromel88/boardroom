@@ -1,3 +1,4 @@
+const app = require('../../app');
 import React from 'react';
 
 class Message extends React.Component {
@@ -12,7 +13,8 @@ class Message extends React.Component {
       avatarPath = './assets/img/usravi_m.png';
     }
 
-    if (this.props.username === this.props.message.user) {
+    //if (this.props.username === this.props.message.user) {
+    if (app.getName() === this.props.message.user) {
       return (
         <div className='message-wrapper self-message'>
           <img className='message-avatar' src={avatarPath} alt={avatarPath} />

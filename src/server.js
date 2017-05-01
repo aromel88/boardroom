@@ -15,6 +15,28 @@ let io;
 
 const teams = {};
 
+const createMessage = (data, sock) => {
+  const socket = sock;
+  const user = socket.name;
+  const id = Date.now() + user;
+  const type = data.type;
+  const content = data.content;
+  const timestamp = data.timestamp;
+  // const avatar = data.avatar;  // Will add in avatars later
+
+  if (id && type && content && timestamp) {
+    const newMessage = new Message(type, content, timestamp, user);
+    teams[socket.team].addMessage(id, newMessage);
+    if (type === 'diagram') {
+      io.sockets.in(socket.team).emit('message', { messageData: newMessage });
+    } else {
+      socket.broadcast.to(socket.team).emit('message', { messageData: newMessage });
+    }
+  } else {
+    socket.emit('messageError', { msg: 'Message missing data!' });
+  }
+};
+
 // Should join & create be separated?
 const onJoin = (sock) => {
   const socket = sock;
@@ -27,20 +49,7 @@ const onMsg = (sock) => {
   const socket = sock;
 
   socket.on('createMessage', (data) => {
-    const user = socket.name;
-    const id = Date.now() + user;
-    const type = data.type;
-    const content = data.content;
-    const timestamp = data.timestamp;
-    // const avatar = data.avatar;  // Will add in avatars later
-
-    if (id && type && content && timestamp) {
-      const newMessage = new Message(type, content, timestamp, user);
-      teams[socket.team].addMessage(id, newMessage);
-      socket.broadcast.to(socket.team).emit('message', { messageData: newMessage });
-    } else {
-      socket.emit('messageError', { msg: 'Message missing data!' });
-    }
+    createMessage(data, socket);
   });
 
   socket.on('getUsers', () => {
@@ -102,3 +111,4 @@ const getIO = () => io;
 module.exports.init = init;
 module.exports.teams = teams;
 module.exports.io = getIO;
+module.exports.createMessage = createMessage;

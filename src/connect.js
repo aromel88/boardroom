@@ -21,8 +21,6 @@ const attemptCreate = (data, sock) => {
   socket.emit('joinSuccess', { team, code, user });
 
   socket.broadcast.to(team).emit('userJoined', { user });
-
-  console.dir(server.teams);
 };
 
 const attemptJoin = (data, sock) => {
@@ -56,8 +54,6 @@ const attemptJoin = (data, sock) => {
   teamData.addUser(user, socket);
   socket.emit('joinSuccess', { team, code, user, existingTabs });
   socket.broadcast.to(team).emit('userJoined', { user });
-
-  console.dir(server.teams);
 };
 
 const attemptConnect = (connectData, sock) => {

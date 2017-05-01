@@ -1,4 +1,5 @@
 const client = require('../../client.js');
+const app = require('../../app');
 
 import React from 'react';
 import MessageContainer from './MessageContainer';
@@ -104,7 +105,8 @@ class ChatContainer extends React.Component {
         type: 'chat',
         content: inputBox.value,
         timestamp: Date.now(),
-        user: this.state.username,
+        //user: this.state.username,
+        user: app.getName(),
         avatar: './assets/img/usravi_m.png',
       };
 
