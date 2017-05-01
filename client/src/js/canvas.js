@@ -145,6 +145,7 @@ const toggleCanvas = () => {
   } else {
     TweenMax.to('.canvas-slide', 0.3, { right: '-=400px', onComplete: () => {
         TweenMax.to(canvasSlideButton, 0.2, { opacity: 1 });
+        clearCanvas();
     }});
   }
 };

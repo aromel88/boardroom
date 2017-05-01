@@ -207,11 +207,30 @@ canvas:hover {
   opacity: 1;
   cursor: pointer; }
 
+.canvas-tab:hover > div, .active-tab:hover > div {
+  display: block; }
+
 .active-tab {
   opacity: 1; }
 
 .active-tab:hover {
   cursor: default; }
+
+.active-tab:hover > div {
+  display: block; }
+
+.tab-userlist {
+  display: none;
+  width: 80px;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  position: relative;
+  left: -105px;
+  text-align: center; }
+
+.tab-userlist-item {
+  padding: 5px; }
 
 #canvas-tools {
   background-color: #00AA8D;
@@ -221,6 +240,18 @@ canvas:hover {
   position: absolute;
   right: -400px;
   top: 800px; }
+
+.canvas-tool {
+  width: 100px;
+  height: 50px;
+  border: 2px solid white;
+  color: white;
+  display: inline-block; }
+
+.canvas-tool:hover {
+  background-color: white;
+  color: #00AA8D;
+  cursor: pointer; }
 
 /*
   Styles for chat page

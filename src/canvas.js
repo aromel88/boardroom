@@ -25,16 +25,30 @@ const sendTabData = (data, sock) => {
   tabs.forEach((tab) => {
     // if the user has a tab open, remove them from that tab
     if (data.curID === tab.id) {
-      tab.usersViewing.splice(data.user, 1);
+      tab.usersViewing.splice(tab.usersViewing.indexOf(data.user), 1);
     // put user in the new tab's user list
     } else if (data.openID === tab.id) {
       tab.usersViewing.push(data.user);
     }
   });
-
+  socket.emit('tabsUpdated', tabs);
   socket.emit('tabOpened', {id: data.openID, imgData});
+};
+
+const doneEditing = (data, sock) => {
+  const socket = sock;
+  const team = server.teams[socket.team];
+  const tabs = team.getTabs();
+  tabs.forEach((tab) => {
+    if (data.id === tab.id) {
+      tab.usersViewing.splice(tab.usersViewing.indexOf(data.user), 1);
+    }
+  });
+
+  server.io().sockets.emit('tabsUpdated', tabs);
 };
 
 module.exports.createTab = createTab;
 module.exports.tabUpdated = tabUpdated;
 module.exports.sendTabData = sendTabData;
+module.exports.doneEditing = doneEditing;

@@ -3639,6 +3639,7 @@ var toggleCanvas = function toggleCanvas() {
   } else {
     TweenMax.to('.canvas-slide', 0.3, { right: '-=400px', onComplete: function onComplete() {
         TweenMax.to(canvasSlideButton, 0.2, { opacity: 1 });
+        clearCanvas();
       } });
   }
 };
@@ -10330,6 +10331,7 @@ var CanvasContainer = function (_React$Component) {
     _this.createTab = _this.createTab.bind(_this);
     _this.tabOpened = _this.tabOpened.bind(_this);
     _this.openTab = _this.openTab.bind(_this);
+    _this.doneEditing = _this.doneEditing.bind(_this);
 
     // set initial state
     _this.state = {
@@ -10384,6 +10386,14 @@ var CanvasContainer = function (_React$Component) {
       this.setState({ activeTab: openID });
       canvas.setActiveTab(openID);
     }
+  }, {
+    key: 'doneEditing',
+    value: function doneEditing() {
+      client.emit('doneEditing', { id: canvas.getActiveTab(), user: app.getName() });
+      this.setState({ activeTab: '' });
+      canvas.setActiveTab('');
+      canvas.toggleCanvas();
+    }
 
     // render Home page
 
@@ -10410,7 +10420,7 @@ var CanvasContainer = function (_React$Component) {
             tabOpenAction: this.openTab
           }),
           _react2.default.createElement(_Canvas2.default, null),
-          _react2.default.createElement(_CanvasTools2.default, null)
+          _react2.default.createElement(_CanvasTools2.default, { doneEditingAction: this.doneEditing })
         )
       );
     }
@@ -10466,7 +10476,22 @@ var CanvasTabBar = function (_React$Component) {
     value: function render() {
       var tabNodes = this.props.canvasTabs.map(function (tab) {
         var tabClassName = this.props.activeTab === tab.id ? 'active-tab' : 'canvas-tab';
-        return _react2.default.createElement('div', { key: tab.id, id: tab.id, className: tabClassName, onClick: this.props.tabOpenAction });
+        var usersInTab = tab.usersViewing.map(function (user) {
+          return _react2.default.createElement(
+            'p',
+            { key: user, className: 'tab-userlist-item' },
+            user
+          );
+        });
+        return _react2.default.createElement(
+          'div',
+          { key: tab.id, id: tab.id, className: tabClassName, onClick: this.props.tabOpenAction },
+          _react2.default.createElement(
+            'div',
+            { id: 'tab-bar-user-list', className: 'tab-userlist' },
+            usersInTab
+          )
+        );
       }.bind(this));
 
       return (
@@ -10532,9 +10557,17 @@ var CanvasTools = function (_React$Component) {
           'div',
           { id: 'canvas-tools', className: 'canvas-slide' },
           _react2.default.createElement(
-            'h1',
-            null,
-            'Canvas Tools Will Go Here'
+            'div',
+            {
+              id: 'done-editing-button',
+              className: 'canvas-tool',
+              onClick: this.props.doneEditingAction
+            },
+            _react2.default.createElement(
+              'p',
+              null,
+              'Done Editing'
+            )
           )
         )
       );
@@ -13179,7 +13212,7 @@ exports = module.exports = __webpack_require__(105)(undefined);
 
 
 // module
-exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\n*:focus {\n  outline: none; }\n\nbody {\n  font-family: \"Montserrat\", sans-serif;\n  overflow-x: hidden; }\n\n/*\n  Styles for home page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\nnav {\n  height: 75px;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  background: #008975;\n  /* Old browsers */\n  background: -moz-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(to bottom, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n.navButton {\n  width: 100px;\n  height: 50px;\n  line-height: 50px;\n  border: 2px solid #FAFAFA;\n  color: #FAFAFA;\n  border-radius: 5px;\n  background-color: transparent;\n  position: absolute;\n  right: 75px;\n  top: 12px; }\n\n.navButton:hover {\n  background-color: white;\n  color: #00AA8D;\n  cursor: pointer; }\n\n#home-container {\n  width: 100%;\n  height: calc(100vh - 75px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  position: relative;\n  top: 75px;\n  background: #E0E0E0;\n  /* Old browsers */\n  background: -moz-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(135deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n#hero-container {\n  width: 40%;\n  height: calc(100vh - 75px);\n  position: relative; }\n\n#hero-container h1 {\n  font-size: 3.5em;\n  color: rgba(0, 0, 0, 0.87);\n  width: 400px;\n  position: absolute;\n  left: 100px;\n  top: 100px; }\n\n#hero-container img {\n  position: absolute;\n  left: 0;\n  bottom: 0; }\n\n#login-controls {\n  background-color: #FAFAFA;\n  width: 400px;\n  height: 300px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  position: absolute;\n  right: 75px;\n  top: 100px; }\n\n#login-controls input[type='text'] {\n  display: block;\n  margin: auto;\n  width: 200px;\n  padding: 4px;\n  font-size: 1em;\n  border-radius: 4px;\n  border: 2px solid #E0E0E0;\n  position: relative;\n  margin-bottom: 10px;\n  top: 25px; }\n\n#join-button {\n  display: block;\n  width: 212px;\n  height: 40px;\n  background-color: #00AA8D;\n  box-shadow: 0px 3px 2px #E0E0E0;\n  border: none;\n  border-radius: 3px;\n  line-height: 40px;\n  text-align: center;\n  transition: width 0.15s, height 0.15s, box-shadow 0.15s;\n  position: absolute;\n  left: 50%;\n  top: 200px;\n  transform: translate(-50%, -50%);\n  color: white;\n  font-size: 1em; }\n  #join-button:hover {\n    cursor: pointer;\n    box-shadow: 4px 7px 3px #E0E0E0;\n    width: 215px;\n    height: 43px; }\n  #join-button:active {\n    box-shadow: 0px 3px 2px #E0E0E0;\n    width: 212px;\n    height: 40px; }\n\n.no-error {\n  display: none; }\n\n.error {\n  width: 400px;\n  height: 25px;\n  line-height: 25px;\n  background-color: red;\n  color: white;\n  position: absolute;\n  right: 75px;\n  top: 500px;\n  text-align: center;\n  border-radius: 3px; }\n\n#canvas-container {\n  overflow-y: auto; }\n\ncanvas {\n  position: absolute;\n  right: -400px;\n  top: 0px;\n  width: 400px;\n  height: 800px;\n  box-sizing: border-box;\n  border: 2px solid #00AA8D; }\n\ncanvas:hover {\n  cursor: crosshair; }\n\n#top-canvas {\n  z-index: 10; }\n\n#canvas-slide-button {\n  position: absolute;\n  right: 60px;\n  top: 5px;\n  width: 50px;\n  height: 50px;\n  border-radius: 50px;\n  line-height: 50px;\n  text-align: center;\n  background-color: #00AA8D;\n  opacity: 0.5;\n  color: white;\n  z-index: -10; }\n\n#canvas-slide-button:hover {\n  opacity: 1;\n  cursor: pointer; }\n\n#canvas-tab-bar {\n  width: 50px;\n  height: 100vh;\n  min-height: 900px;\n  position: absolute;\n  right: 0px;\n  top: 0px;\n  background-color: rgba(0, 0, 0, 0.5); }\n\n.canvas-tab, .active-tab {\n  width: 70px;\n  height: 30px;\n  background-color: #00AA8D;\n  opacity: 0.5;\n  position: relative;\n  right: 20px;\n  top: 70px;\n  margin-top: 20px;\n  color: white; }\n\n.canvas-tab:hover, .active-tab:hover {\n  opacity: 1;\n  cursor: pointer; }\n\n.active-tab {\n  opacity: 1; }\n\n.active-tab:hover {\n  cursor: default; }\n\n#canvas-tools {\n  background-color: #00AA8D;\n  width: 400px;\n  height: calc(100vh - 800px);\n  min-height: 100px;\n  position: absolute;\n  right: -400px;\n  top: 800px; }\n\n/*\n  Styles for chat page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\n#chat-container {\n  height: 100%;\n  width: 100%; }\n\n#sidebar-container {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  width: 250px;\n  height: 100%;\n  background-color: #00AA8D; }\n\n#sidebar-container h3 {\n  color: #FAFAFA;\n  background-color: #008975;\n  line-height: 80px;\n  text-align: center;\n  vertical-align: middle;\n  font-size: 20pt; }\n\n#user-list {\n  width: 85%;\n  margin: auto;\n  margin-top: 20px; }\n\n#messages-container {\n  position: absolute;\n  left: 250px;\n  top: 0px;\n  width: calc(100% - 250px - 400px);\n  height: calc(100% - 32px);\n  overflow-y: auto; }\n\n.user-wrapper {\n  background-color: #F5F5F5;\n  width: 100%;\n  height: 50px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  border-radius: 4px;\n  margin-bottom: 20px;\n  display: flex;\n  flex-direction: row;\n  align-items: center; }\n\n.user-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px;\n  margin-left: 5px; }\n\n.username {\n  margin-left: 10px;\n  color: rgba(0, 0, 0, 0.87);\n  display: inline; }\n\n.message-wrapper {\n  background-color: #00BF9A;\n  min-width: 200px;\n  min-height: 50px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  max-width: 550px;\n  border-radius: 4px;\n  margin-top: 8px;\n  margin-bottom: 12px;\n  margin-right: 20px;\n  margin-left: 20px;\n  display: inline-block;\n  float: left;\n  clear: both; }\n\n.self-message {\n  float: right; }\n\n.message-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px;\n  margin-top: 10px;\n  margin-left: 10px; }\n\n.message-username {\n  position: relative;\n  display: inline;\n  color: #FAFAFA;\n  top: -7px;\n  margin-left: 10px;\n  margin-right: 10px;\n  font-size: 14pt; }\n\n.message-text {\n  position: relative;\n  border-radius: 4px;\n  color: #FAFAFA;\n  display: block;\n  padding: 5px;\n  margin-top: 5px;\n  margin-right: 10px;\n  margin-left: 20px;\n  margin-bottom: 5px;\n  height: 80%; }\n\n#message-input-container {\n  position: fixed;\n  bottom: 0px;\n  left: 250px;\n  width: calc(100% - 250px - 400px); }\n\n#message-input {\n  width: 100%;\n  height: 32px;\n  text-indent: 5px;\n  font-size: 13pt;\n  vertical-align: center; }\n\n/*# sourceMappingURL=app.css.map */\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\n*:focus {\n  outline: none; }\n\nbody {\n  font-family: \"Montserrat\", sans-serif;\n  overflow-x: hidden; }\n\n/*\n  Styles for home page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\nnav {\n  height: 75px;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  background: #008975;\n  /* Old browsers */\n  background: -moz-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(to bottom, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n.navButton {\n  width: 100px;\n  height: 50px;\n  line-height: 50px;\n  border: 2px solid #FAFAFA;\n  color: #FAFAFA;\n  border-radius: 5px;\n  background-color: transparent;\n  position: absolute;\n  right: 75px;\n  top: 12px; }\n\n.navButton:hover {\n  background-color: white;\n  color: #00AA8D;\n  cursor: pointer; }\n\n#home-container {\n  width: 100%;\n  height: calc(100vh - 75px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  position: relative;\n  top: 75px;\n  background: #E0E0E0;\n  /* Old browsers */\n  background: -moz-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(135deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n#hero-container {\n  width: 40%;\n  height: calc(100vh - 75px);\n  position: relative; }\n\n#hero-container h1 {\n  font-size: 3.5em;\n  color: rgba(0, 0, 0, 0.87);\n  width: 400px;\n  position: absolute;\n  left: 100px;\n  top: 100px; }\n\n#hero-container img {\n  position: absolute;\n  left: 0;\n  bottom: 0; }\n\n#login-controls {\n  background-color: #FAFAFA;\n  width: 400px;\n  height: 300px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  position: absolute;\n  right: 75px;\n  top: 100px; }\n\n#login-controls input[type='text'] {\n  display: block;\n  margin: auto;\n  width: 200px;\n  padding: 4px;\n  font-size: 1em;\n  border-radius: 4px;\n  border: 2px solid #E0E0E0;\n  position: relative;\n  margin-bottom: 10px;\n  top: 25px; }\n\n#join-button {\n  display: block;\n  width: 212px;\n  height: 40px;\n  background-color: #00AA8D;\n  box-shadow: 0px 3px 2px #E0E0E0;\n  border: none;\n  border-radius: 3px;\n  line-height: 40px;\n  text-align: center;\n  transition: width 0.15s, height 0.15s, box-shadow 0.15s;\n  position: absolute;\n  left: 50%;\n  top: 200px;\n  transform: translate(-50%, -50%);\n  color: white;\n  font-size: 1em; }\n  #join-button:hover {\n    cursor: pointer;\n    box-shadow: 4px 7px 3px #E0E0E0;\n    width: 215px;\n    height: 43px; }\n  #join-button:active {\n    box-shadow: 0px 3px 2px #E0E0E0;\n    width: 212px;\n    height: 40px; }\n\n.no-error {\n  display: none; }\n\n.error {\n  width: 400px;\n  height: 25px;\n  line-height: 25px;\n  background-color: red;\n  color: white;\n  position: absolute;\n  right: 75px;\n  top: 500px;\n  text-align: center;\n  border-radius: 3px; }\n\n#canvas-container {\n  overflow-y: auto; }\n\ncanvas {\n  position: absolute;\n  right: -400px;\n  top: 0px;\n  width: 400px;\n  height: 800px;\n  box-sizing: border-box;\n  border: 2px solid #00AA8D; }\n\ncanvas:hover {\n  cursor: crosshair; }\n\n#top-canvas {\n  z-index: 10; }\n\n#canvas-slide-button {\n  position: absolute;\n  right: 60px;\n  top: 5px;\n  width: 50px;\n  height: 50px;\n  border-radius: 50px;\n  line-height: 50px;\n  text-align: center;\n  background-color: #00AA8D;\n  opacity: 0.5;\n  color: white;\n  z-index: -10; }\n\n#canvas-slide-button:hover {\n  opacity: 1;\n  cursor: pointer; }\n\n#canvas-tab-bar {\n  width: 50px;\n  height: 100vh;\n  min-height: 900px;\n  position: absolute;\n  right: 0px;\n  top: 0px;\n  background-color: rgba(0, 0, 0, 0.5); }\n\n.canvas-tab, .active-tab {\n  width: 70px;\n  height: 30px;\n  background-color: #00AA8D;\n  opacity: 0.5;\n  position: relative;\n  right: 20px;\n  top: 70px;\n  margin-top: 20px;\n  color: white; }\n\n.canvas-tab:hover, .active-tab:hover {\n  opacity: 1;\n  cursor: pointer; }\n\n.canvas-tab:hover > div, .active-tab:hover > div {\n  display: block; }\n\n.active-tab {\n  opacity: 1; }\n\n.active-tab:hover {\n  cursor: default; }\n\n.active-tab:hover > div {\n  display: block; }\n\n.tab-userlist {\n  display: none;\n  width: 80px;\n  height: auto;\n  background-color: rgba(0, 0, 0, 0.5);\n  color: white;\n  position: relative;\n  left: -105px;\n  text-align: center; }\n\n.tab-userlist-item {\n  padding: 5px; }\n\n#canvas-tools {\n  background-color: #00AA8D;\n  width: 400px;\n  height: calc(100vh - 800px);\n  min-height: 100px;\n  position: absolute;\n  right: -400px;\n  top: 800px; }\n\n.canvas-tool {\n  width: 100px;\n  height: 50px;\n  border: 2px solid white;\n  color: white;\n  display: inline-block; }\n\n.canvas-tool:hover {\n  background-color: white;\n  color: #00AA8D;\n  cursor: pointer; }\n\n/*\n  Styles for chat page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\n#chat-container {\n  height: 100%;\n  width: 100%; }\n\n#sidebar-container {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  width: 250px;\n  height: 100%;\n  background-color: #00AA8D; }\n\n#sidebar-container h3 {\n  color: #FAFAFA;\n  background-color: #008975;\n  line-height: 80px;\n  text-align: center;\n  vertical-align: middle;\n  font-size: 20pt; }\n\n#user-list {\n  width: 85%;\n  margin: auto;\n  margin-top: 20px; }\n\n#messages-container {\n  position: absolute;\n  left: 250px;\n  top: 0px;\n  width: calc(100% - 250px - 400px);\n  height: calc(100% - 32px);\n  overflow-y: auto; }\n\n.user-wrapper {\n  background-color: #F5F5F5;\n  width: 100%;\n  height: 50px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  border-radius: 4px;\n  margin-bottom: 20px;\n  display: flex;\n  flex-direction: row;\n  align-items: center; }\n\n.user-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px;\n  margin-left: 5px; }\n\n.username {\n  margin-left: 10px;\n  color: rgba(0, 0, 0, 0.87);\n  display: inline; }\n\n.message-wrapper {\n  background-color: #00BF9A;\n  min-width: 200px;\n  min-height: 50px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  max-width: 550px;\n  border-radius: 4px;\n  margin-top: 8px;\n  margin-bottom: 12px;\n  margin-right: 20px;\n  margin-left: 20px;\n  display: inline-block;\n  float: left;\n  clear: both; }\n\n.self-message {\n  float: right; }\n\n.message-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px;\n  margin-top: 10px;\n  margin-left: 10px; }\n\n.message-username {\n  position: relative;\n  display: inline;\n  color: #FAFAFA;\n  top: -7px;\n  margin-left: 10px;\n  margin-right: 10px;\n  font-size: 14pt; }\n\n.message-text {\n  position: relative;\n  border-radius: 4px;\n  color: #FAFAFA;\n  display: block;\n  padding: 5px;\n  margin-top: 5px;\n  margin-right: 10px;\n  margin-left: 20px;\n  margin-bottom: 5px;\n  height: 80%; }\n\n#message-input-container {\n  position: fixed;\n  bottom: 0px;\n  left: 250px;\n  width: calc(100% - 250px - 400px); }\n\n#message-input {\n  width: 100%;\n  height: 32px;\n  text-indent: 5px;\n  font-size: 13pt;\n  vertical-align: center; }\n\n/*# sourceMappingURL=app.css.map */\n", ""]);
 
 // exports
 

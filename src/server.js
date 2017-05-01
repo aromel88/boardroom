@@ -76,6 +76,10 @@ const onCanvas = (sock) => {
   socket.on('openTab', (data) => {
     canvasManager.sendTabData(data, socket);
   });
+
+  socket.on('doneEditing', (data) => {
+    canvasManager.doneEditing(data, socket);
+  });
 };
 // const onDisconnect = (sock) => {
 //   const socket = sock;

@@ -13,8 +13,15 @@ class CanvasTabBar extends React.Component {
   render() {
     const tabNodes = this.props.canvasTabs.map(function(tab) {
       const tabClassName = this.props.activeTab === tab.id ? 'active-tab' : 'canvas-tab';
+      const usersInTab = tab.usersViewing.map(function(user) {
+        return (
+          <p key={user} className='tab-userlist-item'>{user}</p>
+        )
+      });
       return (
-        <div key={tab.id} id={tab.id} className={tabClassName} onClick={this.props.tabOpenAction}></div>
+        <div key={tab.id} id={tab.id} className={tabClassName} onClick={this.props.tabOpenAction}>
+          <div id='tab-bar-user-list' className='tab-userlist'>{usersInTab}</div>
+        </div>
       );
     }.bind(this));
 

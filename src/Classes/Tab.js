@@ -8,6 +8,10 @@ class Tab {
   addUserViewing(user) {
     this.usersViewing.push(user);
   }
+
+  removeUserViewing(user) {
+    this.usersViewing.splice(usersViewing.indexOf(user), 1);
+  }
 }
 
 module.exports = Tab;

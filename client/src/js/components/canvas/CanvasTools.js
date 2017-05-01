@@ -13,7 +13,13 @@ class CanvasTools extends React.Component {
     return (
       // everything wrapped in div to avoid error 'Adjacent JSX elements must be wrapped in an enclosing tag'
       <div id='canvas-tools' className='canvas-slide'>
-        <h1>Canvas Tools Will Go Here</h1>
+        <div
+          id='done-editing-button'
+          className='canvas-tool'
+          onClick={this.props.doneEditingAction}
+        >
+          <p>Done Editing</p>
+        </div>
       </div>
     );
   }

@@ -17,6 +17,7 @@ class CanvasContainer extends React.Component {
     this.createTab = this.createTab.bind(this);
     this.tabOpened = this.tabOpened.bind(this);
     this.openTab = this.openTab.bind(this);
+    this.doneEditing = this.doneEditing.bind(this);
 
     // set initial state
     this.state = {
@@ -67,6 +68,13 @@ class CanvasContainer extends React.Component {
     canvas.setActiveTab(openID);
   }
 
+  doneEditing() {
+    client.emit('doneEditing', { id: canvas.getActiveTab(), user: app.getName() });
+    this.setState({ activeTab: '' });
+    canvas.setActiveTab('');
+    canvas.toggleCanvas();
+  }
+
   // render Home page
   render() {
     return (
@@ -79,7 +87,7 @@ class CanvasContainer extends React.Component {
           tabOpenAction={this.openTab}
         />
         <Canvas />
-        <CanvasTools />
+        <CanvasTools doneEditingAction={this.doneEditing} />
       </div>
     );
   }
