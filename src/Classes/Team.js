@@ -53,7 +53,7 @@ class Team {
   getTabs() {
     return this.tabs;
   }
-  
+
   getMessageArray() {
     const messages = this.messages;
     const messageArray = Object.keys(this.messages).map(id => messages[id]);
