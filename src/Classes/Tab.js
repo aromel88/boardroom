@@ -10,7 +10,7 @@ class Tab {
   }
 
   removeUserViewing(user) {
-    this.usersViewing.splice(usersViewing.indexOf(user), 1);
+    this.usersViewing.splice(this.usersViewing.indexOf(user), 1);
   }
 }
 
