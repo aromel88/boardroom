@@ -34,8 +34,9 @@ $message-input-height: 32px;
 // Containers
 
 #chat-container {
-	height : 100%;
-	width  : 100%;
+	position : fixed;
+	height   : 100%;
+	width    : calc(100% - 120px);
 }
 
 #sidebar-container {
@@ -62,7 +63,7 @@ $message-input-height: 32px;
 
 #messages-container {
 	@include position-absolute($sidebar-min-width, 0px);
-	width      : calc(100% - #{$sidebar-min-width} - #{$canvas-width});
+	width      : calc(100% - #{$sidebar-min-width});
 	height     : calc(100% - #{$message-input-height});
 	overflow-y : auto;
 }
@@ -145,13 +146,14 @@ $message-input-height: 32px;
 	position : fixed;
 	bottom   : 0px;
 	left     : $sidebar-min-width;
-	width    : calc(100% - #{$sidebar-min-width} - #{$canvas-width});
+	// 50px = side tab width, 3px = border overdraw
+	width    : calc(100% - #{$sidebar-min-width} - 53px);
 }
 
 #message-input {
-	width       : 100%;
-	height      : $message-input-height;
-	text-indent : 5px;
-	font-size   : 13pt;
-	vertical-align : center;
+	width          : 100%;
+	height         : $message-input-height;
+	text-indent    : 5px;
+	font-size      : 13pt;
+	vertical-align : middle;
 }
