@@ -32,7 +32,7 @@ const sendTabData = (data, sock) => {
     }
   });
   socket.emit('tabsUpdated', tabs);
-  socket.emit('tabOpened', {id: data.openID, imgData});
+  socket.emit('tabOpened', { id: data.openID, imgData });
 };
 
 const doneEditing = (data, sock) => {
@@ -48,8 +48,8 @@ const doneEditing = (data, sock) => {
         const messageData = {
           type: 'diagram',
           timestamp: new Date().getTime(),
-          content: 'A diagram was created'
-        }
+          content: 'A diagram was created',
+        };
         server.createMessage(messageData, socket);
         r = i;
       }
