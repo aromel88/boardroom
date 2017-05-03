@@ -6,6 +6,7 @@
   outline: none; }
 
 body {
+  background-color: #E0E0E0;
   font-family: "Montserrat", sans-serif;
   overflow-x: hidden; }
 
@@ -282,8 +283,7 @@ canvas:hover {
 #chat-container {
   position: fixed;
   height: 100%;
-  width: calc(100% - 50px);
-  background-color: #F5F5F5; }
+  width: calc(100% - 50px); }
 
 #sidebar-container {
   position: absolute;
