@@ -36,7 +36,8 @@ $message-input-height: 32px;
 #chat-container {
 	position : fixed;
 	height   : 100%;
-	width    : calc(100% - 120px);
+	width    : calc(100% - 50px);
+	background-color: $med-gray;
 }
 
 #sidebar-container {

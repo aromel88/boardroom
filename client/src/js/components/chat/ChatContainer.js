@@ -123,7 +123,7 @@ class ChatContainer extends React.Component {
 
   render() {
     return (
-      <div id="chat-container">
+      <div id="chat-container" className='canvas-grow'>
         <SidebarContainer users={this.state.users} />
         <MessageContainer username={this.state.username} messages={this.state.messages} />
         <MessageInput submitMessage={this.submitMessage} />

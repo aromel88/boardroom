@@ -22,7 +22,6 @@ canvas {
   width: $canvas-width;
   height: $canvas-height;
   box-sizing: border-box;
-  border: 2px solid $primary-color;
 }
 
 canvas:hover {
@@ -67,7 +66,7 @@ canvas:hover {
   top: 20px;
   margin-top: 5px;
   color: white;
-  border-radius: 20px 0px 0px 20px;
+  border-radius: 15px 0px 0px 15px;
 }
 
 .canvas-tab:hover {
