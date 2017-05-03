@@ -74,13 +74,15 @@ const handleDisconnect = (sock) => {
   // kill the room if no users are left
   const team = server.teams[socket.team];
   const tabsNeedUpdate = team.removeUser(socket.name);
-  server.io().sockets.in(socket.team).emit('tabsUpdated', team.getTabs());
+  if (tabsNeedUpdate) {
+    server.io().sockets.in(socket.team).emit('tabsUpdated', team.getTabs());
+  }
 
   const userList = team.getUsers();
   if (userList.length < 1) {
     delete server.teams[socket.team];
   } else {
-    server.io().sockets.in(socket.team).emit('userList', {users: userList});
+    server.io().sockets.in(socket.team).emit('userList', { users: userList });
     socket.leave(socket.team);
   }
 };

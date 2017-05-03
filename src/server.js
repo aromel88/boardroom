@@ -94,7 +94,7 @@ const onCanvas = (sock) => {
 const onDisconnect = (sock) => {
   const socket = sock;
 
-  socket.on("disconnect", () => {
+  socket.on('disconnect', () => {
     connectionManager.handleDisconnect(socket);
   });
 };

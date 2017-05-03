@@ -33,7 +33,7 @@ class Team {
     });
     delete this.sockets[user];
 
-    return tabsNeedUpdate
+    return tabsNeedUpdate;
   }
 
   addMessage(id, message) {
