@@ -51,9 +51,8 @@ const doneEditing = (data, sock) => {
   const tabs = team.getTabs();
   let r = -1;
   tabs.forEach((tab, i) => {
-    if (data.id === tab.id) {
-      tab.usersViewing.splice(tab.usersViewing.indexOf(data.user), 1);
-      // if there no more users in the tab crate a message corresponding to this tab
+    if (tab.userIsViewing(data.user)) {
+      tab.removeUserViewing(data.user);
       if (tab.usersViewing.length === 0) {
         const messageData = {
           type: 'diagram',
@@ -67,7 +66,7 @@ const doneEditing = (data, sock) => {
   });
   if (r > -1) tabs.splice(r, 1);
 
-  server.io().sockets.in(socket.room).emit('tabsUpdated', tabs);
+  server.io().sockets.in(socket.team).emit('tabsUpdated', tabs);
 };
 
 module.exports.createTab = createTab;
