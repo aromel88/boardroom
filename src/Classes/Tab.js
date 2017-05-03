@@ -14,6 +14,10 @@ class Tab {
   removeUserViewing(user) {
     this.usersViewing.splice(this.usersViewing.indexOf(user), 1);
   }
+
+  userIsViewing(user) {
+    return this.usersViewing.indexOf(user) > -1;
+  }
 }
 
 module.exports = Tab;

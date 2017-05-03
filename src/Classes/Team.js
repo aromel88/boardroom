@@ -24,7 +24,16 @@ class Team {
 
   removeUser(user) {
     this.users.splice(this.users.indexOf(user), 1);
+    let tabsNeedUpdate = false;
+    this.tabs.forEach((tab) => {
+      if (tab.userIsViewing(user)) {
+        tab.removeUserViewing(user);
+        tabsNeedUpdate = true;
+      }
+    });
     delete this.sockets[user];
+
+    return tabsNeedUpdate
   }
 
   addMessage(id, message) {
