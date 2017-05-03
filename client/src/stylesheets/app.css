@@ -33,7 +33,7 @@ nav {
   /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }
 
 .navButton {
-  width: 100px;
+  width: 105px;
   height: 50px;
   line-height: 50px;
   border: 2px solid #FAFAFA;
@@ -42,7 +42,8 @@ nav {
   background-color: transparent;
   position: absolute;
   right: 75px;
-  top: 12px; }
+  top: 12px;
+  font-size: 1em; }
 
 .navButton:hover {
   background-color: white;

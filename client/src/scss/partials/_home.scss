@@ -20,7 +20,7 @@ nav {
 }
 
 .navButton {
-  width: 100px;
+  width: 105px;
   height: 50px;
   line-height: 50px;
   border: 2px solid $light-gray;
@@ -30,6 +30,7 @@ nav {
   position: absolute;
   right: 75px;
   top: 12px;
+  font-size: 1em;
 }
 
 .navButton:hover {
