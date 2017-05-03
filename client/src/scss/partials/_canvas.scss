@@ -2,6 +2,15 @@
 $canvas-width: 400px;
 $canvas-height: 800px;
 
+// color classes allow for randomly assigning background colors to tabs
+._1 { background-color: #E91E63; }
+._2 { background-color: #9C27B0; }
+._3 { background-color: #F44336; }
+._4 { background-color: #2196F3; }
+._5 { background-color: #CDDC39; }
+._6 { background-color: #FFC107; }
+._7 { background-color: #00BCD4; }
+
 #canvas-container {
   overflow-y: auto;
 }
@@ -54,15 +63,15 @@ canvas:hover {
 }
 
 .canvas-tab {
-  width: 70px;
-  height: 30px;
-  background-color: $primary-color;
+  width: 45px;
+  height: 100px;
   opacity: 0.5;
   position: relative;
-  right: 20px;
+  right: -5px;
   top: 70px;
-  margin-top: 20px;
+  margin-top: 5px;
   color: white;
+  border-radius: 20px 0px 0px 20px;
 }
 
 .canvas-tab:hover {
