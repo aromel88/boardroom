@@ -46,8 +46,12 @@ class CanvasContainer extends React.Component {
     const tabID = `${app.getName()}${new Date().getTime()}`;
     this.setState({ activeTab: tabID });
     canvas.setActiveTab(tabID);
-    client.emit('createTab', { id: tabID, user: app.getName() });
-    canvas.toggleCanvas();
+    client.emit('createTab', { id: tabID, user: app.getName(), curTab: this.state.activeTab });
+    if (this.state.activeTab === '') {
+      canvas.toggleCanvas();
+    } else {
+      canvas.clearCanvas();
+    }
   }
 
   openTab(e) {
@@ -80,8 +84,8 @@ class CanvasContainer extends React.Component {
     return (
       // everything wrapped in div to avoid error 'Adjacent JSX elements must be wrapped in an enclosing tag'
       <div>
-        <div id='canvas-slide-button' onClick={this.createTab}><p>New</p></div>
         <CanvasTabBar
+          createTab={this.createTab}
           activeTab={this.state.activeTab}
           canvasTabs={this.state.canvasTabs}
           tabOpenAction={this.openTab}

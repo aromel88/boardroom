@@ -6,20 +6,30 @@ const createTab = (data, sock) => {
   const newTab = new Tab(data.id, data.user);
   const team = server.teams[socket.team];
   team.addTab(newTab);
-  server.io().sockets.emit('tabsUpdated', team.getTabs());
+
+  // if the user is in a tab, remove them from it
+  if (data.curTab !== '') {
+    team.getTabs().forEach((tab) => {
+      if (tab.id === data.curTab) {
+        tab.removeUserViewing(data.user);
+      }
+    });
+  }
+  server.io().sockets.in(socket.team).emit('tabsUpdated', team.getTabs());
 };
 
 const tabUpdated = (data, sock) => {
   const socket = sock;
   const team = server.teams[socket.team];
-
-  team.updateDiagram(data.id, data.imgData);
+  if (team) {
+    team.updateDiagram(data.id, data.imgData);
+  }
 };
 
 const sendTabData = (data, sock) => {
   const socket = sock;
   const team = server.teams[socket.team];
-  const tabs = team.tabs;
+  const tabs = team.getTabs();
   const imgData = team.diagrams[data.openID];
 
   tabs.forEach((tab) => {
@@ -31,7 +41,7 @@ const sendTabData = (data, sock) => {
       tab.usersViewing.push(data.user);
     }
   });
-  socket.emit('tabsUpdated', tabs);
+  server.io().sockets.in(socket.team).emit('tabsUpdated', tabs);
   socket.emit('tabOpened', { id: data.openID, imgData });
 };
 
@@ -57,7 +67,7 @@ const doneEditing = (data, sock) => {
   });
   if (r > -1) tabs.splice(r, 1);
 
-  server.io().sockets.emit('tabsUpdated', tabs);
+  server.io().sockets.in(socket.room).emit('tabsUpdated', tabs);
 };
 
 module.exports.createTab = createTab;

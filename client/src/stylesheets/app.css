@@ -188,12 +188,8 @@ canvas:hover {
   z-index: 10; }
 
 #canvas-slide-button {
-  position: absolute;
-  right: 60px;
-  top: 5px;
   width: 50px;
   height: 50px;
-  border-radius: 50px;
   line-height: 50px;
   text-align: center;
   background-color: #00AA8D;
