@@ -22,6 +22,11 @@ class Team {
     this.sockets[user] = socket;
   }
 
+  removeUser(user) {
+    this.users.splice(this.users.indexOf(user), 1);
+    delete this.sockets[user];
+  }
+
   addMessage(id, message) {
     if (this.messages[id]) {
       // update message

@@ -64,6 +64,26 @@ const attemptConnect = (connectData, sock) => {
   }
 };
 
+const handleDisconnect = (sock) => {
+  const socket = sock;
+  // if the socket has no name the connection is disconnecting from a join fail
+  if (!socket.name) {
+    return;
+  }
+
+  // kill the room if no users are left
+  const team = server.teams[socket.team];
+  team.removeUser(socket.name);
+  const userList = team.getUsers();
+  if (userList.length < 1) {
+    delete server.teams[socket.team];
+  } else {
+    server.io().sockets.in(socket.team).emit('userList', {users: userList});
+    socket.leave(socket.team);
+  }
+};
+
 module.exports.attemptCreate = attemptCreate;
 module.exports.attemptJoin = attemptJoin;
 module.exports.attemptConnect = attemptConnect;
+module.exports.handleDisconnect = handleDisconnect;

@@ -90,9 +90,14 @@ const onCanvas = (sock) => {
     canvasManager.doneEditing(data, socket);
   });
 };
-// const onDisconnect = (sock) => {
-//   const socket = sock;
-// };
+
+const onDisconnect = (sock) => {
+  const socket = sock;
+
+  socket.on("disconnect", () => {
+    connectionManager.handleDisconnect(socket);
+  });
+};
 
 const init = (expressApp) => {
   io = socketio(expressApp);
@@ -100,7 +105,7 @@ const init = (expressApp) => {
     sock.emit('connected');
     onJoin(sock);
     onMsg(sock);
-    // onDisconnect(sock);
+    onDisconnect(sock);
     onCanvas(sock);
   });
   console.log('Websocket server running');
