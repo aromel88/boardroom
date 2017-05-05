@@ -37,6 +37,7 @@ const init = () => {
   canvasSlideButton = document.querySelector('#canvas-slide-button');
 
   client.on('receiveCanvasData', receiveCanvasData);
+  clearCanvas();
 };
 
 // set stroke color of canvas
@@ -62,7 +63,7 @@ const mouseDown = (e) => {
       x: mouse.x,
       y: mouse.y,
       //style: topCtx.strokeStyle,
-      //id: the id for the diagram we're drawing on
+      id: activeTab
     };
     client.emit('beginDrawStream', drawData);
     startDraw(drawData);
@@ -99,6 +100,7 @@ const stopDraw = () => {
 // start a drawing path where the mouse is clicked on the canvas
 const startDraw = (drawData) => {
   // topCtx.strokeStyle = drawData.style;
+  if (drawData.id !== activeTab) return;
   topCtx.lineWidth = drawData.lineWidth;
   topCtx.beginPath();
   topCtx.moveTo(drawData.x, drawData.y);
@@ -114,13 +116,15 @@ const draw = (drawData) => {
 };
 
 const receiveCanvasData = (canvasData) => {
-  let image = new Image();
-  clearCanvas();
-  image.onload = () => {
-    mainCtx.globalCompositeOperation = 'source-over';
-    mainCtx.drawImage(image, 0, 0, mainCanvas.width, mainCanvas.height);
+  if (canvasData.imgData) {
+    let image = new Image();
+    clearCanvas();
+    image.onload = () => {
+      mainCtx.globalCompositeOperation = 'source-over';
+      mainCtx.drawImage(image, 0, 0, mainCanvas.width, mainCanvas.height);
+    }
+    image.src = canvasData.imgData;
   }
-  image.src = canvasData.imgData;
 };
 
 const sendCanvasData = () => {
@@ -135,6 +139,12 @@ const clearCanvas = () => {
   mainCtx.fillStyle = 'white';
   mainCtx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
   mainCtx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+};
+
+const canvasWasCleared = (data) => {
+  if (activeTab === data.id) {
+    clearCanvas();
+  }
 };
 
 const toggleCanvas = () => {
@@ -166,6 +176,7 @@ module.exports.init = init;
 module.exports.startDraw = startDraw;
 module.exports.draw = draw;
 module.exports.clearCanvas = clearCanvas;
+module.exports.canvasWasCleared = canvasWasCleared;
 module.exports.setUpdateCallback = setUpdateCallback;
 module.exports.toggleCanvas = toggleCanvas;
 module.exports.setActiveTab = setActiveTab;

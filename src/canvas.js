@@ -22,7 +22,11 @@ const tabUpdated = (data, sock) => {
   const socket = sock;
   const team = server.teams[socket.team];
   if (team) {
-    team.updateDiagram(data.id, data.imgData);
+    if (data.imgData !== 0) {
+      team.updateDiagram(data.id, data.imgData);
+    } else {
+      team.deleteDiagram(data.id);
+    }
   }
 };
 
@@ -69,7 +73,14 @@ const doneEditing = (data, sock) => {
   server.io().sockets.in(socket.team).emit('tabsUpdated', tabs);
 };
 
+const clearCanvas = (data, sock) => {
+  const socket = sock;
+  socket.broadcast.to(socket.team).emit('canvasWasCleared', data);
+  tabUpdated({ id: data.id, imgData: 0 }, socket);
+};
+
 module.exports.createTab = createTab;
 module.exports.tabUpdated = tabUpdated;
 module.exports.sendTabData = sendTabData;
 module.exports.doneEditing = doneEditing;
+module.exports.clearCanvas = clearCanvas;

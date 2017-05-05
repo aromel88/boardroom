@@ -79,6 +79,11 @@ class CanvasContainer extends React.Component {
     canvas.toggleCanvas();
   }
 
+  clearCanvas() {
+    client.emit('clearCanvas', { id: canvas.getActiveTab() });
+    canvas.clearCanvas();
+  }
+
   // render Home page
   render() {
     return (
@@ -91,7 +96,7 @@ class CanvasContainer extends React.Component {
           tabOpenAction={this.openTab}
         />
         <Canvas />
-        <CanvasTools doneEditingAction={this.doneEditing} />
+        <CanvasTools doneEditingAction={this.doneEditing} clearCanvasAction={this.clearCanvas} />
       </div>
     );
   }

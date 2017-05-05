@@ -3604,6 +3604,7 @@ var init = function init() {
   canvasSlideButton = document.querySelector('#canvas-slide-button');
 
   client.on('receiveCanvasData', receiveCanvasData);
+  clearCanvas();
 };
 
 // set stroke color of canvas
@@ -3627,7 +3628,9 @@ var mouseDown = function mouseDown(e) {
     var mouse = getMouse(e);
     var drawData = {
       x: mouse.x,
-      y: mouse.y
+      y: mouse.y,
+      //style: topCtx.strokeStyle,
+      id: activeTab
     };
     client.emit('beginDrawStream', drawData);
     startDraw(drawData);
@@ -3664,6 +3667,7 @@ var stopDraw = function stopDraw() {
 // start a drawing path where the mouse is clicked on the canvas
 var startDraw = function startDraw(drawData) {
   // topCtx.strokeStyle = drawData.style;
+  if (drawData.id !== activeTab) return;
   topCtx.lineWidth = drawData.lineWidth;
   topCtx.beginPath();
   topCtx.moveTo(drawData.x, drawData.y);
@@ -3679,13 +3683,15 @@ var draw = function draw(drawData) {
 };
 
 var receiveCanvasData = function receiveCanvasData(canvasData) {
-  var image = new Image();
-  clearCanvas();
-  image.onload = function () {
-    mainCtx.globalCompositeOperation = 'source-over';
-    mainCtx.drawImage(image, 0, 0, mainCanvas.width, mainCanvas.height);
-  };
-  image.src = canvasData.imgData;
+  if (canvasData.imgData) {
+    var image = new Image();
+    clearCanvas();
+    image.onload = function () {
+      mainCtx.globalCompositeOperation = 'source-over';
+      mainCtx.drawImage(image, 0, 0, mainCanvas.width, mainCanvas.height);
+    };
+    image.src = canvasData.imgData;
+  }
 };
 
 var sendCanvasData = function sendCanvasData() {
@@ -3700,6 +3706,12 @@ var clearCanvas = function clearCanvas() {
   mainCtx.fillStyle = 'white';
   mainCtx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
   mainCtx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+};
+
+var canvasWasCleared = function canvasWasCleared(data) {
+  if (activeTab === data.id) {
+    clearCanvas();
+  }
 };
 
 var toggleCanvas = function toggleCanvas() {
@@ -3735,6 +3747,7 @@ module.exports.init = init;
 module.exports.startDraw = startDraw;
 module.exports.draw = draw;
 module.exports.clearCanvas = clearCanvas;
+module.exports.canvasWasCleared = canvasWasCleared;
 module.exports.setUpdateCallback = setUpdateCallback;
 module.exports.toggleCanvas = toggleCanvas;
 module.exports.setActiveTab = setActiveTab;
@@ -3761,35 +3774,13 @@ var canvas = __webpack_require__(28);
 
 var socket = void 0;
 
-// const connect = (teamname, joincode, username, joinSuccessCallback, joinFailureCallback) => {
-//   socket = io.connect();
-//   socket.on('joined', (data) => {
-//     if (data.success) {
-//       joinSuccessCallback();
-//     } else {
-//       joinFailureCallback();
-//     }
-//   });
-//   socket.on('created',  (data) => {
-//     if (data.success) {
-//       joinSuccessCallback();
-//     } else {
-//       joinFailureCallback();
-//     }
-//   });
-//   // socket.on('connected', connectSuccess);
-//   // socket.on('messages', getMessages);
-//   // socket.on('users', getUsers);
-//
-//   socket.emit('join', { team: teamname, join: joincode, user: username });
-// };
-
 var connect = function connect() {
   socket = io.connect();
 
   socket.on('startDraw', canvas.startDraw);
   socket.on('draw', canvas.draw);
   socket.on('clearCanvas', canvas.clearCanvas);
+  socket.on('canvasWasCleared', canvas.canvasWasCleared);
 };
 
 var disconnect = function disconnect() {
@@ -10402,6 +10393,12 @@ var CanvasContainer = function (_React$Component) {
       canvas.setActiveTab('');
       canvas.toggleCanvas();
     }
+  }, {
+    key: 'clearCanvas',
+    value: function clearCanvas() {
+      client.emit('clearCanvas', { id: canvas.getActiveTab() });
+      canvas.clearCanvas();
+    }
 
     // render Home page
 
@@ -10420,7 +10417,7 @@ var CanvasContainer = function (_React$Component) {
             tabOpenAction: this.openTab
           }),
           _react2.default.createElement(_Canvas2.default, null),
-          _react2.default.createElement(_CanvasTools2.default, { doneEditingAction: this.doneEditing })
+          _react2.default.createElement(_CanvasTools2.default, { doneEditingAction: this.doneEditing, clearCanvasAction: this.clearCanvas })
         )
       );
     }
@@ -10545,6 +10542,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var canvas = __webpack_require__(28);
+
 // test class to make sure react is working
 var CanvasTools = function (_React$Component) {
   _inherits(CanvasTools, _React$Component);
@@ -10577,6 +10576,19 @@ var CanvasTools = function (_React$Component) {
               'p',
               null,
               'Done Editing'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            {
+              id: 'clear-canvas-button',
+              className: 'canvas-tool',
+              onClick: this.props.clearCanvasAction
+            },
+            _react2.default.createElement(
+              'p',
+              null,
+              'Clear Canvas'
             )
           )
         )

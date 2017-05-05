@@ -48,6 +48,10 @@ class Team {
     this.diagrams[id] = imgData;
   }
 
+  deleteDiagram(id) {
+    delete this.diagrams[id];
+  }
+
   addTab(tab) {
     this.tabs.push(tab);
   }

@@ -82,6 +82,10 @@ const onCanvas = (sock) => {
     canvasManager.tabUpdated(data, socket);
   });
 
+  socket.on('clearCanvas', (data) => {
+    canvasManager.clearCanvas(data, socket);
+  });
+
   socket.on('openTab', (data) => {
     canvasManager.sendTabData(data, socket);
   });
