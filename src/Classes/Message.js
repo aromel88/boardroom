@@ -1,9 +1,11 @@
 class Message {
-  constructor(type, content, timestamp, user) {
+  constructor(id, type, content, timestamp, user, diagramId) { // diagramID optional
+    this.id = id;
     this.type = type;
     this.content = content;
     this.timestamp = timestamp;
     this.user = user;
+    this.diagramId = diagramId;
     // this.avatar = avatar;
   }
 

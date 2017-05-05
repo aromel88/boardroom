@@ -3057,15 +3057,11 @@ var toggleCanvas = function toggleCanvas() {
   canvasOpen = !canvasOpen;
   if (canvasOpen) {
     TweenMax.to('.canvas-slide', 0.3, { right: '+=400px' });
-    //canvasSlideButton.style.opacity = 0;
-
     TweenMax.to('.canvas-grow', 0.3, { width: '-=400px' });
   } else {
     TweenMax.to('.canvas-slide', 0.3, { right: '-=400px', onComplete: function onComplete() {
-        //  TweenMax.to(canvasSlideButton, 0.2, { opacity: 1 });
         clearCanvas();
       } });
-
     TweenMax.to('.canvas-grow', 0.3, { width: '+=400px' });
   }
 };
@@ -10824,6 +10820,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var app = __webpack_require__(22);
+var client = __webpack_require__(29);
+var canvas = __webpack_require__(21);
 
 var Message = function (_React$Component) {
   _inherits(Message, _React$Component);
@@ -10835,8 +10833,24 @@ var Message = function (_React$Component) {
   }
 
   _createClass(Message, [{
+    key: 'reopenDiagram',
+    value: function reopenDiagram(diagramId) {
+      //const diagramId = e.target.id;
+      console.log('diagramID: ' + diagramId);
+      if (diagramId.indexOf('message') > -1) return;
+      var curTab = canvas.getActiveTab();
+      var user = app.getName();
+      client.emit('reopenDiagram', {
+        user: user,
+        curTab: curTab,
+        diagramId: diagramId
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       var avatarPath = this.props.message.avatar;
       if (!avatarPath || avatarPath == '') {
         avatarPath = './assets/img/usravi_m.png';
@@ -10849,9 +10863,12 @@ var Message = function (_React$Component) {
       if (this.props.message.type === 'diagram') {
         className += ' diagram-message';
       }
+      var id = this.props.message.diagramId;
       return _react2.default.createElement(
         'div',
-        { className: className },
+        { className: className, id: id, onClick: function onClick() {
+            return _this2.reopenDiagram(id);
+          } },
         _react2.default.createElement('img', { className: 'message-avatar', src: avatarPath, alt: avatarPath }),
         _react2.default.createElement(
           'p',

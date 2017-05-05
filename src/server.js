@@ -25,7 +25,8 @@ const createMessage = (data, sock) => {
   // const avatar = data.avatar;  // Will add in avatars later
 
   if (id && type && content && timestamp) {
-    const newMessage = new Message(type, content, timestamp, user);
+    const diagramId = data.diagramId ? data.diagramId : `message${id}`;
+    const newMessage = new Message(id, type, content, timestamp, user, data.diagramId);
     teams[socket.team].addMessage(id, newMessage);
     if (type === 'diagram') {
       io.sockets.in(socket.team).emit('message', { messageData: newMessage });
@@ -60,6 +61,20 @@ const onMsg = (sock) => {
   socket.on('getMessages', () => {
     const messages = teams[socket.team].getMessageArray();
     socket.emit('messageList', { messages });
+  });
+
+  socket.on('reopenDiagram', (data) => {
+    const tabId = data.diagramId;
+    canvasManager.createTab({
+      id: tabId,
+      user: data.user,
+      curTab: data.curTab
+    }, socket);
+    // canvasManager.sendTabData({
+    //   openID: tabId,
+    //   curID: data.curTab,
+    //   user: data.user
+    // }, socket);
   });
 };
 

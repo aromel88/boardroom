@@ -39,10 +39,12 @@ const sendTabData = (data, sock) => {
   tabs.forEach((tab) => {
     // if the user has a tab open, remove them from that tab
     if (data.curID === tab.id) {
-      tab.usersViewing.splice(tab.usersViewing.indexOf(data.user), 1);
+      tab.removeUserViewing(data.user);
     // put user in the new tab's user list
     } else if (data.openID === tab.id) {
-      tab.usersViewing.push(data.user);
+      if (!tab.userIsViewing(data.user)) {
+        tab.addUserViewing(data.user);
+      }
     }
   });
   server.io().sockets.in(socket.team).emit('tabsUpdated', tabs);
@@ -58,10 +60,12 @@ const doneEditing = (data, sock) => {
     if (tab.userIsViewing(data.user)) {
       tab.removeUserViewing(data.user);
       if (tab.usersViewing.length === 0) {
+        const diagramId = tab.id;
         const messageData = {
           type: 'diagram',
           timestamp: new Date().getTime(),
           content: 'A diagram was created',
+          diagramId: diagramId
         };
         server.createMessage(messageData, socket);
         r = i;

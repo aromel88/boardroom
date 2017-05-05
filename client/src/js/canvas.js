@@ -151,15 +151,11 @@ const toggleCanvas = () => {
   canvasOpen = !canvasOpen;
   if (canvasOpen) {
     TweenMax.to('.canvas-slide', 0.3, { right: '+=400px' });
-    //canvasSlideButton.style.opacity = 0;
-
     TweenMax.to('.canvas-grow', 0.3, { width: '-=400px' });
   } else {
     TweenMax.to('.canvas-slide', 0.3, { right: '-=400px', onComplete: () => {
-      //  TweenMax.to(canvasSlideButton, 0.2, { opacity: 1 });
         clearCanvas();
     }});
-
     TweenMax.to('.canvas-grow', 0.3, { width: '+=400px' });
   }
 };
