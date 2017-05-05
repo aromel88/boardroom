@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "assets";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 21);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2904,6 +2904,204 @@ module.exports = React;
 "use strict";
 
 
+var client = __webpack_require__(29);
+var animations = __webpack_require__(28);
+
+var updateCallback = void 0;
+
+// DOM elements
+var topCanvas = void 0; // drawing canvas
+var topCtx = void 0;
+var mainCanvas = void 0; // display canvas
+var mainCtx = void 0;
+var canvasTools = void 0;
+var canvasSlideButton = void 0;
+
+// drawing control variables
+var activeTab = void 0;
+var drawing = void 0;
+var drawAllowed = true;
+var canvasOpen = false;
+
+var setUpdateCallback = function setUpdateCallback(callback) {
+  updateCallback = callback;
+};
+
+// initialization of canvas elements
+var init = function init() {
+  // grab canvas and ctx
+  topCanvas = document.querySelector('#top-canvas');
+  topCanvas.addEventListener('mousedown', mouseDown);
+  topCanvas.addEventListener('mousemove', mouseMove);
+  topCanvas.addEventListener('mouseup', stopDraw);
+  topCanvas.addEventListener('mouseleave', stopDraw);
+  topCtx = topCanvas.getContext('2d');
+  topCtx.strokeStyle = 'black';
+  mainCanvas = document.querySelector('#main-canvas');
+  mainCtx = mainCanvas.getContext('2d');
+  canvasTools = document.querySelector('#canvas-tools');
+  canvasSlideButton = document.querySelector('#canvas-slide-button');
+
+  client.on('receiveCanvasData', receiveCanvasData);
+  clearCanvas();
+};
+
+// set stroke color of canvas
+var setStroke = function setStroke(style) {
+  topCtx.strokeStyle = style;
+};
+
+// helper method returns mouse position in local coordinate system of element
+var getMouse = function getMouse(e) {
+  var mouse = {};
+  mouse.x = e.pageX - e.target.offsetLeft;
+  mouse.y = e.pageY - e.target.offsetTop;
+  return mouse;
+};
+
+// mouse down event handler, start drawing
+var mouseDown = function mouseDown(e) {
+  console.log('down');
+  if (drawAllowed) {
+    drawing = true;
+    var mouse = getMouse(e);
+    var drawData = {
+      x: mouse.x,
+      y: mouse.y,
+      //style: topCtx.strokeStyle,
+      id: activeTab
+    };
+    client.emit('beginDrawStream', drawData);
+    startDraw(drawData);
+  }
+};
+
+// mousemove event handler for drawing
+var mouseMove = function mouseMove(e) {
+  e.preventDefault();
+  if (drawing) {
+    var mouse = getMouse(e);
+    var drawData = {
+      x: mouse.x,
+      y: mouse.y,
+      id: activeTab
+    };
+    client.emit('updateDrawStream', drawData);
+    draw(drawData);
+  }
+};
+
+// set drawAllowed flag
+var allowDraw = function allowDraw(allow) {
+  drawAllowed = allow;
+  lineWidth = 1;
+};
+
+// called to ensure draw flag is false
+var stopDraw = function stopDraw() {
+  drawing = false;
+  sendCanvasData();
+};
+
+// start a drawing path where the mouse is clicked on the canvas
+var startDraw = function startDraw(drawData) {
+  // topCtx.strokeStyle = drawData.style;
+  if (drawData.id !== activeTab) return;
+  topCtx.lineWidth = drawData.lineWidth;
+  topCtx.beginPath();
+  topCtx.moveTo(drawData.x, drawData.y);
+};
+
+// draw a line to new point when mouse is dragged on the canvas
+var draw = function draw(drawData) {
+  if (drawData.id !== activeTab) return;
+  topCtx.lineTo(drawData.x, drawData.y);
+  topCtx.stroke();
+  mainCtx.drawImage(topCanvas, 0, 0);
+  topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
+};
+
+var receiveCanvasData = function receiveCanvasData(canvasData) {
+  if (canvasData.imgData) {
+    var image = new Image();
+    clearCanvas();
+    image.onload = function () {
+      mainCtx.globalCompositeOperation = 'source-over';
+      mainCtx.drawImage(image, 0, 0, mainCanvas.width, mainCanvas.height);
+    };
+    image.src = canvasData.imgData;
+  }
+};
+
+var sendCanvasData = function sendCanvasData() {
+  client.emit('sendCanvasData', {
+    id: activeTab,
+    imgData: mainCanvas.toDataURL()
+  });
+};
+
+// clear canvas of any drawing
+var clearCanvas = function clearCanvas() {
+  mainCtx.fillStyle = 'white';
+  mainCtx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+  mainCtx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+};
+
+var canvasWasCleared = function canvasWasCleared(data) {
+  if (activeTab === data.id) {
+    clearCanvas();
+  }
+};
+
+var toggleCanvas = function toggleCanvas() {
+  canvasOpen = !canvasOpen;
+  if (canvasOpen) {
+    TweenMax.to('.canvas-slide', 0.3, { right: '+=400px' });
+    //canvasSlideButton.style.opacity = 0;
+
+    TweenMax.to('.canvas-grow', 0.3, { width: '-=400px' });
+  } else {
+    TweenMax.to('.canvas-slide', 0.3, { right: '-=400px', onComplete: function onComplete() {
+        //  TweenMax.to(canvasSlideButton, 0.2, { opacity: 1 });
+        clearCanvas();
+      } });
+
+    TweenMax.to('.canvas-grow', 0.3, { width: '+=400px' });
+  }
+};
+
+var setActiveTab = function setActiveTab(tabID) {
+  activeTab = tabID;
+};
+
+var getActiveTab = function getActiveTab() {
+  return activeTab;
+};
+
+var getCanvasOpen = function getCanvasOpen() {
+  return canvasOpen;
+};
+
+module.exports.init = init;
+module.exports.startDraw = startDraw;
+module.exports.draw = draw;
+module.exports.clearCanvas = clearCanvas;
+module.exports.canvasWasCleared = canvasWasCleared;
+module.exports.setUpdateCallback = setUpdateCallback;
+module.exports.toggleCanvas = toggleCanvas;
+module.exports.setActiveTab = setActiveTab;
+module.exports.getActiveTab = getActiveTab;
+module.exports.canvasOpen = getCanvasOpen;
+module.exports.sendCanvasData = sendCanvasData;
+module.exports.receiveCanvasData = receiveCanvasData;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 __webpack_require__(88);
 
 var _react = __webpack_require__(7);
@@ -2924,8 +3122,8 @@ var _AppContainer2 = _interopRequireDefault(_AppContainer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var canvas = __webpack_require__(28);
-var animations = __webpack_require__(27);
+var canvas = __webpack_require__(21);
+var animations = __webpack_require__(28);
 
 
 var team = void 0;
@@ -2969,7 +3167,7 @@ module.exports.getName = getName;
 module.exports.getInitialTabs = getInitialTabs;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2995,7 +3193,7 @@ module.exports = emptyObject;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3279,7 +3477,7 @@ module.exports = EventPluginHub;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3295,7 +3493,7 @@ module.exports = EventPluginHub;
 
 
 
-var EventPluginHub = __webpack_require__(23);
+var EventPluginHub = __webpack_require__(24);
 var EventPluginUtils = __webpack_require__(40);
 
 var accumulateInto = __webpack_require__(74);
@@ -3419,7 +3617,7 @@ module.exports = EventPropagators;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3472,7 +3670,7 @@ var ReactInstanceMap = {
 module.exports = ReactInstanceMap;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3536,7 +3734,7 @@ SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 module.exports = SyntheticUIEvent;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3559,204 +3757,6 @@ module.exports.animateWithRewind = animateWithRewind;
 module.exports.handleError = handleError;
 
 /***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var client = __webpack_require__(29);
-var animations = __webpack_require__(27);
-
-var updateCallback = void 0;
-
-// DOM elements
-var topCanvas = void 0; // drawing canvas
-var topCtx = void 0;
-var mainCanvas = void 0; // display canvas
-var mainCtx = void 0;
-var canvasTools = void 0;
-var canvasSlideButton = void 0;
-
-// drawing control variables
-var activeTab = void 0;
-var drawing = void 0;
-var drawAllowed = true;
-var canvasOpen = false;
-
-var setUpdateCallback = function setUpdateCallback(callback) {
-  updateCallback = callback;
-};
-
-// initialization of canvas elements
-var init = function init() {
-  // grab canvas and ctx
-  topCanvas = document.querySelector('#top-canvas');
-  topCanvas.addEventListener('mousedown', mouseDown);
-  topCanvas.addEventListener('mousemove', mouseMove);
-  topCanvas.addEventListener('mouseup', stopDraw);
-  topCanvas.addEventListener('mouseleave', stopDraw);
-  topCtx = topCanvas.getContext('2d');
-  topCtx.strokeStyle = 'black';
-  mainCanvas = document.querySelector('#main-canvas');
-  mainCtx = mainCanvas.getContext('2d');
-  canvasTools = document.querySelector('#canvas-tools');
-  canvasSlideButton = document.querySelector('#canvas-slide-button');
-
-  client.on('receiveCanvasData', receiveCanvasData);
-  clearCanvas();
-};
-
-// set stroke color of canvas
-var setStroke = function setStroke(style) {
-  topCtx.strokeStyle = style;
-};
-
-// helper method returns mouse position in local coordinate system of element
-var getMouse = function getMouse(e) {
-  var mouse = {};
-  mouse.x = e.pageX - e.target.offsetLeft;
-  mouse.y = e.pageY - e.target.offsetTop;
-  return mouse;
-};
-
-// mouse down event handler, start drawing
-var mouseDown = function mouseDown(e) {
-  console.log('down');
-  if (drawAllowed) {
-    drawing = true;
-    var mouse = getMouse(e);
-    var drawData = {
-      x: mouse.x,
-      y: mouse.y,
-      //style: topCtx.strokeStyle,
-      id: activeTab
-    };
-    client.emit('beginDrawStream', drawData);
-    startDraw(drawData);
-  }
-};
-
-// mousemove event handler for drawing
-var mouseMove = function mouseMove(e) {
-  e.preventDefault();
-  if (drawing) {
-    var mouse = getMouse(e);
-    var drawData = {
-      x: mouse.x,
-      y: mouse.y,
-      id: activeTab
-    };
-    client.emit('updateDrawStream', drawData);
-    draw(drawData);
-  }
-};
-
-// set drawAllowed flag
-var allowDraw = function allowDraw(allow) {
-  drawAllowed = allow;
-  lineWidth = 1;
-};
-
-// called to ensure draw flag is false
-var stopDraw = function stopDraw() {
-  drawing = false;
-  sendCanvasData();
-};
-
-// start a drawing path where the mouse is clicked on the canvas
-var startDraw = function startDraw(drawData) {
-  // topCtx.strokeStyle = drawData.style;
-  if (drawData.id !== activeTab) return;
-  topCtx.lineWidth = drawData.lineWidth;
-  topCtx.beginPath();
-  topCtx.moveTo(drawData.x, drawData.y);
-};
-
-// draw a line to new point when mouse is dragged on the canvas
-var draw = function draw(drawData) {
-  if (drawData.id !== activeTab) return;
-  topCtx.lineTo(drawData.x, drawData.y);
-  topCtx.stroke();
-  mainCtx.drawImage(topCanvas, 0, 0);
-  topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
-};
-
-var receiveCanvasData = function receiveCanvasData(canvasData) {
-  if (canvasData.imgData) {
-    var image = new Image();
-    clearCanvas();
-    image.onload = function () {
-      mainCtx.globalCompositeOperation = 'source-over';
-      mainCtx.drawImage(image, 0, 0, mainCanvas.width, mainCanvas.height);
-    };
-    image.src = canvasData.imgData;
-  }
-};
-
-var sendCanvasData = function sendCanvasData() {
-  client.emit('sendCanvasData', {
-    id: activeTab,
-    imgData: mainCanvas.toDataURL()
-  });
-};
-
-// clear canvas of any drawing
-var clearCanvas = function clearCanvas() {
-  mainCtx.fillStyle = 'white';
-  mainCtx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
-  mainCtx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
-};
-
-var canvasWasCleared = function canvasWasCleared(data) {
-  if (activeTab === data.id) {
-    clearCanvas();
-  }
-};
-
-var toggleCanvas = function toggleCanvas() {
-  canvasOpen = !canvasOpen;
-  if (canvasOpen) {
-    TweenMax.to('.canvas-slide', 0.3, { right: '+=400px' });
-    //canvasSlideButton.style.opacity = 0;
-
-    TweenMax.to('.canvas-grow', 0.3, { width: '-=400px' });
-  } else {
-    TweenMax.to('.canvas-slide', 0.3, { right: '-=400px', onComplete: function onComplete() {
-        //  TweenMax.to(canvasSlideButton, 0.2, { opacity: 1 });
-        clearCanvas();
-      } });
-
-    TweenMax.to('.canvas-grow', 0.3, { width: '+=400px' });
-  }
-};
-
-var setActiveTab = function setActiveTab(tabID) {
-  activeTab = tabID;
-};
-
-var getActiveTab = function getActiveTab() {
-  return activeTab;
-};
-
-var getCanvasOpen = function getCanvasOpen() {
-  return canvasOpen;
-};
-
-module.exports.init = init;
-module.exports.startDraw = startDraw;
-module.exports.draw = draw;
-module.exports.clearCanvas = clearCanvas;
-module.exports.canvasWasCleared = canvasWasCleared;
-module.exports.setUpdateCallback = setUpdateCallback;
-module.exports.toggleCanvas = toggleCanvas;
-module.exports.setActiveTab = setActiveTab;
-module.exports.getActiveTab = getActiveTab;
-module.exports.canvasOpen = getCanvasOpen;
-module.exports.sendCanvasData = sendCanvasData;
-module.exports.receiveCanvasData = receiveCanvasData;
-
-/***/ }),
 /* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3769,7 +3769,7 @@ var _HomeContainer2 = _interopRequireDefault(_HomeContainer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var canvas = __webpack_require__(28);
+var canvas = __webpack_require__(21);
 
 
 var socket = void 0;
@@ -4412,7 +4412,7 @@ module.exports = ReactBrowserEventEmitter;
 
 
 
-var SyntheticUIEvent = __webpack_require__(26);
+var SyntheticUIEvent = __webpack_require__(27);
 var ViewportMetrics = __webpack_require__(73);
 
 var getEventModifierState = __webpack_require__(48);
@@ -5889,7 +5889,7 @@ module.exports = ReactErrorUtils;
 var _prodInvariant = __webpack_require__(3);
 
 var ReactCurrentOwner = __webpack_require__(12);
-var ReactInstanceMap = __webpack_require__(25);
+var ReactInstanceMap = __webpack_require__(26);
 var ReactInstrumentation = __webpack_require__(9);
 var ReactUpdates = __webpack_require__(11);
 
@@ -6808,7 +6808,7 @@ var _prodInvariant = __webpack_require__(17);
 var ReactNoopUpdateQueue = __webpack_require__(54);
 
 var canDefineProperty = __webpack_require__(36);
-var emptyObject = __webpack_require__(22);
+var emptyObject = __webpack_require__(23);
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
 
@@ -7049,8 +7049,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var app = __webpack_require__(21);
-var animations = __webpack_require__(27);
+var app = __webpack_require__(22);
+var animations = __webpack_require__(28);
 var client = __webpack_require__(29);
 
 // test class to make sure react is working
@@ -8534,14 +8534,14 @@ var ReactDOMComponentTree = __webpack_require__(5);
 var ReactDOMContainerInfo = __webpack_require__(139);
 var ReactDOMFeatureFlags = __webpack_require__(141);
 var ReactFeatureFlags = __webpack_require__(67);
-var ReactInstanceMap = __webpack_require__(25);
+var ReactInstanceMap = __webpack_require__(26);
 var ReactInstrumentation = __webpack_require__(9);
 var ReactMarkupChecksum = __webpack_require__(161);
 var ReactReconciler = __webpack_require__(19);
 var ReactUpdateQueue = __webpack_require__(45);
 var ReactUpdates = __webpack_require__(11);
 
-var emptyObject = __webpack_require__(22);
+var emptyObject = __webpack_require__(23);
 var instantiateReactComponent = __webpack_require__(78);
 var invariant = __webpack_require__(1);
 var setInnerHTML = __webpack_require__(35);
@@ -10308,10 +10308,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var app = __webpack_require__(21);
+var app = __webpack_require__(22);
 var client = __webpack_require__(29);
-var canvas = __webpack_require__(28);
-var animations = __webpack_require__(27);
+var canvas = __webpack_require__(21);
+var animations = __webpack_require__(28);
 
 // test class to make sure react is working
 var CanvasContainer = function (_React$Component) {
@@ -10453,7 +10453,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var canvas = __webpack_require__(28);
+var canvas = __webpack_require__(21);
 
 // test class to make sure react is working
 var CanvasTabBar = function (_React$Component) {
@@ -10542,7 +10542,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var canvas = __webpack_require__(28);
+var canvas = __webpack_require__(21);
 
 // test class to make sure react is working
 var CanvasTools = function (_React$Component) {
@@ -10639,7 +10639,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var client = __webpack_require__(29);
-var app = __webpack_require__(21);
+var app = __webpack_require__(22);
 
 var ChatContainer = function (_React$Component) {
   _inherits(ChatContainer, _React$Component);
@@ -10823,7 +10823,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var app = __webpack_require__(21);
+var app = __webpack_require__(22);
 
 var Message = function (_React$Component) {
   _inherits(Message, _React$Component);
@@ -10841,41 +10841,29 @@ var Message = function (_React$Component) {
       if (!avatarPath || avatarPath == '') {
         avatarPath = './assets/img/usravi_m.png';
       }
-
+      var className = 'message-wrapper';
       //if (this.props.username === this.props.message.user) {
       if (app.getName() === this.props.message.user) {
-        return _react2.default.createElement(
-          'div',
-          { className: 'message-wrapper self-message' },
-          _react2.default.createElement('img', { className: 'message-avatar', src: avatarPath, alt: avatarPath }),
-          _react2.default.createElement(
-            'p',
-            { className: 'message-username' },
-            this.props.message.user
-          ),
-          _react2.default.createElement(
-            'p',
-            { className: 'message-text' },
-            this.props.message.content
-          )
-        );
-      } else {
-        return _react2.default.createElement(
-          'div',
-          { className: 'message-wrapper' },
-          _react2.default.createElement('img', { className: 'message-avatar', src: avatarPath, alt: avatarPath }),
-          _react2.default.createElement(
-            'p',
-            { className: 'message-username' },
-            this.props.message.user
-          ),
-          _react2.default.createElement(
-            'p',
-            { className: 'message-text' },
-            this.props.message.content
-          )
-        );
+        className += ' self-message';
       }
+      if (this.props.message.type === 'diagram') {
+        className += ' diagram-message';
+      }
+      return _react2.default.createElement(
+        'div',
+        { className: className },
+        _react2.default.createElement('img', { className: 'message-avatar', src: avatarPath, alt: avatarPath }),
+        _react2.default.createElement(
+          'p',
+          { className: 'message-username' },
+          this.props.message.user
+        ),
+        _react2.default.createElement(
+          'p',
+          { className: 'message-text' },
+          this.props.message.content
+        )
+      );
     }
   }]);
 
@@ -13239,7 +13227,7 @@ exports = module.exports = __webpack_require__(105)(undefined);
 
 
 // module
-exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\n*:focus {\n  outline: none; }\n\nbody {\n  background-color: #E0E0E0;\n  font-family: \"Montserrat\", sans-serif;\n  overflow-x: hidden; }\n\n/*\n  Styles for home page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\nnav {\n  height: 75px;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  background: #008975;\n  /* Old browsers */\n  background: -moz-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(to bottom, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n.navButton {\n  width: 105px;\n  height: 50px;\n  line-height: 50px;\n  border: 2px solid #FAFAFA;\n  color: #FAFAFA;\n  border-radius: 5px;\n  background-color: transparent;\n  position: absolute;\n  right: 75px;\n  top: 12px;\n  font-size: 1em; }\n\n.navButton:hover {\n  background-color: white;\n  color: #00AA8D;\n  cursor: pointer; }\n\n#home-container {\n  width: 100%;\n  height: calc(100vh - 75px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  position: relative;\n  top: 75px;\n  background: #E0E0E0;\n  /* Old browsers */\n  background: -moz-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(135deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n#hero-container {\n  width: 40%;\n  height: calc(100vh - 75px);\n  position: relative; }\n\n#hero-container h1 {\n  font-size: 3.5em;\n  color: rgba(0, 0, 0, 0.87);\n  width: 400px;\n  position: absolute;\n  left: 100px;\n  top: 100px; }\n\n#hero-container img {\n  position: absolute;\n  left: 0;\n  bottom: 0; }\n\n#login-controls {\n  background-color: #FAFAFA;\n  width: 400px;\n  height: 300px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  position: absolute;\n  right: 75px;\n  top: 100px; }\n\n#login-controls input[type='text'] {\n  display: block;\n  margin: auto;\n  width: 200px;\n  padding: 4px;\n  font-size: 1em;\n  border-radius: 4px;\n  border: 2px solid #E0E0E0;\n  position: relative;\n  margin-bottom: 10px;\n  top: 25px; }\n\n#join-button {\n  display: block;\n  width: 212px;\n  height: 40px;\n  background-color: #00AA8D;\n  box-shadow: 0px 3px 2px #E0E0E0;\n  border: none;\n  border-radius: 3px;\n  line-height: 40px;\n  text-align: center;\n  transition: width 0.15s, height 0.15s, box-shadow 0.15s;\n  position: absolute;\n  left: 50%;\n  top: 200px;\n  transform: translate(-50%, -50%);\n  color: white;\n  font-size: 1em; }\n  #join-button:hover {\n    cursor: pointer;\n    box-shadow: 4px 7px 3px #E0E0E0;\n    width: 215px;\n    height: 43px; }\n  #join-button:active {\n    box-shadow: 0px 3px 2px #E0E0E0;\n    width: 212px;\n    height: 40px; }\n\n.no-error {\n  display: none; }\n\n.error {\n  width: 400px;\n  height: 25px;\n  line-height: 25px;\n  background-color: red;\n  color: white;\n  position: absolute;\n  right: 75px;\n  top: 500px;\n  text-align: center;\n  border-radius: 3px; }\n\n._1 {\n  background-color: #E91E63; }\n\n._2 {\n  background-color: #9C27B0; }\n\n._3 {\n  background-color: #F44336; }\n\n._4 {\n  background-color: #2196F3; }\n\n._5 {\n  background-color: #CDDC39; }\n\n._6 {\n  background-color: #FFC107; }\n\n._7 {\n  background-color: #00BCD4; }\n\n#canvas-container {\n  overflow-y: auto; }\n\ncanvas {\n  position: absolute;\n  right: -400px;\n  top: 0px;\n  width: 400px;\n  height: 800px;\n  box-sizing: border-box; }\n\ncanvas:hover {\n  cursor: crosshair; }\n\n#top-canvas {\n  z-index: 10; }\n\n#canvas-slide-button {\n  width: 50px;\n  height: 50px;\n  line-height: 50px;\n  text-align: center;\n  background-color: #00AA8D;\n  opacity: 1;\n  color: white;\n  z-index: -10; }\n\n#canvas-slide-button:hover {\n  cursor: pointer;\n  background-color: #00BF9A; }\n\n#canvas-tab-bar {\n  width: 50px;\n  height: 100vh;\n  min-height: 900px;\n  position: absolute;\n  right: 0px;\n  top: 0px;\n  background-color: rgba(0, 0, 0, 0.5); }\n\n.canvas-tab, .active-tab {\n  width: 45px;\n  height: 100px;\n  opacity: 0.5;\n  position: relative;\n  right: -5px;\n  top: 20px;\n  margin-top: 5px;\n  color: white;\n  border-radius: 15px 0px 0px 15px; }\n\n.canvas-tab:hover, .active-tab:hover {\n  opacity: 1;\n  cursor: pointer; }\n\n.canvas-tab:hover > div, .active-tab:hover > div {\n  display: block; }\n\n.active-tab {\n  opacity: 1; }\n\n.active-tab:hover {\n  cursor: default; }\n\n.active-tab:hover > div {\n  display: block; }\n\n.tab-userlist {\n  display: none;\n  width: 80px;\n  height: auto;\n  background-color: rgba(0, 0, 0, 0.5);\n  color: white;\n  position: relative;\n  left: -105px;\n  text-align: center; }\n\n.tab-userlist-item {\n  padding: 5px; }\n\n#canvas-tools {\n  background-color: #00AA8D;\n  width: 400px;\n  height: calc(100vh - 800px);\n  min-height: 100px;\n  position: absolute;\n  right: -400px;\n  top: 800px; }\n\n.canvas-tool {\n  width: 100px;\n  height: 50px;\n  border: 2px solid white;\n  color: white;\n  display: inline-block; }\n\n.canvas-tool:hover {\n  background-color: white;\n  color: #00AA8D;\n  cursor: pointer; }\n\n/*\n  Styles for chat page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\n#chat-container {\n  position: fixed;\n  height: 100%;\n  width: calc(100% - 50px); }\n\n#sidebar-container {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  width: 250px;\n  height: 100%;\n  background-color: #00AA8D; }\n\n#sidebar-container h3 {\n  color: #FAFAFA;\n  background-color: #008975;\n  line-height: 80px;\n  text-align: center;\n  vertical-align: middle;\n  font-size: 20pt; }\n\n#user-list {\n  width: 85%;\n  margin: auto;\n  margin-top: 20px; }\n\n#messages-container {\n  position: absolute;\n  left: 250px;\n  top: 0px;\n  width: calc(100% - 250px);\n  height: calc(100% - 32px);\n  overflow-y: auto; }\n\n.user-wrapper {\n  background-color: #F5F5F5;\n  width: 100%;\n  height: 50px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  border-radius: 4px;\n  margin-bottom: 20px;\n  display: flex;\n  flex-direction: row;\n  align-items: center; }\n\n.user-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px;\n  margin-left: 5px; }\n\n.username {\n  margin-left: 10px;\n  color: rgba(0, 0, 0, 0.87);\n  display: inline; }\n\n.message-wrapper {\n  background-color: #00BF9A;\n  min-width: 200px;\n  min-height: 50px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  max-width: 550px;\n  border-radius: 4px;\n  margin-top: 8px;\n  margin-bottom: 12px;\n  margin-right: 20px;\n  margin-left: 20px;\n  display: inline-block;\n  float: left;\n  clear: both; }\n\n.self-message {\n  float: right; }\n\n.message-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px;\n  margin-top: 10px;\n  margin-left: 10px; }\n\n.message-username {\n  position: relative;\n  display: inline;\n  color: #FAFAFA;\n  top: -7px;\n  margin-left: 10px;\n  margin-right: 10px;\n  font-size: 14pt; }\n\n.message-text {\n  position: relative;\n  border-radius: 4px;\n  color: #FAFAFA;\n  display: block;\n  padding: 5px;\n  margin-top: 5px;\n  margin-right: 10px;\n  margin-left: 20px;\n  margin-bottom: 5px;\n  height: 80%; }\n\n#message-input-container {\n  position: fixed;\n  bottom: 0px;\n  left: 250px;\n  width: calc(100% - 250px - 53px); }\n\n#message-input {\n  width: 100%;\n  height: 32px;\n  text-indent: 5px;\n  font-size: 13pt;\n  vertical-align: middle; }\n\n/*# sourceMappingURL=app.css.map */\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\n*:focus {\n  outline: none; }\n\nbody {\n  background-color: #E0E0E0;\n  font-family: \"Montserrat\", sans-serif;\n  overflow-x: hidden; }\n\n/*\n  Styles for home page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\nnav {\n  height: 75px;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  background: #008975;\n  /* Old browsers */\n  background: -moz-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(to bottom, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n.navButton {\n  width: 105px;\n  height: 50px;\n  line-height: 50px;\n  border: 2px solid #FAFAFA;\n  color: #FAFAFA;\n  border-radius: 5px;\n  background-color: transparent;\n  position: absolute;\n  right: 75px;\n  top: 12px;\n  font-size: 1em; }\n\n.navButton:hover {\n  background-color: white;\n  color: #00AA8D;\n  cursor: pointer; }\n\n#home-container {\n  width: 100%;\n  height: calc(100vh - 75px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  position: relative;\n  top: 75px;\n  background: #E0E0E0;\n  /* Old browsers */\n  background: -moz-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(135deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n#hero-container {\n  width: 40%;\n  height: calc(100vh - 75px);\n  position: relative; }\n\n#hero-container h1 {\n  font-size: 3.5em;\n  color: rgba(0, 0, 0, 0.87);\n  width: 400px;\n  position: absolute;\n  left: 100px;\n  top: 100px; }\n\n#hero-container img {\n  position: absolute;\n  left: 0;\n  bottom: 0; }\n\n#login-controls {\n  background-color: #FAFAFA;\n  width: 400px;\n  height: 300px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  position: absolute;\n  right: 75px;\n  top: 100px; }\n\n#login-controls input[type='text'] {\n  display: block;\n  margin: auto;\n  width: 200px;\n  padding: 4px;\n  font-size: 1em;\n  border-radius: 4px;\n  border: 2px solid #E0E0E0;\n  position: relative;\n  margin-bottom: 10px;\n  top: 25px; }\n\n#join-button {\n  display: block;\n  width: 212px;\n  height: 40px;\n  background-color: #00AA8D;\n  box-shadow: 0px 3px 2px #E0E0E0;\n  border: none;\n  border-radius: 3px;\n  line-height: 40px;\n  text-align: center;\n  transition: width 0.15s, height 0.15s, box-shadow 0.15s;\n  position: absolute;\n  left: 50%;\n  top: 200px;\n  transform: translate(-50%, -50%);\n  color: white;\n  font-size: 1em; }\n  #join-button:hover {\n    cursor: pointer;\n    box-shadow: 4px 7px 3px #E0E0E0;\n    width: 215px;\n    height: 43px; }\n  #join-button:active {\n    box-shadow: 0px 3px 2px #E0E0E0;\n    width: 212px;\n    height: 40px; }\n\n.no-error {\n  display: none; }\n\n.error {\n  width: 400px;\n  height: 25px;\n  line-height: 25px;\n  background-color: red;\n  color: white;\n  position: absolute;\n  right: 75px;\n  top: 500px;\n  text-align: center;\n  border-radius: 3px; }\n\n._1 {\n  background-color: #E91E63; }\n\n._2 {\n  background-color: #9C27B0; }\n\n._3 {\n  background-color: #F44336; }\n\n._4 {\n  background-color: #2196F3; }\n\n._5 {\n  background-color: #CDDC39; }\n\n._6 {\n  background-color: #FFC107; }\n\n._7 {\n  background-color: #00BCD4; }\n\n#canvas-container {\n  overflow-y: auto; }\n\ncanvas {\n  position: absolute;\n  right: -400px;\n  top: 0px;\n  width: 400px;\n  height: 800px;\n  box-sizing: border-box; }\n\ncanvas:hover {\n  cursor: crosshair; }\n\n#top-canvas {\n  z-index: 10; }\n\n#canvas-slide-button {\n  width: 50px;\n  height: 50px;\n  line-height: 50px;\n  text-align: center;\n  background-color: #00AA8D;\n  opacity: 1;\n  color: white;\n  z-index: -10; }\n\n#canvas-slide-button:hover {\n  cursor: pointer;\n  background-color: #00BF9A; }\n\n#canvas-tab-bar {\n  width: 50px;\n  height: 100vh;\n  min-height: 900px;\n  position: absolute;\n  right: 0px;\n  top: 0px;\n  background-color: rgba(0, 0, 0, 0.5); }\n\n.canvas-tab, .active-tab {\n  width: 45px;\n  height: 100px;\n  opacity: 0.5;\n  position: relative;\n  right: -5px;\n  top: 20px;\n  margin-top: 5px;\n  color: white;\n  border-radius: 15px 0px 0px 15px; }\n\n.canvas-tab:hover, .active-tab:hover {\n  opacity: 1;\n  cursor: pointer; }\n\n.canvas-tab:hover > div, .active-tab:hover > div {\n  display: block; }\n\n.active-tab {\n  opacity: 1; }\n\n.active-tab:hover {\n  cursor: default; }\n\n.active-tab:hover > div {\n  display: block; }\n\n.tab-userlist {\n  display: none;\n  width: 80px;\n  height: auto;\n  background-color: rgba(0, 0, 0, 0.5);\n  color: white;\n  position: relative;\n  left: -105px;\n  text-align: center; }\n\n.tab-userlist-item {\n  padding: 5px; }\n\n#canvas-tools {\n  background-color: #00AA8D;\n  width: 400px;\n  height: calc(100vh - 800px);\n  min-height: 100px;\n  position: absolute;\n  right: -400px;\n  top: 800px; }\n\n.canvas-tool {\n  width: 100px;\n  height: 50px;\n  border: 2px solid white;\n  color: white;\n  display: inline-block; }\n\n.canvas-tool:hover {\n  background-color: white;\n  color: #00AA8D;\n  cursor: pointer; }\n\n/*\n  Styles for chat page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\n#chat-container {\n  position: fixed;\n  height: 100%;\n  width: calc(100% - 50px); }\n\n#sidebar-container {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  width: 250px;\n  height: 100%;\n  background-color: #00AA8D; }\n\n#sidebar-container h3 {\n  color: #FAFAFA;\n  background-color: #008975;\n  line-height: 80px;\n  text-align: center;\n  vertical-align: middle;\n  font-size: 20pt; }\n\n#user-list {\n  width: 85%;\n  margin: auto;\n  margin-top: 20px; }\n\n#messages-container {\n  position: absolute;\n  left: 250px;\n  top: 0px;\n  width: calc(100% - 250px);\n  height: calc(100% - 32px);\n  overflow-y: auto; }\n\n.user-wrapper {\n  background-color: #F5F5F5;\n  width: 100%;\n  height: 50px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  border-radius: 4px;\n  margin-bottom: 20px;\n  display: flex;\n  flex-direction: row;\n  align-items: center; }\n\n.user-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px;\n  margin-left: 5px; }\n\n.username {\n  margin-left: 10px;\n  color: rgba(0, 0, 0, 0.87);\n  display: inline; }\n\n.message-wrapper {\n  background-color: #00BF9A;\n  min-width: 200px;\n  min-height: 50px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  max-width: 550px;\n  border-radius: 4px;\n  margin-top: 8px;\n  margin-bottom: 12px;\n  margin-right: 20px;\n  margin-left: 20px;\n  display: inline-block;\n  float: left;\n  clear: both; }\n\n.self-message {\n  float: right; }\n\n.diagram-message {\n  background-color: #9C27B0; }\n\n.diagram-message:hover {\n  background-color: #BA68C8;\n  cursor: pointer; }\n\n.message-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px;\n  margin-top: 10px;\n  margin-left: 10px; }\n\n.message-username {\n  position: relative;\n  display: inline;\n  color: #FAFAFA;\n  top: -7px;\n  margin-left: 10px;\n  margin-right: 10px;\n  font-size: 14pt; }\n\n.message-text {\n  position: relative;\n  border-radius: 4px;\n  color: #FAFAFA;\n  display: block;\n  padding: 5px;\n  margin-top: 5px;\n  margin-right: 10px;\n  margin-left: 20px;\n  margin-bottom: 5px;\n  height: 80%; }\n\n#message-input-container {\n  position: fixed;\n  bottom: 0px;\n  left: 250px;\n  width: calc(100% - 250px - 53px); }\n\n#message-input {\n  width: 100%;\n  height: 32px;\n  text-indent: 5px;\n  font-size: 13pt;\n  vertical-align: middle; }\n\n/*# sourceMappingURL=app.css.map */\n", ""]);
 
 // exports
 
@@ -14846,7 +14834,7 @@ module.exports = AutoFocusUtils;
 
 
 
-var EventPropagators = __webpack_require__(24);
+var EventPropagators = __webpack_require__(25);
 var ExecutionEnvironment = __webpack_require__(6);
 var FallbackCompositionState = __webpack_require__(132);
 var SyntheticCompositionEvent = __webpack_require__(175);
@@ -15451,8 +15439,8 @@ module.exports = CSSPropertyOperations;
 
 
 
-var EventPluginHub = __webpack_require__(23);
-var EventPropagators = __webpack_require__(24);
+var EventPluginHub = __webpack_require__(24);
+var EventPropagators = __webpack_require__(25);
 var ExecutionEnvironment = __webpack_require__(6);
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactUpdates = __webpack_require__(11);
@@ -15887,7 +15875,7 @@ module.exports = DefaultEventPluginOrder;
 
 
 
-var EventPropagators = __webpack_require__(24);
+var EventPropagators = __webpack_require__(25);
 var ReactDOMComponentTree = __webpack_require__(5);
 var SyntheticMouseEvent = __webpack_require__(32);
 
@@ -16535,7 +16523,7 @@ var React = __webpack_require__(20);
 var ReactComponentEnvironment = __webpack_require__(43);
 var ReactCurrentOwner = __webpack_require__(12);
 var ReactErrorUtils = __webpack_require__(44);
-var ReactInstanceMap = __webpack_require__(25);
+var ReactInstanceMap = __webpack_require__(26);
 var ReactInstrumentation = __webpack_require__(9);
 var ReactNodeTypes = __webpack_require__(71);
 var ReactReconciler = __webpack_require__(19);
@@ -16544,7 +16532,7 @@ if (process.env.NODE_ENV !== 'production') {
   var checkReactTypeSpec = __webpack_require__(184);
 }
 
-var emptyObject = __webpack_require__(22);
+var emptyObject = __webpack_require__(23);
 var invariant = __webpack_require__(1);
 var shallowEqual = __webpack_require__(37);
 var shouldUpdateReactComponent = __webpack_require__(51);
@@ -17564,7 +17552,7 @@ var DOMLazyTree = __webpack_require__(18);
 var DOMNamespaces = __webpack_require__(39);
 var DOMProperty = __webpack_require__(14);
 var DOMPropertyOperations = __webpack_require__(63);
-var EventPluginHub = __webpack_require__(23);
+var EventPluginHub = __webpack_require__(24);
 var EventPluginRegistry = __webpack_require__(30);
 var ReactBrowserEventEmitter = __webpack_require__(31);
 var ReactDOMComponentFlags = __webpack_require__(64);
@@ -20662,7 +20650,7 @@ module.exports = REACT_ELEMENT_TYPE;
 
 
 
-var EventPluginHub = __webpack_require__(23);
+var EventPluginHub = __webpack_require__(24);
 
 function runEventQueueInBatch(events) {
   EventPluginHub.enqueueEvents(events);
@@ -20900,7 +20888,7 @@ module.exports = ReactHostOperationHistoryHook;
 
 
 var DOMProperty = __webpack_require__(14);
-var EventPluginHub = __webpack_require__(23);
+var EventPluginHub = __webpack_require__(24);
 var EventPluginUtils = __webpack_require__(40);
 var ReactComponentEnvironment = __webpack_require__(43);
 var ReactEmptyComponent = __webpack_require__(66);
@@ -21039,7 +21027,7 @@ module.exports = ReactMarkupChecksum;
 var _prodInvariant = __webpack_require__(3);
 
 var ReactComponentEnvironment = __webpack_require__(43);
-var ReactInstanceMap = __webpack_require__(25);
+var ReactInstanceMap = __webpack_require__(26);
 var ReactInstrumentation = __webpack_require__(9);
 
 var ReactCurrentOwner = __webpack_require__(12);
@@ -22468,7 +22456,7 @@ module.exports = SVGDOMPropertyConfig;
 
 
 
-var EventPropagators = __webpack_require__(24);
+var EventPropagators = __webpack_require__(25);
 var ExecutionEnvironment = __webpack_require__(6);
 var ReactDOMComponentTree = __webpack_require__(5);
 var ReactInputSelection = __webpack_require__(69);
@@ -22668,7 +22656,7 @@ module.exports = SelectEventPlugin;
 var _prodInvariant = __webpack_require__(3);
 
 var EventListener = __webpack_require__(56);
-var EventPropagators = __webpack_require__(24);
+var EventPropagators = __webpack_require__(25);
 var ReactDOMComponentTree = __webpack_require__(5);
 var SyntheticAnimationEvent = __webpack_require__(173);
 var SyntheticClipboardEvent = __webpack_require__(174);
@@ -22679,7 +22667,7 @@ var SyntheticMouseEvent = __webpack_require__(32);
 var SyntheticDragEvent = __webpack_require__(176);
 var SyntheticTouchEvent = __webpack_require__(180);
 var SyntheticTransitionEvent = __webpack_require__(181);
-var SyntheticUIEvent = __webpack_require__(26);
+var SyntheticUIEvent = __webpack_require__(27);
 var SyntheticWheelEvent = __webpack_require__(182);
 
 var emptyFunction = __webpack_require__(10);
@@ -23067,7 +23055,7 @@ module.exports = SyntheticDragEvent;
 
 
 
-var SyntheticUIEvent = __webpack_require__(26);
+var SyntheticUIEvent = __webpack_require__(27);
 
 /**
  * @interface FocusEvent
@@ -23150,7 +23138,7 @@ module.exports = SyntheticInputEvent;
 
 
 
-var SyntheticUIEvent = __webpack_require__(26);
+var SyntheticUIEvent = __webpack_require__(27);
 
 var getEventCharCode = __webpack_require__(47);
 var getEventKey = __webpack_require__(188);
@@ -23239,7 +23227,7 @@ module.exports = SyntheticKeyboardEvent;
 
 
 
-var SyntheticUIEvent = __webpack_require__(26);
+var SyntheticUIEvent = __webpack_require__(27);
 
 var getEventModifierState = __webpack_require__(48);
 
@@ -23623,7 +23611,7 @@ var _prodInvariant = __webpack_require__(3);
 
 var ReactCurrentOwner = __webpack_require__(12);
 var ReactDOMComponentTree = __webpack_require__(5);
-var ReactInstanceMap = __webpack_require__(25);
+var ReactInstanceMap = __webpack_require__(26);
 
 var getHostComponentFromComposite = __webpack_require__(76);
 var invariant = __webpack_require__(1);
@@ -24543,7 +24531,7 @@ var ReactElement = __webpack_require__(16);
 var ReactPropTypeLocationNames = __webpack_require__(84);
 var ReactNoopUpdateQueue = __webpack_require__(54);
 
-var emptyObject = __webpack_require__(22);
+var emptyObject = __webpack_require__(23);
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
 
@@ -25491,7 +25479,7 @@ var _assign = __webpack_require__(4);
 var ReactComponent = __webpack_require__(53);
 var ReactNoopUpdateQueue = __webpack_require__(54);
 
-var emptyObject = __webpack_require__(22);
+var emptyObject = __webpack_require__(23);
 
 /**
  * Base class helpers for the updating state of a component.

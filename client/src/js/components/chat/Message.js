@@ -12,27 +12,22 @@ class Message extends React.Component {
     if (!avatarPath || avatarPath == '') {
       avatarPath = './assets/img/usravi_m.png';
     }
-
+    let className = 'message-wrapper';
     //if (this.props.username === this.props.message.user) {
     if (app.getName() === this.props.message.user) {
-      return (
-        <div className='message-wrapper self-message'>
-          <img className='message-avatar' src={avatarPath} alt={avatarPath} />
-          <p className='message-username'>{this.props.message.user}</p>
-          {/* May need to change to handle diagrams vs. text messages */}
-          <p className='message-text'>{this.props.message.content}</p>
-        </div>
-      );
-    } else {
-      return (
-        <div className='message-wrapper'>
-          <img className='message-avatar' src={avatarPath} alt={avatarPath} />
-          <p className='message-username'>{this.props.message.user}</p>
-          {/* May need to change to handle diagrams vs. text messages */}
-          <p className='message-text'>{this.props.message.content}</p>
-        </div>
-      );
+      className += ' self-message';
     }
+    if (this.props.message.type === 'diagram') {
+      className += ' diagram-message';
+    }
+    return (
+      <div className={className}>
+        <img className='message-avatar' src={avatarPath} alt={avatarPath} />
+        <p className='message-username'>{this.props.message.user}</p>
+        {/* May need to change to handle diagrams vs. text messages */}
+        <p className='message-text'>{this.props.message.content}</p>
+      </div>
+    );
   }
 }
 

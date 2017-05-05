@@ -18,6 +18,10 @@ $primary-color: #00AA8D;
 $primary-color-light: #00BF9A;
 $primary-color-dark: #008975;
 
+$accent-color: #9C27B0;
+$accent-color-light: #BA68C8;
+$accent-color-dark: #7B1FA2;
+
 // mixins
 @mixin position-absolute($left, $top) {
   position: absolute;

@@ -356,6 +356,13 @@ canvas:hover {
 .self-message {
   float: right; }
 
+.diagram-message {
+  background-color: #9C27B0; }
+
+.diagram-message:hover {
+  background-color: #BA68C8;
+  cursor: pointer; }
+
 .message-avatar {
   border-radius: 25px;
   width: 30px;
