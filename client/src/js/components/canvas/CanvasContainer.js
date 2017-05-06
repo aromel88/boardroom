@@ -17,6 +17,7 @@ class CanvasContainer extends React.Component {
     this.createTab = this.createTab.bind(this);
     this.tabOpened = this.tabOpened.bind(this);
     this.openTab = this.openTab.bind(this);
+    this.openTabHandler = this.openTabHandler.bind(this);
     this.doneEditing = this.doneEditing.bind(this);
 
     // set initial state
@@ -30,6 +31,7 @@ class CanvasContainer extends React.Component {
     canvas.setUpdateCallback(this.setImageData);
     client.on('tabsUpdated', this.tabsUpdated);
     client.on('tabOpened', this.tabOpened);
+    client.on('tabReopened', this.openTab);
   }
 
   tabOpened(data) {
@@ -54,8 +56,8 @@ class CanvasContainer extends React.Component {
     }
   }
 
-  openTab(e) {
-    const openID = e.target.id;
+  openTab(data) {
+    const openID = data.id;
     if (openID === this.state.activeTab) {
       return;
     }
@@ -70,6 +72,11 @@ class CanvasContainer extends React.Component {
       });
     this.setState({ activeTab: openID });
     canvas.setActiveTab(openID);
+  }
+
+  openTabHandler(e) {
+    const openID = e.target.id;
+    this.openTab({id: openID});
   }
 
   doneEditing() {
@@ -93,7 +100,7 @@ class CanvasContainer extends React.Component {
           createTab={this.createTab}
           activeTab={this.state.activeTab}
           canvasTabs={this.state.canvasTabs}
-          tabOpenAction={this.openTab}
+          tabOpenAction={this.openTabHandler}
         />
         <Canvas />
         <CanvasTools doneEditingAction={this.doneEditing} clearCanvasAction={this.clearCanvas} />

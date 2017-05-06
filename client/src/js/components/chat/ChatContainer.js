@@ -105,9 +105,9 @@ class ChatContainer extends React.Component {
         type: 'chat',
         content: inputBox.value,
         timestamp: Date.now(),
-        //user: this.state.username,
         user: app.getName(),
         avatar: './assets/img/usravi_m.png',
+        id: `${app.getName()}${new Date().getTime()}`
       };
 
       client.emit('createMessage', newMessage);

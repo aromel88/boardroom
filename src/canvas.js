@@ -65,7 +65,7 @@ const doneEditing = (data, sock) => {
           type: 'diagram',
           timestamp: new Date().getTime(),
           content: 'A diagram was created',
-          diagramId: diagramId
+          id: diagramId
         };
         server.createMessage(messageData, socket);
         r = i;

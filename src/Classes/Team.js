@@ -54,7 +54,6 @@ class Team {
 
   addTab(tab) {
     this.tabs.push(tab);
-    console.dir(this.tabs);
   }
 
   getUsers() {

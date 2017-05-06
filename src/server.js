@@ -18,15 +18,14 @@ const teams = {};
 const createMessage = (data, sock) => {
   const socket = sock;
   const user = socket.name;
-  const id = Date.now() + user;
+  const id = data.id;
   const type = data.type;
   const content = data.content;
   const timestamp = data.timestamp;
   // const avatar = data.avatar;  // Will add in avatars later
 
   if (id && type && content && timestamp) {
-    const diagramId = data.diagramId ? data.diagramId : `message${id}`;
-    const newMessage = new Message(id, type, content, timestamp, user, data.diagramId);
+    const newMessage = new Message(id, type, content, timestamp, user);
     teams[socket.team].addMessage(id, newMessage);
     if (type === 'diagram') {
       io.sockets.in(socket.team).emit('message', { messageData: newMessage });
@@ -64,17 +63,18 @@ const onMsg = (sock) => {
   });
 
   socket.on('reopenDiagram', (data) => {
-    const tabId = data.diagramId;
+    const team = teams[socket.team];
+    const messages = team.getMessages();
+    const tabId = data.id;
     canvasManager.createTab({
       id: tabId,
       user: data.user,
       curTab: data.curTab
     }, socket);
-    // canvasManager.sendTabData({
-    //   openID: tabId,
-    //   curID: data.curTab,
-    //   user: data.user
-    // }, socket);
+    socket.emit('tabReopened', {id: tabId});
+    delete messages[tabId];
+    const messageArray = team.getMessageArray();
+    io.sockets.in(socket.team).emit('messageList', { messages: messageArray });
   });
 };
 

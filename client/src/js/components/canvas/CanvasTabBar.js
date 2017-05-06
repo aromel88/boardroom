@@ -20,7 +20,7 @@ class CanvasTabBar extends React.Component {
         )
       });
       return (
-        <div key={tab.id} id={tab.id} className={tabClassWithColor} onClick={this.props.tabOpenAction}>
+        <div key={`tab${tab.id}`} id={tab.id} className={tabClassWithColor} onClick={this.props.tabOpenAction}>
           <div id='tab-bar-user-list' className='tab-userlist'>{usersInTab}</div>
         </div>
       );
