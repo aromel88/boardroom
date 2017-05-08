@@ -21,7 +21,7 @@ $user-min-height : 50px;
 $message-radius     : 4px;
 $message-min-width  : 200px;
 $message-max-width  : 550px;
-$message-min-height : 50px;
+$message-min-height : 70px;
 
 $message-input-height: 32px;
 
@@ -150,6 +150,16 @@ $message-input-height: 32px;
 	margin-left   : 20px;
 	margin-bottom : 5px;
 	height        : 80%;
+}
+
+.message-timestamp {
+	position      : relative;
+	color         : $light-gray;
+	display       : inline-block;
+	margin-right  : 20px;
+	margin-bottom : 5px;
+	float         : right;
+	font-size     : 8pt;
 }
 
 #message-input-container {

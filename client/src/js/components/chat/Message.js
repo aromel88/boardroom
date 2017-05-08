@@ -38,6 +38,7 @@ class Message extends React.Component {
         <p className='message-username'>{this.props.message.user}</p>
         {/* May need to change to handle diagrams vs. text messages */}
         <p className='message-text'>{this.props.message.content}</p>
+        <p className='message-timestamp'>{new Date(this.props.message.timestamp).toLocaleString()}</p>
       </div>
     );
   }
