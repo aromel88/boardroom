@@ -260,15 +260,15 @@ canvas:hover {
   top: 800px; }
 
 .canvas-tool {
-  width: 100px;
+  margin-top: 20px;
+  width: 50px;
   height: 50px;
-  border: 2px solid white;
+  margin-left: 66.66667px;
   color: white;
   display: inline-block; }
 
 .canvas-tool:hover {
-  background-color: white;
-  color: #00AA8D;
+  opacity: 0.7;
   cursor: pointer; }
 
 /*

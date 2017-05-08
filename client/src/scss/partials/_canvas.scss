@@ -113,14 +113,14 @@ canvas:hover {
 }
 
 .canvas-tool {
-  width: 100px;
+  margin-top: 20px;
+  width: 50px;
   height: 50px;
-  border: 2px solid white;
+  margin-left: $canvas-width / 6;
   color: white;
   display: inline-block;
 }
 .canvas-tool:hover {
-  background-color: white;
-  color: $primary-color;
+  opacity: 0.7;
   cursor: pointer;
 }
