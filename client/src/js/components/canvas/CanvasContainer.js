@@ -19,13 +19,16 @@ class CanvasContainer extends React.Component {
     this.openTab = this.openTab.bind(this);
     this.openTabHandler = this.openTabHandler.bind(this);
     this.doneEditing = this.doneEditing.bind(this);
+    this.toolToggle = this.toolToggle.bind(this);
 
     // set initial state
     this.state = {
       drawColor: 'black',
       lineWeight: 1,
       canvasTabs: app.getInitialTabs(),
-      activeTab: ''
+      activeTab: '',
+      curTool: 'Eraser',
+      currentToolImg: 'assets/img/eraser.png'
     }
 
     canvas.setUpdateCallback(this.setImageData);
@@ -91,6 +94,16 @@ class CanvasContainer extends React.Component {
     canvas.clearCanvas();
   }
 
+  toolToggle() {
+    if (canvas.getCurrentTool() === 0) {
+      this.setState({ curTool: 'Pen', currentToolImg: 'assets/img/eraser.png' });
+    } else {
+      this.setState({ curTool: 'Eraser', currentToolImg: 'assets/img/pen.png' });
+    }
+
+    canvas.toggleTool();
+  }
+
   // render Home page
   render() {
     return (
@@ -103,7 +116,13 @@ class CanvasContainer extends React.Component {
           tabOpenAction={this.openTabHandler}
         />
         <Canvas />
-        <CanvasTools doneEditingAction={this.doneEditing} clearCanvasAction={this.clearCanvas} />
+        <CanvasTools
+          currentTool={this.state.curTool}
+          toolDisplayImg={this.state.currentToolImg}
+          doneEditingAction={this.doneEditing}
+          clearCanvasAction={this.clearCanvas}
+          toolToggleAction={this.toolToggle}
+        />
       </div>
     );
   }

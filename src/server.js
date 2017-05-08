@@ -69,9 +69,9 @@ const onMsg = (sock) => {
     canvasManager.createTab({
       id: tabId,
       user: data.user,
-      curTab: data.curTab
+      curTab: data.curTab,
     }, socket);
-    socket.emit('tabReopened', {id: tabId});
+    socket.emit('tabReopened', { id: tabId });
     delete messages[tabId];
     const messageArray = team.getMessageArray();
     io.sockets.in(socket.team).emit('messageList', { messages: messageArray });

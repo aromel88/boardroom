@@ -16,6 +16,7 @@ let activeTab;
 let drawing;
 let drawAllowed = true;
 let canvasOpen = false;
+let currentTool = 0;  // 0 is pen, 1 is eraser
 
 const setUpdateCallback = (callback) => {
   updateCallback = callback;
@@ -168,6 +169,8 @@ const getActiveTab = () => { return activeTab; };
 
 const getCanvasOpen = () => { return canvasOpen; };
 
+const getCurrentTool = () => { return currentTool; };
+
 module.exports.init = init;
 module.exports.startDraw = startDraw;
 module.exports.draw = draw;
@@ -177,6 +180,7 @@ module.exports.setUpdateCallback = setUpdateCallback;
 module.exports.toggleCanvas = toggleCanvas;
 module.exports.setActiveTab = setActiveTab;
 module.exports.getActiveTab = getActiveTab;
+module.exports.getCurrentTool = getCurrentTool;
 module.exports.canvasOpen = getCanvasOpen;
 module.exports.sendCanvasData = sendCanvasData;
 module.exports.receiveCanvasData = receiveCanvasData;
