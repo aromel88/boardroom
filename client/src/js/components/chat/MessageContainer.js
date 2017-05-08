@@ -17,6 +17,11 @@ class MessageContainer extends React.Component {
 
     return <div id='messages-container'>{messages}</div>;
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    const container = document.querySelector('#messages-container');
+    container.scrollTop = container.scrollHeight;
+  }
 }
 
 export default MessageContainer;

@@ -62,9 +62,11 @@ $message-input-height: 32px;
 }
 
 #messages-container {
-	@include position-absolute($sidebar-min-width, 0px);
+	position   : absolute;
+	left       : $sidebar-min-width;
+	bottom     : $message-input-height;
 	width      : calc(100% - #{$sidebar-min-width});
-	height     : calc(100% - #{$message-input-height});
+	max-height : calc(100% - #{$message-input-height});
 	overflow-y : auto;
 }
 

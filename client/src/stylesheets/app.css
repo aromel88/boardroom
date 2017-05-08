@@ -309,9 +309,9 @@ canvas:hover {
 #messages-container {
   position: absolute;
   left: 250px;
-  top: 0px;
+  bottom: 32px;
   width: calc(100% - 250px);
-  height: calc(100% - 32px);
+  max-height: calc(100% - 32px);
   overflow-y: auto; }
 
 .user-wrapper {

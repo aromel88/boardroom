@@ -25,7 +25,6 @@ class Message extends React.Component {
       avatarPath = './assets/img/usravi_m.png';
     }
     let className = 'message-wrapper';
-    //if (this.props.username === this.props.message.user) {
     if (app.getName() === this.props.message.user) {
       className += ' self-message';
     }
