@@ -2516,6 +2516,8 @@ var drawing = void 0;
 var drawAllowed = true;
 var canvasOpen = false;
 var currentTool = 0; // 0 is pen, 1 is eraser
+var strokeStyle = 'black';
+var lineWidth = 1;
 
 var setUpdateCallback = function setUpdateCallback(callback) {
   updateCallback = callback;
@@ -2529,6 +2531,7 @@ var init = function init() {
   topCanvas.addEventListener('mousemove', mouseMove);
   topCanvas.addEventListener('mouseup', stopDraw);
   topCanvas.addEventListener('mouseleave', stopDraw);
+  topCanvas.style.cursor = 'url("assets/img/pen-cursor.png") -20 20,crosshair';
   topCtx = topCanvas.getContext('2d');
   topCtx.strokeStyle = 'black';
   mainCanvas = document.querySelector('#main-canvas');
@@ -2555,14 +2558,14 @@ var getMouse = function getMouse(e) {
 
 // mouse down event handler, start drawing
 var mouseDown = function mouseDown(e) {
-  console.log('down');
   if (drawAllowed) {
     drawing = true;
     var mouse = getMouse(e);
     var drawData = {
       x: mouse.x,
       y: mouse.y,
-      //style: topCtx.strokeStyle,
+      strokeStyle: strokeStyle,
+      lineWidth: lineWidth,
       id: activeTab
     };
     client.emit('beginDrawStream', drawData);
@@ -2578,6 +2581,8 @@ var mouseMove = function mouseMove(e) {
     var drawData = {
       x: mouse.x,
       y: mouse.y,
+      strokeStyle: strokeStyle,
+      lineWidth: lineWidth,
       id: activeTab
     };
     client.emit('updateDrawStream', drawData);
@@ -2585,11 +2590,11 @@ var mouseMove = function mouseMove(e) {
   }
 };
 
-// set drawAllowed flag
-var allowDraw = function allowDraw(allow) {
-  drawAllowed = allow;
-  lineWidth = 1;
-};
+// // set drawAllowed flag
+// const allowDraw = (allow) => {
+//   drawAllowed = allow;
+//   lineWidth = 1;
+// };
 
 // called to ensure draw flag is false
 var stopDraw = function stopDraw() {
@@ -2602,6 +2607,7 @@ var startDraw = function startDraw(drawData) {
   // topCtx.strokeStyle = drawData.style;
   if (drawData.id !== activeTab) return;
   topCtx.lineWidth = drawData.lineWidth;
+  topCtx.strokeStyle = drawData.strokeStyle;
   topCtx.beginPath();
   topCtx.moveTo(drawData.x, drawData.y);
 };
@@ -2609,10 +2615,14 @@ var startDraw = function startDraw(drawData) {
 // draw a line to new point when mouse is dragged on the canvas
 var draw = function draw(drawData) {
   if (drawData.id !== activeTab) return;
+  topCtx.save();
+  topCtx.strokeStyle = drawData.strokeStyle;
+  topCtx.lineWidth = drawData.lineWidth;
   topCtx.lineTo(drawData.x, drawData.y);
   topCtx.stroke();
   mainCtx.drawImage(topCanvas, 0, 0);
   topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
+  topCtx.restore();
 };
 
 var receiveCanvasData = function receiveCanvasData(canvasData) {
@@ -2664,6 +2674,12 @@ var toggleTool = function toggleTool() {
   currentTool = currentTool == 0 ? 1 : 0;
   if (currentTool === 0) {
     topCanvas.style.cursor = 'url("assets/img/pen-cursor.png") -20 20,crosshair';
+    strokeStyle = 'black';
+    lineWidth = 1;
+  } else {
+    topCanvas.style.cursor = 'url("assets/img/eraser-cursor.png") 10 20, default';
+    strokeStyle = 'white';
+    lineWidth = 20;
   }
 };
 
