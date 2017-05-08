@@ -95,7 +95,8 @@ class CanvasContainer extends React.Component {
   }
 
   toolToggle() {
-    if (canvas.getCurrentTool() === 0) {
+    console.log('toggle');
+    if (canvas.getCurrentTool() === 1) {
       this.setState({ curTool: 'Pen', currentToolImg: 'assets/img/eraser.png' });
     } else {
       this.setState({ curTool: 'Eraser', currentToolImg: 'assets/img/pen.png' });

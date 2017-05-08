@@ -22,10 +22,7 @@ canvas {
   width: $canvas-width;
   height: $canvas-height;
   box-sizing: border-box;
-}
-
-canvas:hover {
-  cursor: crosshair;
+  //cursor: crosshair;
 }
 
 #top-canvas {

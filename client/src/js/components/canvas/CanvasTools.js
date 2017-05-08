@@ -18,7 +18,7 @@ class CanvasTools extends React.Component {
           src={this.props.toolDisplayImg}
           id='done-editing-button'
           className='canvas-tool'
-          onClick={this.props.doneEditingAction}
+          onClick={this.props.toolToggleAction}
           title={this.props.curTool}
         />
         <img

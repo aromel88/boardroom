@@ -161,6 +161,13 @@ const toggleCanvas = () => {
   }
 };
 
+const toggleTool = () => {
+  currentTool = currentTool == 0 ? 1 : 0;
+  if (currentTool === 0) {
+    topCanvas.style.cursor = 'url("assets/img/pen-cursor.png") -20 20,crosshair';
+  }
+};
+
 const setActiveTab = (tabID) => {
   activeTab = tabID;
 };
@@ -178,6 +185,7 @@ module.exports.clearCanvas = clearCanvas;
 module.exports.canvasWasCleared = canvasWasCleared;
 module.exports.setUpdateCallback = setUpdateCallback;
 module.exports.toggleCanvas = toggleCanvas;
+module.exports.toggleTool = toggleTool;
 module.exports.setActiveTab = setActiveTab;
 module.exports.getActiveTab = getActiveTab;
 module.exports.getCurrentTool = getCurrentTool;

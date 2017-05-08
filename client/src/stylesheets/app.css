@@ -181,9 +181,6 @@ canvas {
   height: 800px;
   box-sizing: border-box; }
 
-canvas:hover {
-  cursor: crosshair; }
-
 #top-canvas {
   z-index: 10; }
 
