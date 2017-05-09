@@ -14,6 +14,7 @@ const Message = require('./Classes/Message.js');
 let io;
 
 const teams = {};
+const typers = [];
 
 const createMessage = (data, sock) => {
   const socket = sock;
@@ -42,6 +43,32 @@ const onJoin = (sock) => {
   const socket = sock;
   socket.on('join', (data) => {
     connectionManager.attemptConnect(data, socket);
+  });
+};
+
+const onTyping = (sock) => {
+  const socket = sock;
+
+  socket.on('userTyping', (data) => {
+    const user = data.user;
+    const typing = data.typing;
+
+    let typersChanged = false;
+
+    if (typers.includes(user)) {
+      if (typing === false) {
+        typers.splice(typers.indexOf(user), 1);
+        typersChanged = true;
+      }
+    } else {
+      typers.push(user);
+      typersChanged = true;
+    }
+
+    // Only update clients if actual changes occurred
+    if (typersChanged && typers.length >= 0) {
+      socket.broadcast.to(socket.team).emit('typingUsers', { users: typers });
+    }
   });
 };
 
@@ -123,6 +150,7 @@ const init = (expressApp) => {
   io.sockets.on('connection', (sock) => {
     sock.emit('connected');
     onJoin(sock);
+    onTyping(sock);
     onMsg(sock);
     onDisconnect(sock);
     onCanvas(sock);
