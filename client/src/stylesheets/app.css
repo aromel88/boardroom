@@ -376,7 +376,7 @@ canvas {
   margin-right: 10px;
   font-size: 14pt; }
 
-.message-text {
+.message-text, .message-edit {
   position: relative;
   border-radius: 4px;
   color: #FAFAFA;
@@ -396,6 +396,10 @@ canvas {
   margin-bottom: 5px;
   float: right;
   font-size: 8pt; }
+
+.message-edit {
+  display: block;
+  color: black; }
 
 #message-input-container {
   position: fixed;

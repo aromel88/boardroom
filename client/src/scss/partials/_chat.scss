@@ -162,6 +162,12 @@ $message-input-height: 32px;
 	font-size     : 8pt;
 }
 
+.message-edit {
+	display: block;
+	@extend .message-text;
+	color: black;
+}
+
 #message-input-container {
 	position : fixed;
 	bottom   : 0px;

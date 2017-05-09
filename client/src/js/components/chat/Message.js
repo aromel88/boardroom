@@ -21,19 +21,23 @@ class Message extends React.Component {
 
   render() {
     let avatarPath = this.props.message.avatar;
+    const id = this.props.message.id;
     if (!avatarPath || avatarPath == '') {
       avatarPath = './assets/img/usravi_m.png';
     }
     let className = 'message-wrapper';
+    let onClickHandler;
     if (app.getName() === this.props.message.user) {
       className += ' self-message';
     }
     if (this.props.message.type === 'diagram') {
       className += ' diagram-message';
+      onClickHandler = () => this.reopenDiagram(id);
+    } else {
+      onClickHandler = () => {console.log('someday we would do message editing')};
     }
-    const id = this.props.message.id;
     return (
-      <div className={className} id={id} onClick={() => this.reopenDiagram(id) }>
+      <div className={className} id={id} onClick={onClickHandler}>
         <img className='message-avatar' src={avatarPath} alt={avatarPath} />
         <p className='message-username'>{this.props.message.user}</p>
         {/* May need to change to handle diagrams vs. text messages */}
