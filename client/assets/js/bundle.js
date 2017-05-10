@@ -2594,6 +2594,7 @@ var mouseMove = function mouseMove(e) {
 // called to ensure draw flag is false
 var stopDraw = function stopDraw() {
   drawing = false;
+  client.emit('stopDraw');
   sendCanvasData();
 };
 
@@ -2622,6 +2623,10 @@ var draw = function draw(drawData) {
   mainCtx.drawImage(topCanvas, 0, 0);
   topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
   topCtx.restore();
+};
+
+var endDrawStream = function endDrawStream() {
+  drawAllowed = true;
 };
 
 var receiveCanvasData = function receiveCanvasData(canvasData) {
@@ -2702,6 +2707,7 @@ module.exports.init = init;
 module.exports.startDraw = startDraw;
 module.exports.beginDrawStream = beginDrawStream;
 module.exports.draw = draw;
+module.exports.endDrawStream = endDrawStream;
 module.exports.clearCanvas = clearCanvas;
 module.exports.canvasWasCleared = canvasWasCleared;
 module.exports.setUpdateCallback = setUpdateCallback;
@@ -3219,6 +3225,7 @@ var connect = function connect() {
 
   socket.on('startDraw', canvas.beginDrawStream);
   socket.on('draw', canvas.draw);
+  socket.on('stopDraw', canvas.endDrawStream);
   socket.on('clearCanvas', canvas.clearCanvas);
   socket.on('canvasWasCleared', canvas.canvasWasCleared);
 };
