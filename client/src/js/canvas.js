@@ -1,3 +1,4 @@
+const app = require('./app');
 const client = require('./client');
 const animations = require('./animations');
 
@@ -67,7 +68,8 @@ const mouseDown = (e) => {
       y: mouse.y,
       strokeStyle: strokeStyle,
       lineWidth: lineWidth,
-      id: activeTab
+      id: activeTab,
+      user: app.getName()
     };
     client.emit('beginDrawStream', drawData);
     startDraw(drawData);
@@ -91,12 +93,6 @@ const mouseMove = (e) => {
   }
 };
 
-// // set drawAllowed flag
-// const allowDraw = (allow) => {
-//   drawAllowed = allow;
-//   lineWidth = 1;
-// };
-
 // called to ensure draw flag is false
 const stopDraw = () => {
   drawing = false;
@@ -105,8 +101,10 @@ const stopDraw = () => {
 
 // start a drawing path where the mouse is clicked on the canvas
 const startDraw = (drawData) => {
-  // topCtx.strokeStyle = drawData.style;
   if (drawData.id !== activeTab) return;
+  if (drawData.user !== app.getName()) {
+    drawAllowed = false;
+  }
   topCtx.lineWidth = drawData.lineWidth;
   topCtx.strokeStyle = drawData.strokeStyle;
   topCtx.beginPath();
