@@ -7109,7 +7109,7 @@ var HomeContainer = function (_React$Component) {
     _this.state = {
       navItem: 'Start a team',
       navAction: _this.createTeamPage,
-      heroText: 'Plan, discuss, win.',
+      heroText: 'Chat, brainstorm and draw collaboratively to get the juices flowing',
       heroImg: './assets/img/heroimg.svg',
       joinType: 'Join your team',
       joinAction: _this.joinRoom,
@@ -7125,7 +7125,7 @@ var HomeContainer = function (_React$Component) {
       this.setState({
         navItem: 'Back',
         navAction: this.homePage,
-        heroText: 'Start your brainstorming here',
+        heroText: 'Start your team here',
         joinType: 'Create your team',
         joinAction: this.createRoom
       });
@@ -7136,7 +7136,7 @@ var HomeContainer = function (_React$Component) {
       this.setState({
         navItem: 'Start a team',
         navAction: this.createTeamPage,
-        heroText: 'Plan, discuss, win.',
+        heroText: 'Chat, brainstorm and draw collaboratively to get the juices flowing',
         joinType: 'Join your team',
         joinAction: this.joinRoom
       });
@@ -11502,6 +11502,7 @@ var Nav = function (_React$Component) {
       return _react2.default.createElement(
         'nav',
         null,
+        _react2.default.createElement('img', { src: 'assets/img/logo-75x75.png', alt: 'BoardRoom logo' }),
         _react2.default.createElement('input', { type: 'button', className: 'navButton', value: this.props.navItem, onClick: this.clickHandler })
       );
     }
