@@ -124,6 +124,11 @@ class ChatContainer extends React.Component {
 
       client.emit('createMessage', newMessage);
 
+      if (this.isTypingID) {
+        clearTimeout(this.isTypingID);
+        client.emit('userTyping', { user: app.getName(), typing: false });
+      }
+
       inputBox.value = '';
       messages.push(newMessage);
 
