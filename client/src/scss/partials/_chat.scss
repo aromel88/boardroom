@@ -23,7 +23,13 @@ $message-min-width  : 200px;
 $message-max-width  : 550px;
 $message-min-height : 70px;
 
-$message-input-height: 32px;
+$message-input-height : 34px;
+// 50px for tab bar, 3 px for border, 30 px for left & right inset
+$message-input-adjust : 83px;
+
+$typing-status-height : 22px;
+
+$message-input-text-color: #4B4B4B;
 
 // Mixins
 
@@ -62,11 +68,12 @@ $message-input-height: 32px;
 }
 
 #messages-container {
+	$bottom-offset : calc(#{$message-input-height} + #{$typing-status-height} + 5px);
 	position   : absolute;
 	left       : $sidebar-min-width;
-	bottom     : $message-input-height;
+	bottom     : $bottom-offset;
 	width      : calc(100% - #{$sidebar-min-width});
-	max-height : calc(100% - #{$message-input-height});
+	max-height : calc(100% - #{$bottom-offset});
 	overflow-y : auto;
 }
 
@@ -170,16 +177,35 @@ $message-input-height: 32px;
 
 #message-input-container {
 	position : fixed;
-	bottom   : 0px;
-	left     : $sidebar-min-width;
-	// 50px = side tab width, 3px = border overdraw
-	width    : calc(100% - #{$sidebar-min-width} - 53px);
+	bottom   : $typing-status-height;
+	left     : calc(#{$sidebar-min-width} + 15px);
+	width    : calc(100% - #{$sidebar-min-width} - #{$message-input-adjust});
 }
 
 #message-input {
 	width          : 100%;
 	height         : $message-input-height;
-	text-indent    : 5px;
+	color          : $message-input-text-color;
+	text-indent    : 8px;
 	font-size      : 13pt;
 	vertical-align : middle;
+	border-radius  : 5px;
+	border-width   : thin;
+	border-color   : $dark-gray;
+  	box-shadow     : 0px 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+.typing-list {
+	position    : fixed;
+	height      : $typing-status-height;
+	bottom      : 0;
+	left        : calc(#{$sidebar-min-width} + 18px);
+	color       : $message-input-text-color;
+	line-height : $typing-status-height;
+	font-size   : 8pt;
+	font-weight : bold;
+}
+
+.invisible-class {
+	visibility: hidden;
 }

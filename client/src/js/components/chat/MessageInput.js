@@ -9,7 +9,13 @@ class MessageInput extends React.Component {
   render() {
     return (
       <div id='message-input-container' className='canvas-grow'>
-        <input type='text' id='message-input' placeholder='Write a message' onKeyUp={this.props.submitMessage} />
+        <input
+          type='text'
+          id='message-input'
+          placeholder='Write a message'
+          onKeyUp={this.props.submitMessage}
+          onChange={this.props.isTyping}
+        />
       </div>
     );
   }

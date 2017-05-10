@@ -5,29 +5,35 @@ import React from 'react';
 import MessageContainer from './MessageContainer';
 import SidebarContainer from './SidebarContainer';
 import MessageInput from './MessageInput.js';
+import UsersTypingDisplay from './UsersTypingDisplay.js';
 
 class ChatContainer extends React.Component {
 
   constructor() {
     super();
 
+    this.isTypingID;
+
     this.submitMessage = this.submitMessage.bind(this);
     this.setUser = this.setUser.bind(this);
     this.setUsers = this.setUsers.bind(this);
     this.setMessage = this.setMessage.bind(this);
     this.setMessages = this.setMessages.bind(this);
+    this.isTyping = this.isTyping.bind(this);
     this.handleMessageError = this.handleMessageError.bind(this);
+    this.showTypingUsers = this.showTypingUsers.bind(this);
 
     client.on('message', this.setMessage);
     client.on('messageList', this.setMessages);
     client.on('userJoined', this.setUser);
     client.on('userList', this.setUsers);
     client.on('messageError', this.handleMessageError);
+    client.on('typingUsers', this.showTypingUsers);
 
     this.state = {
       users: [],
       messages: [],
-      username: 'Cool User',
+      usersTyping: [],
     };
   }
 
@@ -96,6 +102,12 @@ class ChatContainer extends React.Component {
     console.dir(data.msg);
   }
 
+  showTypingUsers(data) {
+    this.setState({
+      usersTyping: data.users,
+    });
+  }
+
   submitMessage(e) {
     if (e.keyCode === 13) {
       const inputBox = document.querySelector('#message-input');
@@ -121,12 +133,32 @@ class ChatContainer extends React.Component {
     }
   }
 
+  isTyping(e) {
+    if (e.target.value === '') {
+      return;
+    }
+
+    client.emit('userTyping', { user: app.getName(), typing: true });
+
+    // reset current timeout
+    if (this.isTypingID) {
+      clearTimeout(this.isTypingID);
+    }
+
+    // send a "has stopped typing" message after 4 seconds
+    this.isTypingID = setTimeout(() => {
+      client.emit('userTyping', { user: app.getName(), typing: false });
+    }, 2000);
+  }
+
   render() {
+
     return (
       <div id="chat-container" className='canvas-grow'>
         <SidebarContainer users={this.state.users} />
-        <MessageContainer username={this.state.username} messages={this.state.messages} />
-        <MessageInput submitMessage={this.submitMessage} />
+        <MessageContainer username={app.getName()} messages={this.state.messages} />
+        <MessageInput submitMessage={this.submitMessage} isTyping={this.isTyping} />
+        <UsersTypingDisplay username={app.getName()} users={this.state.usersTyping} />
       </div>
     );
   }

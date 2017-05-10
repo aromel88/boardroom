@@ -42,6 +42,10 @@ const getName = () => {
   return user;
 };
 
+const getTeam = () => {
+  return team;
+}
+
 const getInitialTabs = () => {
   return initialTabData ? initialTabData : [];
 };
