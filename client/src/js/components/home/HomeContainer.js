@@ -29,7 +29,7 @@ class HomeContainer extends React.Component {
     this.state = {
       navItem: 'Start a team',
       navAction: this.createTeamPage,
-      heroText: 'Plan, discuss, win.',
+      heroText: 'Chat, brainstorm and draw collaboratively to get the juices flowing',
       heroImg: './assets/img/heroimg.svg',
       joinType: 'Join your team',
       joinAction: this.joinRoom,
@@ -42,7 +42,7 @@ class HomeContainer extends React.Component {
     this.setState({
       navItem: 'Back',
       navAction: this.homePage,
-      heroText: 'Start your brainstorming here',
+      heroText: 'Start your team here',
       joinType: 'Create your team',
       joinAction: this.createRoom
     });
@@ -52,7 +52,7 @@ class HomeContainer extends React.Component {
     this.setState({
       navItem: 'Start a team',
       navAction: this.createTeamPage,
-      heroText: 'Plan, discuss, win.',
+      heroText: 'Chat, brainstorm and draw collaboratively to get the juices flowing',
       joinType: 'Join your team',
       joinAction: this.joinRoom
     });
