@@ -8,6 +8,7 @@ const connect = () => {
 
   socket.on('startDraw', canvas.beginDrawStream);
   socket.on('draw', canvas.draw);
+  socket.on('stopDraw', canvas.endDrawStream);
   socket.on('clearCanvas', canvas.clearCanvas);
   socket.on('canvasWasCleared', canvas.canvasWasCleared);
 };

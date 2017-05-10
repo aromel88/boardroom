@@ -116,6 +116,10 @@ const onCanvas = (sock) => {
     socket.broadcast.to(socket.team).emit('draw', data);
   });
 
+  socket.on('stopDraw', () => {
+    socket.broadcast.to(socket.team).emit('stopDraw', data);
+  });
+
   socket.on('createTab', (data) => {
     canvasManager.createTab(data, socket);
   });

@@ -95,6 +95,7 @@ const mouseMove = (e) => {
 // called to ensure draw flag is false
 const stopDraw = () => {
   drawing = false;
+  client.emit('stopDraw');
   sendCanvasData();
 };
 
@@ -123,6 +124,10 @@ const draw = (drawData) => {
   mainCtx.drawImage(topCanvas, 0, 0);
   topCtx.clearRect(0, 0, topCanvas.width, topCanvas.height);
   topCtx.restore();
+};
+
+const endDrawStream = () => {
+  drawAllowed = true;
 };
 
 const receiveCanvasData = (canvasData) => {
@@ -197,6 +202,7 @@ module.exports.init = init;
 module.exports.startDraw = startDraw;
 module.exports.beginDrawStream = beginDrawStream;
 module.exports.draw = draw;
+module.exports.endDrawStream = endDrawStream;
 module.exports.clearCanvas = clearCanvas;
 module.exports.canvasWasCleared = canvasWasCleared;
 module.exports.setUpdateCallback = setUpdateCallback;
