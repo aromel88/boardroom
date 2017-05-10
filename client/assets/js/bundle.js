@@ -11105,7 +11105,7 @@ var MessageInput = function (_React$Component) {
           id: 'message-input',
           placeholder: 'Write a message',
           onKeyUp: this.props.submitMessage,
-          onChange: this.props.isTyping
+          onInput: this.props.isTyping
         })
       );
     }
@@ -11289,7 +11289,7 @@ var UsersTypingDisplay = function (_React$Component) {
       if (users.includes(username)) {
         console.log('original: ');
         console.dir(users);
-        users = users.splice(users.indexOf(username), 1);
+        users.splice(users.indexOf(username), 1);
       }
 
       if (users && users.length > 0) {
@@ -11301,7 +11301,7 @@ var UsersTypingDisplay = function (_React$Component) {
         console.log('modified: ');
         console.dir(users);
 
-        this.props.users.length === 1 ? userList += ' is' : userList += ' are';
+        users.length === 1 ? userList += ' is' : userList += ' are';
         userList += ' typing. . .';
       } else {
         classes += ' invisible-class';

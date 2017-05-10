@@ -14,7 +14,7 @@ class MessageInput extends React.Component {
           id='message-input'
           placeholder='Write a message'
           onKeyUp={this.props.submitMessage}
-          onChange={this.props.isTyping}
+          onInput={this.props.isTyping}
         />
       </div>
     );

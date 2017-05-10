@@ -16,7 +16,7 @@ class UsersTypingDisplay extends React.Component {
     if (users.includes(username)) {
       console.log('original: ');
       console.dir(users);
-      users = users.splice(users.indexOf(username), 1);
+      users.splice(users.indexOf(username), 1);
     }
 
     if (users && users.length > 0) {
@@ -28,7 +28,7 @@ class UsersTypingDisplay extends React.Component {
       console.log('modified: ');
       console.dir(users);
 
-      this.props.users.length === 1 ? userList += ' is' : userList += ' are';
+      users.length === 1 ? userList += ' is' : userList += ' are';
       userList += ' typing. . .';
     } else {
       classes += ' invisible-class';
