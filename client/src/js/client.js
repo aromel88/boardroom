@@ -6,7 +6,7 @@ let socket;
 const connect = () => {
   socket = io.connect();
 
-  socket.on('startDraw', canvas.startDraw);
+  socket.on('startDraw', canvas.beginDrawStream);
   socket.on('draw', canvas.draw);
   socket.on('clearCanvas', canvas.clearCanvas);
   socket.on('canvasWasCleared', canvas.canvasWasCleared);

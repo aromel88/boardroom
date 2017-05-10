@@ -69,7 +69,6 @@ const mouseDown = (e) => {
       strokeStyle: strokeStyle,
       lineWidth: lineWidth,
       id: activeTab,
-      user: app.getName()
     };
     client.emit('beginDrawStream', drawData);
     startDraw(drawData);
@@ -99,12 +98,14 @@ const stopDraw = () => {
   sendCanvasData();
 };
 
+const beginDrawStream = (data) => {
+  drawAllowed = false;
+  startDraw(data);
+};
+
 // start a drawing path where the mouse is clicked on the canvas
 const startDraw = (drawData) => {
   if (drawData.id !== activeTab) return;
-  if (drawData.user !== app.getName()) {
-    drawAllowed = false;
-  }
   topCtx.lineWidth = drawData.lineWidth;
   topCtx.strokeStyle = drawData.strokeStyle;
   topCtx.beginPath();
@@ -194,6 +195,7 @@ const getCurrentTool = () => { return currentTool; };
 
 module.exports.init = init;
 module.exports.startDraw = startDraw;
+module.exports.beginDrawStream = beginDrawStream;
 module.exports.draw = draw;
 module.exports.clearCanvas = clearCanvas;
 module.exports.canvasWasCleared = canvasWasCleared;
