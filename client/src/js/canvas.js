@@ -95,12 +95,18 @@ const mouseMove = (e) => {
 // called to ensure draw flag is false
 const stopDraw = () => {
   drawing = false;
-  client.emit('stopDraw');
+  client.emit('stopDraw', {id: activeTab});
   sendCanvasData();
 };
 
 const beginDrawStream = (data) => {
+  if (data.id !== activeTab) return;
   drawAllowed = false;
+  if (currentTool === 0) {
+    topCanvas.style.cursor = 'url("assets/img/pen-cursor-no.png") -20 20,crosshair';
+  } else {
+    topCanvas.style.cursor = 'url("assets/img/eraser-cursor-no.png") 10 20, default';
+  }
   startDraw(data);
 };
 
@@ -126,8 +132,14 @@ const draw = (drawData) => {
   topCtx.restore();
 };
 
-const endDrawStream = () => {
+const endDrawStream = (data) => {
+  if (data.id !== activeTab) return;
   drawAllowed = true;
+  if (currentTool === 0) {
+    topCanvas.style.cursor = 'url("assets/img/pen-cursor.png") -20 20,crosshair';
+  } else {
+    topCanvas.style.cursor = 'url("assets/img/eraser-cursor.png") 10 20, default';
+  }
 };
 
 const receiveCanvasData = (canvasData) => {
@@ -186,11 +198,19 @@ const toggleCanvas = () => {
 const toggleTool = () => {
   currentTool = currentTool == 0 ? 1 : 0;
   if (currentTool === 0) {
-    topCanvas.style.cursor = 'url("assets/img/pen-cursor.png") -20 20,crosshair';
+    if (drawAllowed) {
+      topCanvas.style.cursor = 'url("assets/img/pen-cursor.png") -20 20,crosshair';
+    } else {
+      topCanvas.style.cursor = 'url("assets/img/pen-cursor-no.png") -20 20,crosshair';
+    }
     strokeStyle = 'black';
     lineWidth = 1;
   } else {
-    topCanvas.style.cursor = 'url("assets/img/eraser-cursor.png") 10 20, default';
+    if (drawAllowed) {
+      topCanvas.style.cursor = 'url("assets/img/eraser-cursor.png") 10 20, default';
+    } else {
+      topCanvas.style.cursor = 'url("assets/img/eraser-cursor-no.png") 10 20, default';
+    }
     strokeStyle = 'white';
     lineWidth = 20;
   }
