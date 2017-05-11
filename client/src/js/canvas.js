@@ -95,11 +95,12 @@ const mouseMove = (e) => {
 // called to ensure draw flag is false
 const stopDraw = () => {
   drawing = false;
-  client.emit('stopDraw');
+  client.emit('stopDraw', {id: activeTab});
   sendCanvasData();
 };
 
 const beginDrawStream = (data) => {
+  if (data.id !== activeTab) return;
   drawAllowed = false;
   if (currentTool === 0) {
     topCanvas.style.cursor = 'url("assets/img/pen-cursor-no.png") -20 20,crosshair';
@@ -131,8 +132,14 @@ const draw = (drawData) => {
   topCtx.restore();
 };
 
-const endDrawStream = () => {
+const endDrawStream = (data) => {
+  if (data.id !== activeTab) return;
   drawAllowed = true;
+  if (currentTool === 0) {
+    topCanvas.style.cursor = 'url("assets/img/pen-cursor.png") -20 20,crosshair';
+  } else {
+    topCanvas.style.cursor = 'url("assets/img/eraser-cursor.png") 10 20, default';
+  }
 };
 
 const receiveCanvasData = (canvasData) => {

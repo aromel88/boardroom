@@ -2594,11 +2594,12 @@ var mouseMove = function mouseMove(e) {
 // called to ensure draw flag is false
 var stopDraw = function stopDraw() {
   drawing = false;
-  client.emit('stopDraw');
+  client.emit('stopDraw', { id: activeTab });
   sendCanvasData();
 };
 
 var beginDrawStream = function beginDrawStream(data) {
+  if (data.id !== activeTab) return;
   drawAllowed = false;
   if (currentTool === 0) {
     topCanvas.style.cursor = 'url("assets/img/pen-cursor-no.png") -20 20,crosshair';
@@ -2630,8 +2631,14 @@ var draw = function draw(drawData) {
   topCtx.restore();
 };
 
-var endDrawStream = function endDrawStream() {
+var endDrawStream = function endDrawStream(data) {
+  if (data.id !== activeTab) return;
   drawAllowed = true;
+  if (currentTool === 0) {
+    topCanvas.style.cursor = 'url("assets/img/pen-cursor.png") -20 20,crosshair';
+  } else {
+    topCanvas.style.cursor = 'url("assets/img/eraser-cursor.png") 10 20, default';
+  }
 };
 
 var receiveCanvasData = function receiveCanvasData(canvasData) {
