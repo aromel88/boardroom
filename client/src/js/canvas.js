@@ -166,12 +166,20 @@ const toggleCanvas = () => {
   canvasOpen = !canvasOpen;
   if (canvasOpen) {
     TweenMax.to('.canvas-slide', 0.3, { right: '+=400px' });
-    TweenMax.to('.canvas-grow', 0.3, { width: '-=400px' });
+
+    TweenMax.set('#chat-container', { width: 'calc(100% - 50px)'});
+    TweenMax.set('#message-input-container', { width: 'calc(100% - 333px)'});
+
+    TweenMax.to('#chat-container', 0.3, { width: 'calc(100% - 450px)'});
+    TweenMax.to('#message-input-container', 0.3, { width: 'calc(100% - 733px)'});
+
   } else {
     TweenMax.to('.canvas-slide', 0.3, { right: '-=400px', onComplete: () => {
         clearCanvas();
     }});
-    TweenMax.to('.canvas-grow', 0.3, { width: '+=400px' });
+
+    TweenMax.to('#chat-container', 0.3, { width: 'calc(100% - 50px)'});
+    TweenMax.to('#message-input-container', 0.3, { width: 'calc(100% - 333px)'});
   }
 };
 

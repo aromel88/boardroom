@@ -149,6 +149,32 @@ nav {
   text-align: center;
   border-radius: 3px; }
 
+#intro-container {
+  margin-top: 75px;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center; }
+
+#intro-team {
+  order: 0;
+  flex: 33% 1 auto;
+  margin-left: 15px;
+  margin-right: 15px; }
+
+#intro-messages {
+  order: 1;
+  flex: 33% 1 auto;
+  margin-left: 15px;
+  margin-right: 15px; }
+
+#intro-drawing {
+  order: 2;
+  flex: 33% 1 auto;
+  margin-left: 15px;
+  margin-right: 15px; }
+
 ._1 {
   background-color: #E91E63; }
 
@@ -386,7 +412,8 @@ canvas {
   margin-right: 10px;
   margin-left: 20px;
   margin-bottom: 5px;
-  height: 80%; }
+  height: 80%;
+  word-wrap: break-word; }
 
 .message-timestamp {
   position: relative;

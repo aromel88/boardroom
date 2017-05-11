@@ -125,7 +125,7 @@ $message-input-text-color: #4B4B4B;
 }
 .diagram-message:hover {
 	background-color : $accent-color-light;
-	cursor					 : pointer;
+	cursor 			 : pointer;
 }
 
 .message-avatar {
@@ -157,6 +157,7 @@ $message-input-text-color: #4B4B4B;
 	margin-left   : 20px;
 	margin-bottom : 5px;
 	height        : 80%;
+	word-wrap     : break-word;
 }
 
 .message-timestamp {

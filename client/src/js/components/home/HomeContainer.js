@@ -5,6 +5,7 @@ import React from 'react';
 import Nav from './Nav';
 import HeroContainer from './HeroContainer';
 import LoginContainer from './LoginContainer';
+import IntroContainer from './IntroContainer.js';
 
 // test class to make sure react is working
 class HomeContainer extends React.Component {
@@ -136,7 +137,6 @@ class HomeContainer extends React.Component {
     return true;
   };
 
-  // TODO: Find a way to get these in React (w/out docucment.querySelector)
   joinRoom() {
     console.log('joining room');
     const team = document.querySelector('#team-name').value;
@@ -195,6 +195,9 @@ class HomeContainer extends React.Component {
           />
         </div>
         <div className={this.state.error}>{this.state.errorMessage}</div>
+        <div>
+          <IntroContainer />
+        </div>
       </div>
     );
   }
