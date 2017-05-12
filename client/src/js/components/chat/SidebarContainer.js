@@ -13,9 +13,11 @@ class SidebarContainer extends React.Component {
     });
 
     return (
-      <div id='sidebar-container'>
+      <div id='sidebar-container' className='sidebar'>
         <h3>Users</h3>
         <ul id='user-list'>{users}</ul>
+        <input type='button' className='prem-but' id='premium-button' name='premium-button'
+          value='Go Premium' onClick={this.props.showPremiumAction} />
       </div>
     );
   }

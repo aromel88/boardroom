@@ -33,7 +33,7 @@ nav {
   background: linear-gradient(to bottom, #00BF9A 0%, #00AA8D 44%, #008975 100%);
   /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }
 
-.navButton {
+.navButton, .prem-but {
   width: 105px;
   height: 50px;
   line-height: 50px;
@@ -46,7 +46,7 @@ nav {
   top: 12px;
   font-size: 1em; }
 
-.navButton:hover {
+.navButton:hover, .prem-but:hover {
   background-color: white;
   color: #00AA8D;
   cursor: pointer; }
@@ -342,13 +342,14 @@ canvas {
   height: 100%;
   width: calc(100% - 50px); }
 
-#sidebar-container {
+.sidebar {
   position: absolute;
   left: 0px;
   top: 0px;
   width: 250px;
   height: 100%;
-  background-color: #00AA8D; }
+  background-color: #00AA8D;
+  color: white; }
 
 #sidebar-container h3 {
   color: #FAFAFA;
@@ -357,6 +358,44 @@ canvas {
   text-align: center;
   vertical-align: middle;
   font-size: 20pt; }
+
+.prem-but {
+  top: calc(100% - 55px); }
+
+#close-premium {
+  width: 20px;
+  height: 20px;
+  color: white;
+  font-size: 2em;
+  position: relative;
+  top: 5px;
+  left: calc(100% - 25px); }
+
+#close-premium:hover {
+  cursor: pointer; }
+
+#premium-container {
+  top: 100%;
+  background-color: rgba(0, 0, 0, 0.87); }
+
+#premium-container h1 {
+  width: 100%;
+  text-align: center;
+  position: relative;
+  top: 100px; }
+
+#premium-container img {
+  display: block;
+  margin: auto; }
+
+#premium-features {
+  list-style-type: circle;
+  position: relative;
+  top: 100px;
+  padding: 20px; }
+
+#premium-features li {
+  margin-bottom: 20px; }
 
 #user-list {
   width: 85%;

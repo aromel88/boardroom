@@ -18,6 +18,7 @@ const renderApp = () => {
       document.querySelector('#app'), () => {
         // module initializations if needed
         canvas.init();
+        animations.init();
       }
     );
 };

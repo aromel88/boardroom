@@ -2787,6 +2787,7 @@ var renderApp = function renderApp() {
   _reactDom2.default.render(_react2.default.createElement(_AppContainer2.default, null), document.querySelector('#app'), function () {
     // module initializations if needed
     canvas.init();
+    animations.init();
   });
 };
 
@@ -3851,6 +3852,8 @@ module.exports = SyntheticUIEvent;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var premiumIsVisible = void 0;
+
 var animateWithRewind = function animateWithRewind(element, duration, toOptions, backOptions, callback) {
   TweenMax.to(element, duration, _extends({}, toOptions, { onComplete: function onComplete() {
       if (callback) callback();
@@ -3862,8 +3865,23 @@ var handleError = function handleError() {
   TweenMax.to('.error', 0.1, { top: "-=10px", yoyo: true, repeat: 3 });
 };
 
+var togglePremiumContainer = function togglePremiumContainer() {
+  premiumIsVisible = !premiumIsVisible;
+  if (premiumIsVisible) {
+    TweenMax.to('#premium-container', 0.2, { top: '0px' });
+  } else {
+    TweenMax.to('#premium-container', 0.2, { top: '100%' });
+  }
+};
+
+var init = function init() {
+  premiumIsVisible = false;
+};
+
+module.exports.init = init;
 module.exports.animateWithRewind = animateWithRewind;
 module.exports.handleError = handleError;
+module.exports.togglePremiumContainer = togglePremiumContainer;
 
 /***/ }),
 /* 30 */
@@ -10720,6 +10738,10 @@ var _SidebarContainer = __webpack_require__(97);
 
 var _SidebarContainer2 = _interopRequireDefault(_SidebarContainer);
 
+var _PremiumContainer = __webpack_require__(212);
+
+var _PremiumContainer2 = _interopRequireDefault(_PremiumContainer);
+
 var _MessageInput = __webpack_require__(96);
 
 var _MessageInput2 = _interopRequireDefault(_MessageInput);
@@ -10738,6 +10760,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var client = __webpack_require__(23);
 var app = __webpack_require__(19);
+var animations = __webpack_require__(29);
 
 var ChatContainer = function (_React$Component) {
   _inherits(ChatContainer, _React$Component);
@@ -10757,6 +10780,7 @@ var ChatContainer = function (_React$Component) {
     _this.isTyping = _this.isTyping.bind(_this);
     _this.handleMessageError = _this.handleMessageError.bind(_this);
     _this.showTypingUsers = _this.showTypingUsers.bind(_this);
+    _this.togglePremium = _this.togglePremium.bind(_this);
 
     client.on('message', _this.setMessage);
     client.on('messageList', _this.setMessages);
@@ -10909,13 +10933,19 @@ var ChatContainer = function (_React$Component) {
       }, 2000);
     }
   }, {
+    key: 'togglePremium',
+    value: function togglePremium() {
+      animations.togglePremiumContainer();
+    }
+  }, {
     key: 'render',
     value: function render() {
 
       return _react2.default.createElement(
         'div',
         { id: 'chat-container', className: 'canvas-grow' },
-        _react2.default.createElement(_SidebarContainer2.default, { users: this.state.users }),
+        _react2.default.createElement(_SidebarContainer2.default, { users: this.state.users, showPremiumAction: this.togglePremium }),
+        _react2.default.createElement(_PremiumContainer2.default, { closePremiumAction: this.togglePremium }),
         _react2.default.createElement(_MessageContainer2.default, { username: app.getName(), messages: this.state.messages }),
         _react2.default.createElement(_MessageInput2.default, { submitMessage: this.submitMessage, isTyping: this.isTyping }),
         _react2.default.createElement(_UsersTypingDisplay2.default, { username: app.getName(), users: this.state.usersTyping })
@@ -11208,7 +11238,7 @@ var SidebarContainer = function (_React$Component) {
 
       return _react2.default.createElement(
         'div',
-        { id: 'sidebar-container' },
+        { id: 'sidebar-container', className: 'sidebar' },
         _react2.default.createElement(
           'h3',
           null,
@@ -11218,7 +11248,9 @@ var SidebarContainer = function (_React$Component) {
           'ul',
           { id: 'user-list' },
           users
-        )
+        ),
+        _react2.default.createElement('input', { type: 'button', className: 'prem-but', id: 'premium-button', name: 'premium-button',
+          value: 'Go Premium', onClick: this.props.showPremiumAction })
       );
     }
   }]);
@@ -13571,7 +13603,7 @@ exports = module.exports = __webpack_require__(107)(undefined);
 
 
 // module
-exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\n*:focus {\n  outline: none; }\n\nbody {\n  background-color: #E0E0E0;\n  font-family: \"Montserrat\", sans-serif;\n  overflow-x: hidden; }\n\n/*\n  Styles for home page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\nnav {\n  height: 75px;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  background: #008975;\n  /* Old browsers */\n  background: -moz-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(to bottom, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n.navButton {\n  width: 105px;\n  height: 50px;\n  line-height: 50px;\n  border: 2px solid #FAFAFA;\n  color: #FAFAFA;\n  border-radius: 5px;\n  background-color: transparent;\n  position: absolute;\n  right: 75px;\n  top: 12px;\n  font-size: 1em; }\n\n.navButton:hover {\n  background-color: white;\n  color: #00AA8D;\n  cursor: pointer; }\n\n#home-container {\n  width: 100%;\n  height: calc(100vh - 75px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  position: relative;\n  top: 75px;\n  background: #E0E0E0;\n  /* Old browsers */\n  background: -moz-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(135deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n#hero-container {\n  width: 40%;\n  height: calc(100vh - 75px);\n  position: relative; }\n\n#hero-container h1 {\n  font-size: 3.5em;\n  color: rgba(0, 0, 0, 0.87);\n  width: 400px;\n  position: absolute;\n  left: 100px;\n  top: 100px; }\n\n#hero-container img {\n  position: absolute;\n  left: 0;\n  bottom: 0; }\n\n#login-controls {\n  background-color: #FAFAFA;\n  width: 400px;\n  height: 300px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  position: absolute;\n  right: 75px;\n  top: 100px; }\n\n#login-controls input[type='text'] {\n  display: block;\n  margin: auto;\n  width: 200px;\n  padding: 4px;\n  font-size: 1em;\n  border-radius: 4px;\n  border: 2px solid #E0E0E0;\n  position: relative;\n  margin-bottom: 10px;\n  top: 25px; }\n\n#join-button {\n  display: block;\n  width: 212px;\n  height: 40px;\n  background-color: #00AA8D;\n  box-shadow: 0px 3px 2px #E0E0E0;\n  border: none;\n  border-radius: 3px;\n  line-height: 40px;\n  text-align: center;\n  transition: width 0.15s, height 0.15s, box-shadow 0.15s;\n  position: absolute;\n  left: 50%;\n  top: 200px;\n  transform: translate(-50%, -50%);\n  color: white;\n  font-size: 1em; }\n  #join-button:hover {\n    cursor: pointer;\n    box-shadow: 4px 7px 3px #E0E0E0;\n    width: 215px;\n    height: 43px; }\n  #join-button:active {\n    box-shadow: 0px 3px 2px #E0E0E0;\n    width: 212px;\n    height: 40px; }\n\n.no-error {\n  display: none; }\n\n.error {\n  width: 400px;\n  height: 25px;\n  line-height: 25px;\n  background-color: red;\n  color: white;\n  position: absolute;\n  right: 75px;\n  top: 500px;\n  text-align: center;\n  border-radius: 3px; }\n\n#intro-container {\n  margin-top: 75px;\n  height: 100vh;\n  width: 100vw;\n  text-align: center;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-around;\n  align-items: flex-start;\n  background: #E0E0E0;\n  /* Old browsers */\n  background: -moz-linear-gradient(45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n  #intro-container div {\n    max-width: 33%;\n    margin-top: 13%; }\n\n#intro-team {\n  order: 0;\n  flex: 33% 1 auto;\n  margin-left: 15px;\n  margin-right: 15px; }\n  #intro-team img {\n    margin-top: 15px;\n    height: auto; }\n    @media screen and (max-width: 1150px) {\n      #intro-team img {\n        max-width: 100%;\n        max-height: 500px; } }\n\n#intro-messages {\n  order: 1;\n  flex: 33% 1 auto;\n  margin-left: 15px;\n  margin-right: 15px; }\n  #intro-messages img {\n    margin-top: 15px;\n    height: auto; }\n    @media screen and (max-width: 1150px) {\n      #intro-messages img {\n        max-width: 100%;\n        max-height: 500px; } }\n\n#intro-drawing {\n  order: 2;\n  flex: 33% 1 auto;\n  margin-left: 15px;\n  margin-right: 15px; }\n  #intro-drawing img {\n    margin-top: 15px;\n    height: auto; }\n    @media screen and (max-width: 1150px) {\n      #intro-drawing img {\n        max-width: 100%;\n        max-height: 500px; } }\n\n._1 {\n  background-color: #E91E63; }\n\n._2 {\n  background-color: #9C27B0; }\n\n._3 {\n  background-color: #F44336; }\n\n._4 {\n  background-color: #2196F3; }\n\n._5 {\n  background-color: #CDDC39; }\n\n._6 {\n  background-color: #FFC107; }\n\n._7 {\n  background-color: #00BCD4; }\n\n#canvas-container {\n  overflow-y: auto; }\n\ncanvas {\n  position: absolute;\n  right: -400px;\n  top: 0px;\n  width: 400px;\n  height: 800px;\n  box-sizing: border-box; }\n\n#top-canvas {\n  z-index: 10; }\n\n#canvas-slide-button {\n  width: 50px;\n  height: 50px;\n  line-height: 50px;\n  text-align: center;\n  background-color: #00AA8D;\n  opacity: 1;\n  color: white;\n  z-index: -10; }\n\n#canvas-slide-button:hover {\n  cursor: pointer;\n  background-color: #00BF9A; }\n\n#canvas-tab-bar {\n  width: 50px;\n  height: 100vh;\n  min-height: 900px;\n  position: absolute;\n  right: 0px;\n  top: 0px;\n  background-color: rgba(0, 0, 0, 0.5); }\n\n.canvas-tab, .active-tab {\n  width: 45px;\n  height: 100px;\n  opacity: 0.5;\n  position: relative;\n  right: -5px;\n  top: 20px;\n  margin-top: 5px;\n  color: white;\n  border-radius: 15px 0px 0px 15px; }\n\n.canvas-tab:hover, .active-tab:hover {\n  opacity: 1;\n  cursor: pointer; }\n\n.canvas-tab:hover > div, .active-tab:hover > div {\n  display: block; }\n\n.active-tab {\n  opacity: 1; }\n\n.active-tab:hover {\n  cursor: default; }\n\n.active-tab:hover > div {\n  display: block; }\n\n.tab-userlist {\n  display: none;\n  width: 80px;\n  height: auto;\n  background-color: rgba(0, 0, 0, 0.5);\n  color: white;\n  position: relative;\n  left: -105px;\n  text-align: center; }\n\n.tab-userlist-item {\n  padding: 5px; }\n\n#canvas-tools {\n  background-color: #00AA8D;\n  width: 400px;\n  height: calc(100vh - 800px);\n  min-height: 100px;\n  position: absolute;\n  right: -400px;\n  top: 800px; }\n\n.canvas-tool {\n  margin-top: 20px;\n  width: 50px;\n  height: 50px;\n  margin-left: 66.66667px;\n  color: white;\n  display: inline-block; }\n\n.canvas-tool:hover {\n  opacity: 0.7;\n  cursor: pointer; }\n\n/*\n  Styles for chat page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\n#chat-container {\n  position: fixed;\n  height: 100%;\n  width: calc(100% - 50px); }\n\n#sidebar-container {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  width: 250px;\n  height: 100%;\n  background-color: #00AA8D; }\n\n#sidebar-container h3 {\n  color: #FAFAFA;\n  background-color: #008975;\n  line-height: 80px;\n  text-align: center;\n  vertical-align: middle;\n  font-size: 20pt; }\n\n#user-list {\n  width: 85%;\n  margin: auto;\n  margin-top: 20px; }\n\n#messages-container {\n  position: absolute;\n  left: 250px;\n  bottom: calc(34px + 22px + 5px);\n  width: calc(100% - 250px);\n  max-height: calc(100% - calc(34px + 22px + 5px));\n  overflow-y: auto; }\n\n.user-wrapper {\n  background-color: #F5F5F5;\n  width: 100%;\n  height: 50px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  border-radius: 4px;\n  margin-bottom: 20px;\n  display: flex;\n  flex-direction: row;\n  align-items: center; }\n\n.user-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px;\n  margin-left: 5px; }\n\n.username {\n  margin-left: 10px;\n  color: rgba(0, 0, 0, 0.87);\n  display: inline; }\n\n.message-wrapper {\n  background-color: #00BF9A;\n  min-width: 200px;\n  min-height: 70px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  max-width: 550px;\n  border-radius: 4px;\n  margin-top: 8px;\n  margin-bottom: 12px;\n  margin-right: 20px;\n  margin-left: 20px;\n  display: inline-block;\n  float: left;\n  clear: both; }\n\n.self-message {\n  float: right; }\n\n.diagram-message {\n  background-color: #9C27B0; }\n\n.diagram-message:hover {\n  background-color: #BA68C8;\n  cursor: pointer; }\n\n.message-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px;\n  margin-top: 10px;\n  margin-left: 10px; }\n\n.message-username {\n  position: relative;\n  display: inline;\n  color: #FAFAFA;\n  top: -7px;\n  margin-left: 10px;\n  margin-right: 10px;\n  font-size: 14pt; }\n\n.message-text, .message-edit {\n  position: relative;\n  border-radius: 4px;\n  color: #FAFAFA;\n  display: block;\n  padding: 5px;\n  margin-top: 5px;\n  margin-right: 10px;\n  margin-left: 20px;\n  margin-bottom: 5px;\n  height: 80%;\n  word-wrap: break-word; }\n\n.message-timestamp {\n  position: relative;\n  color: #FAFAFA;\n  display: inline-block;\n  margin-right: 20px;\n  margin-bottom: 5px;\n  float: right;\n  font-size: 8pt; }\n\n.message-edit {\n  display: block;\n  color: black; }\n\n#message-input-container {\n  position: fixed;\n  bottom: 22px;\n  left: calc(250px + 15px);\n  width: calc(100% - 250px - 83px); }\n\n#message-input {\n  width: 100%;\n  height: 34px;\n  color: #4B4B4B;\n  text-indent: 8px;\n  font-size: 13pt;\n  vertical-align: middle;\n  border-radius: 5px;\n  border-width: thin;\n  border-color: #E0E0E0;\n  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5); }\n\n.typing-list {\n  position: fixed;\n  height: 22px;\n  bottom: 0;\n  left: calc(250px + 18px);\n  color: #4B4B4B;\n  line-height: 22px;\n  font-size: 8pt;\n  font-weight: bold; }\n\n.invisible-class {\n  visibility: hidden; }\n\n/*# sourceMappingURL=app.css.map */\n", ""]);
+exports.push([module.i, "* {\n  margin: 0;\n  padding: 0; }\n\n*:focus {\n  outline: none; }\n\nbody {\n  background-color: #E0E0E0;\n  font-family: \"Montserrat\", sans-serif;\n  overflow-x: hidden; }\n\n/*\n  Styles for home page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\nnav {\n  height: 75px;\n  width: 100%;\n  position: absolute;\n  top: 0;\n  background: #008975;\n  /* Old browsers */\n  background: -moz-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(top, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(to bottom, #00BF9A 0%, #00AA8D 44%, #008975 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n.navButton, .prem-but {\n  width: 105px;\n  height: 50px;\n  line-height: 50px;\n  border: 2px solid #FAFAFA;\n  color: #FAFAFA;\n  border-radius: 5px;\n  background-color: transparent;\n  position: absolute;\n  right: 75px;\n  top: 12px;\n  font-size: 1em; }\n\n.navButton:hover, .prem-but:hover {\n  background-color: white;\n  color: #00AA8D;\n  cursor: pointer; }\n\n#home-container {\n  width: 100%;\n  height: calc(100vh - 75px);\n  overflow-y: auto;\n  overflow-x: hidden;\n  position: relative;\n  top: 75px;\n  background: #E0E0E0;\n  /* Old browsers */\n  background: -moz-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(-45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(135deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n\n#hero-container {\n  width: 40%;\n  height: calc(100vh - 75px);\n  position: relative; }\n\n#hero-container h1 {\n  font-size: 3.5em;\n  color: rgba(0, 0, 0, 0.87);\n  width: 400px;\n  position: absolute;\n  left: 100px;\n  top: 100px; }\n\n#hero-container img {\n  position: absolute;\n  left: 0;\n  bottom: 0; }\n\n#login-controls {\n  background-color: #FAFAFA;\n  width: 400px;\n  height: 300px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  position: absolute;\n  right: 75px;\n  top: 100px; }\n\n#login-controls input[type='text'] {\n  display: block;\n  margin: auto;\n  width: 200px;\n  padding: 4px;\n  font-size: 1em;\n  border-radius: 4px;\n  border: 2px solid #E0E0E0;\n  position: relative;\n  margin-bottom: 10px;\n  top: 25px; }\n\n#join-button {\n  display: block;\n  width: 212px;\n  height: 40px;\n  background-color: #00AA8D;\n  box-shadow: 0px 3px 2px #E0E0E0;\n  border: none;\n  border-radius: 3px;\n  line-height: 40px;\n  text-align: center;\n  transition: width 0.15s, height 0.15s, box-shadow 0.15s;\n  position: absolute;\n  left: 50%;\n  top: 200px;\n  transform: translate(-50%, -50%);\n  color: white;\n  font-size: 1em; }\n  #join-button:hover {\n    cursor: pointer;\n    box-shadow: 4px 7px 3px #E0E0E0;\n    width: 215px;\n    height: 43px; }\n  #join-button:active {\n    box-shadow: 0px 3px 2px #E0E0E0;\n    width: 212px;\n    height: 40px; }\n\n.no-error {\n  display: none; }\n\n.error {\n  width: 400px;\n  height: 25px;\n  line-height: 25px;\n  background-color: red;\n  color: white;\n  position: absolute;\n  right: 75px;\n  top: 500px;\n  text-align: center;\n  border-radius: 3px; }\n\n#intro-container {\n  margin-top: 75px;\n  height: 100vh;\n  width: 100vw;\n  text-align: center;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-around;\n  align-items: flex-start;\n  background: #E0E0E0;\n  /* Old browsers */\n  background: -moz-linear-gradient(45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* FF3.6-15 */\n  background: -webkit-linear-gradient(45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* Chrome10-25,Safari5.1-6 */\n  background: linear-gradient(45deg, white 0%, #F5F5F5 40%, #E0E0E0 100%);\n  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }\n  #intro-container div {\n    max-width: 33%;\n    margin-top: 13%; }\n\n#intro-team {\n  order: 0;\n  flex: 33% 1 auto;\n  margin-left: 15px;\n  margin-right: 15px; }\n  #intro-team img {\n    margin-top: 15px;\n    height: auto; }\n    @media screen and (max-width: 1150px) {\n      #intro-team img {\n        max-width: 100%;\n        max-height: 500px; } }\n\n#intro-messages {\n  order: 1;\n  flex: 33% 1 auto;\n  margin-left: 15px;\n  margin-right: 15px; }\n  #intro-messages img {\n    margin-top: 15px;\n    height: auto; }\n    @media screen and (max-width: 1150px) {\n      #intro-messages img {\n        max-width: 100%;\n        max-height: 500px; } }\n\n#intro-drawing {\n  order: 2;\n  flex: 33% 1 auto;\n  margin-left: 15px;\n  margin-right: 15px; }\n  #intro-drawing img {\n    margin-top: 15px;\n    height: auto; }\n    @media screen and (max-width: 1150px) {\n      #intro-drawing img {\n        max-width: 100%;\n        max-height: 500px; } }\n\n._1 {\n  background-color: #E91E63; }\n\n._2 {\n  background-color: #9C27B0; }\n\n._3 {\n  background-color: #F44336; }\n\n._4 {\n  background-color: #2196F3; }\n\n._5 {\n  background-color: #CDDC39; }\n\n._6 {\n  background-color: #FFC107; }\n\n._7 {\n  background-color: #00BCD4; }\n\n#canvas-container {\n  overflow-y: auto; }\n\ncanvas {\n  position: absolute;\n  right: -400px;\n  top: 0px;\n  width: 400px;\n  height: 800px;\n  box-sizing: border-box; }\n\n#top-canvas {\n  z-index: 10; }\n\n#canvas-slide-button {\n  width: 50px;\n  height: 50px;\n  line-height: 50px;\n  text-align: center;\n  background-color: #00AA8D;\n  opacity: 1;\n  color: white;\n  z-index: -10; }\n\n#canvas-slide-button:hover {\n  cursor: pointer;\n  background-color: #00BF9A; }\n\n#canvas-tab-bar {\n  width: 50px;\n  height: 100vh;\n  min-height: 900px;\n  position: absolute;\n  right: 0px;\n  top: 0px;\n  background-color: rgba(0, 0, 0, 0.5); }\n\n.canvas-tab, .active-tab {\n  width: 45px;\n  height: 100px;\n  opacity: 0.5;\n  position: relative;\n  right: -5px;\n  top: 20px;\n  margin-top: 5px;\n  color: white;\n  border-radius: 15px 0px 0px 15px; }\n\n.canvas-tab:hover, .active-tab:hover {\n  opacity: 1;\n  cursor: pointer; }\n\n.canvas-tab:hover > div, .active-tab:hover > div {\n  display: block; }\n\n.active-tab {\n  opacity: 1; }\n\n.active-tab:hover {\n  cursor: default; }\n\n.active-tab:hover > div {\n  display: block; }\n\n.tab-userlist {\n  display: none;\n  width: 80px;\n  height: auto;\n  background-color: rgba(0, 0, 0, 0.5);\n  color: white;\n  position: relative;\n  left: -105px;\n  text-align: center; }\n\n.tab-userlist-item {\n  padding: 5px; }\n\n#canvas-tools {\n  background-color: #00AA8D;\n  width: 400px;\n  height: calc(100vh - 800px);\n  min-height: 100px;\n  position: absolute;\n  right: -400px;\n  top: 800px; }\n\n.canvas-tool {\n  margin-top: 20px;\n  width: 50px;\n  height: 50px;\n  margin-left: 66.66667px;\n  color: white;\n  display: inline-block; }\n\n.canvas-tool:hover {\n  opacity: 0.7;\n  cursor: pointer; }\n\n/*\n  Styles for chat page\n  IMGE 590 - Project 3 - The Product\n\n  Aaron Romel\n  Jesse Cooper\n\n  \"Drop your joust, boys\" - Unknown\n*/\n#chat-container {\n  position: fixed;\n  height: 100%;\n  width: calc(100% - 50px); }\n\n.sidebar {\n  position: absolute;\n  left: 0px;\n  top: 0px;\n  width: 250px;\n  height: 100%;\n  background-color: #00AA8D;\n  color: white; }\n\n#sidebar-container h3 {\n  color: #FAFAFA;\n  background-color: #008975;\n  line-height: 80px;\n  text-align: center;\n  vertical-align: middle;\n  font-size: 20pt; }\n\n.prem-but {\n  top: calc(100% - 55px); }\n\n#close-premium {\n  width: 20px;\n  height: 20px;\n  color: white;\n  font-size: 2em;\n  position: relative;\n  top: 5px;\n  left: calc(100% - 25px); }\n\n#close-premium:hover {\n  cursor: pointer; }\n\n#premium-container {\n  top: 100%;\n  background-color: rgba(0, 0, 0, 0.87); }\n\n#premium-container h1 {\n  width: 100%;\n  text-align: center;\n  position: relative;\n  top: 100px; }\n\n#premium-container img {\n  display: block;\n  margin: auto; }\n\n#premium-features {\n  list-style-type: circle;\n  position: relative;\n  top: 100px;\n  padding: 20px; }\n\n#premium-features li {\n  margin-bottom: 20px; }\n\n#user-list {\n  width: 85%;\n  margin: auto;\n  margin-top: 20px; }\n\n#messages-container {\n  position: absolute;\n  left: 250px;\n  bottom: calc(34px + 22px + 5px);\n  width: calc(100% - 250px);\n  max-height: calc(100% - calc(34px + 22px + 5px));\n  overflow-y: auto; }\n\n.user-wrapper {\n  background-color: #F5F5F5;\n  width: 100%;\n  height: 50px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  border-radius: 4px;\n  margin-bottom: 20px;\n  display: flex;\n  flex-direction: row;\n  align-items: center; }\n\n.user-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px;\n  margin-left: 5px; }\n\n.username {\n  margin-left: 10px;\n  color: rgba(0, 0, 0, 0.87);\n  display: inline; }\n\n.message-wrapper {\n  background-color: #00BF9A;\n  min-width: 200px;\n  min-height: 70px;\n  border-radius: 5px;\n  box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.5);\n  max-width: 550px;\n  border-radius: 4px;\n  margin-top: 8px;\n  margin-bottom: 12px;\n  margin-right: 20px;\n  margin-left: 20px;\n  display: inline-block;\n  float: left;\n  clear: both; }\n\n.self-message {\n  float: right; }\n\n.diagram-message {\n  background-color: #9C27B0; }\n\n.diagram-message:hover {\n  background-color: #BA68C8;\n  cursor: pointer; }\n\n.message-avatar {\n  border-radius: 25px;\n  width: 30px;\n  height: 30px;\n  margin-top: 10px;\n  margin-left: 10px; }\n\n.message-username {\n  position: relative;\n  display: inline;\n  color: #FAFAFA;\n  top: -7px;\n  margin-left: 10px;\n  margin-right: 10px;\n  font-size: 14pt; }\n\n.message-text, .message-edit {\n  position: relative;\n  border-radius: 4px;\n  color: #FAFAFA;\n  display: block;\n  padding: 5px;\n  margin-top: 5px;\n  margin-right: 10px;\n  margin-left: 20px;\n  margin-bottom: 5px;\n  height: 80%;\n  word-wrap: break-word; }\n\n.message-timestamp {\n  position: relative;\n  color: #FAFAFA;\n  display: inline-block;\n  margin-right: 20px;\n  margin-bottom: 5px;\n  float: right;\n  font-size: 8pt; }\n\n.message-edit {\n  display: block;\n  color: black; }\n\n#message-input-container {\n  position: fixed;\n  bottom: 22px;\n  left: calc(250px + 15px);\n  width: calc(100% - 250px - 83px); }\n\n#message-input {\n  width: 100%;\n  height: 34px;\n  color: #4B4B4B;\n  text-indent: 8px;\n  font-size: 13pt;\n  vertical-align: middle;\n  border-radius: 5px;\n  border-width: thin;\n  border-color: #E0E0E0;\n  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5); }\n\n.typing-list {\n  position: fixed;\n  height: 22px;\n  bottom: 0;\n  left: calc(250px + 18px);\n  color: #4B4B4B;\n  line-height: 22px;\n  font-size: 8pt;\n  font-weight: bold; }\n\n.invisible-class {\n  visibility: hidden; }\n\n/*# sourceMappingURL=app.css.map */\n", ""]);
 
 // exports
 
@@ -26629,6 +26661,97 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+/* 212 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PremiumContainer = function (_React$Component) {
+  _inherits(PremiumContainer, _React$Component);
+
+  function PremiumContainer(props) {
+    _classCallCheck(this, PremiumContainer);
+
+    return _possibleConstructorReturn(this, (PremiumContainer.__proto__ || Object.getPrototypeOf(PremiumContainer)).call(this, props));
+  }
+
+  _createClass(PremiumContainer, [{
+    key: 'render',
+    value: function render() {
+
+      return _react2.default.createElement(
+        'div',
+        { id: 'premium-container', className: 'sidebar' },
+        _react2.default.createElement(
+          'div',
+          { id: 'close-premium', onClick: this.props.closePremiumAction },
+          'X'
+        ),
+        _react2.default.createElement('input', { type: 'button', id: 'go-premium-button', name: 'go-premium-button', className: 'prem-but',
+          value: 'Let\'s do it!' }),
+        _react2.default.createElement(
+          'h1',
+          null,
+          'Premium'
+        ),
+        _react2.default.createElement(
+          'h1',
+          null,
+          'Features'
+        ),
+        _react2.default.createElement(
+          'ul',
+          { id: 'premium-features' },
+          _react2.default.createElement(
+            'li',
+            null,
+            'Unlimited storage of chat logs and diagrams'
+          ),
+          _react2.default.createElement(
+            'li',
+            null,
+            'Private messaging'
+          ),
+          _react2.default.createElement(
+            'li',
+            null,
+            'Multiple Channels Per Team'
+          ),
+          _react2.default.createElement(
+            'li',
+            null,
+            'More powerful diagraming tools'
+          )
+        )
+      );
+    }
+  }]);
+
+  return PremiumContainer;
+}(_react2.default.Component);
+
+exports.default = PremiumContainer;
 
 /***/ })
 /******/ ]);

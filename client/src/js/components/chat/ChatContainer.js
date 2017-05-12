@@ -1,9 +1,11 @@
 const client = require('../../client.js');
 const app = require('../../app');
+const animations = require('../../animations');
 
 import React from 'react';
 import MessageContainer from './MessageContainer';
 import SidebarContainer from './SidebarContainer';
+import PremiumContainer from './PremiumContainer';
 import MessageInput from './MessageInput.js';
 import UsersTypingDisplay from './UsersTypingDisplay.js';
 
@@ -22,6 +24,7 @@ class ChatContainer extends React.Component {
     this.isTyping = this.isTyping.bind(this);
     this.handleMessageError = this.handleMessageError.bind(this);
     this.showTypingUsers = this.showTypingUsers.bind(this);
+    this.togglePremium = this.togglePremium.bind(this);
 
     client.on('message', this.setMessage);
     client.on('messageList', this.setMessages);
@@ -156,11 +159,16 @@ class ChatContainer extends React.Component {
     }, 2000);
   }
 
+  togglePremium() {
+    animations.togglePremiumContainer();
+  }
+
   render() {
 
     return (
       <div id="chat-container" className='canvas-grow'>
-        <SidebarContainer users={this.state.users} />
+        <SidebarContainer users={this.state.users} showPremiumAction={this.togglePremium} />
+        <PremiumContainer closePremiumAction={this.togglePremium}/>
         <MessageContainer username={app.getName()} messages={this.state.messages} />
         <MessageInput submitMessage={this.submitMessage} isTyping={this.isTyping} />
         <UsersTypingDisplay username={app.getName()} users={this.state.usersTyping} />
