@@ -8,7 +8,7 @@ class IntroContainer extends React.Component {
     this.state = {
       teamImage: './assets/img/intro-users.png',
       messageImage: './assets/img/intro-messages.png',
-      drawingImage: './assets/img/intro-diagram.png',
+      drawingImage: './assets/img/intro-diagram-with-drawing.png',
     }
   }
 
