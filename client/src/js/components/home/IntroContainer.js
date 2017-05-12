@@ -24,7 +24,7 @@ class IntroContainer extends React.Component {
           <img src={this.state.messageImage} alt='Message img' />
         </div>
         <div id='intro-drawing'>
-          <h1>Create and edit diagrams together</h1>
+          <h1>Diagram and draw together</h1>
           <img src={this.state.drawingImage} alt='Drawing img' />
         </div>
       </div>
