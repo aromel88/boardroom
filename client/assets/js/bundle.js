@@ -7147,7 +7147,7 @@ var HomeContainer = function (_React$Component) {
     _this.state = {
       navItem: 'Start a team',
       navAction: _this.createTeamPage,
-      heroText: 'Chat, brainstorm and draw collaboratively to get the juices flowing',
+      heroText: 'Chat, brainstorm and draw collaboratively',
       heroImg: './assets/img/heroimg.svg',
       joinType: 'Join your team',
       joinAction: _this.joinRoom,
@@ -7174,7 +7174,7 @@ var HomeContainer = function (_React$Component) {
       this.setState({
         navItem: 'Start a team',
         navAction: this.createTeamPage,
-        heroText: 'Chat, brainstorm and draw collaboratively to get the juices flowing',
+        heroText: 'Chat, brainstorm and draw collaboratively',
         joinType: 'Join your team',
         joinAction: this.joinRoom
       });
